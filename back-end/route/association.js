@@ -1,9 +1,12 @@
 const express = require('express')
 const router = express.Router()
-const {signupAssociation} = require("../controllers/association")
+const {signupAssociation , getListAssociation} = require("../controllers/association")
 
 
 
 router.post('/signupAssociation', signupAssociation)
+
+  //get list association
+  router.get('/getAll',getListAssociation)
 
 module.exports = router;
