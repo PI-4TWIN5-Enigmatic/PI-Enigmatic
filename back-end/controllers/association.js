@@ -1,5 +1,9 @@
 const Association = require("../models/association")
 
+const bcrypt = require('bcryptjs');
+
+const jwt=require("jsonwebtoken")
+
 
 exports.signupAssociation = async (req,res,next) =>{
 
