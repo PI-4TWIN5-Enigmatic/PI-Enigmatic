@@ -1,10 +1,6 @@
 const express = require('express')
 const router = express.Router()
-<<<<<<< HEAD
-const {signup,getListUser,forgetPassword,emailSend,changerPass} = require("../controllers/user")
-=======
-const {signup,getListUser,login} = require("../controllers/user")
->>>>>>> 9dd69cabeb90cefe46b6d9d789f77a7479a92ea9
+const {signup,getListUser,forgetPassword,emailSend,changerPass , login} = require("../controllers/user")
 
 
 router.get('/', function (req, res) {

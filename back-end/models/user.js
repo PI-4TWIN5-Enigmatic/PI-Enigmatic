@@ -28,11 +28,49 @@ const userSchema = new mongoose.Schema(
             }
           },
         occupation: {
-            type: String,
+            type: String,enum: ['Student ', 'Employee'],
             trim: true,
            required : [true, 'Please add your occupation '],
             maxlength : 32
         },
+        isActive: {
+          type: Boolean,
+        
+          default: false
+    
+         
+      },
+      isBanned: {
+        type: Boolean,
+       
+        default: false
+  
+       
+    },
+    googleId: {
+      type: String,
+      trim: true
+    
+
+     
+  },
+  secret: {
+    type: String,
+   
+  
+
+   
+},
+score: {
+  type: number,
+
+},
+specialUser: {
+  type: Boolean,
+  default: false
+
+ 
+},
         sexe: { type: String, enum: ['Male', 'Female'] },
        phone: { type: String , required: true , unique: true },
         friends: { type: Number , default: 0},

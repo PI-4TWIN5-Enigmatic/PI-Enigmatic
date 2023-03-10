@@ -92,7 +92,6 @@ exports.getListAssociation = async (req, res,next) => {
        res.status(404).json({message: error.message});
     }
 }
-<<<<<<< HEAD
 
 exports.verifiedAsso = async (req,res,next)=>{
     const associationId = req.params.id;
@@ -106,5 +105,3 @@ exports.verifiedAsso = async (req,res,next)=>{
       });
 
 }
-=======
->>>>>>> 9dd69cabeb90cefe46b6d9d789f77a7479a92ea9

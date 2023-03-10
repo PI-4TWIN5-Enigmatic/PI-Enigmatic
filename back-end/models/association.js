@@ -1,5 +1,6 @@
 const mongoose = require('mongoose')
 const bcrypt = require('bcrypt');
+const user = require('./user');
 const saltRounds = 10;
 
 const associationSchema = new mongoose.Schema(
@@ -28,6 +29,7 @@ const associationSchema = new mongoose.Schema(
         },
         sector: {
             type: String,
+            enum: ['Health ', 'Nature','Education','Poverty'],
             trim: true,
             required: true
         },
@@ -36,6 +38,12 @@ const associationSchema = new mongoose.Schema(
           trim: true,
           required: true
       },
+      isActive: {
+        type: Boolean,
+        trim: true,
+        default: false
+         },
+       
 
            isVerified: {
         type: Boolean,
@@ -62,7 +70,7 @@ const associationSchema = new mongoose.Schema(
             trim: true,
         },
         founder: {
-            type: String,
+            type: user,
             trim: true,
             required : [true, 'Please add the founder of the association '],
         },
