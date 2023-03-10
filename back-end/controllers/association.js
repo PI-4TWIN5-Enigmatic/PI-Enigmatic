@@ -10,6 +10,10 @@ const transport = nodemailer.createTransport({
 
  
 
+const bcrypt = require('bcryptjs');
+
+const jwt=require("jsonwebtoken")
+
 
 exports.signupAssociation = async (req,res,next) =>{
     const {email} = req.body ;
@@ -61,6 +65,24 @@ exports.signupAssociation = async (req,res,next) =>{
     })
    }
 }
+/* LOGGING IN */
+exports.loginassociation = async (req, res) => {
+    try {
+      const { email, password } = req.body;
+      const association = await Association.findOne({ email: email });
+      if (!association) return res.status(400).json({ msg: "association does not exist. " });
+  
+      const isMatch = await bcrypt.compare(password, association.password);
+      if (!isMatch) return res.status(400).json({ msg: "Invalid credentials. " });
+  
+      const token = jwt.sign({ id: association._id }, process.env.JWT_SECRET);
+      delete association.password;
+      res.status(200).json({ token, association });
+    } catch (err) {
+      res.status(500).json({ error: err.message });
+    }
+  };
+
 //get list association
 exports.getListAssociation = async (req, res,next) => {
     try {
@@ -70,6 +92,7 @@ exports.getListAssociation = async (req, res,next) => {
        res.status(404).json({message: error.message});
     }
 }
+<<<<<<< HEAD
 
 exports.verifiedAsso = async (req,res,next)=>{
     const associationId = req.params.id;
@@ -83,3 +106,5 @@ exports.verifiedAsso = async (req,res,next)=>{
       });
 
 }
+=======
+>>>>>>> 9dd69cabeb90cefe46b6d9d789f77a7479a92ea9
