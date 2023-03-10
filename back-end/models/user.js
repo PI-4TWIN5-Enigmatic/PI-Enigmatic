@@ -7,13 +7,13 @@ const userSchema = new mongoose.Schema(
         firstName: {
             type: String,
             trim: true,
-            required : [true, 'Please add your fisrt name '],
+           required : [true, 'Please add your fisrt name '],
             maxlength : 32
         },
         lastName: {
             type: String,
             trim: true,
-            required : [true, 'Please add your last name '],
+          required : [true, 'Please add your last name '],
             maxlength : 32
         },
         email: {
@@ -30,11 +30,11 @@ const userSchema = new mongoose.Schema(
         occupation: {
             type: String,
             trim: true,
-            required : [true, 'Please add your occupation '],
+           required : [true, 'Please add your occupation '],
             maxlength : 32
         },
         sexe: { type: String, enum: ['Male', 'Female'] },
-        phone: { type: String , required: true , unique: true },
+       phone: { type: String , required: true , unique: true },
         friends: { type: Number , default: 0},
         profilePicture: { type: Buffer },
         followedProfil : { type: Number ,  default: 0},

@@ -31,6 +31,17 @@ const associationSchema = new mongoose.Schema(
             trim: true,
             required: true
         },
+        validator: {
+          type: String,
+          trim: true,
+          required: true
+      },
+
+           isVerified: {
+        type: Boolean,
+        trim: true,
+        default: false
+         },
           foundationDate: {
             type: Date,
             required: true,
