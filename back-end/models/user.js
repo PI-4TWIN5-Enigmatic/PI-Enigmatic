@@ -40,8 +40,13 @@ const userSchema = new mongoose.Schema(
     
          
       },
-      isBanned: { type: Boolean, default:false},
-
+      isBanned: {
+        type: Boolean,
+       
+        default: false
+  
+       
+    },
     googleId: {
       type: String,
       trim: true
@@ -67,12 +72,13 @@ specialUser: {
  
 },
         sexe: { type: String, enum: ['Male', 'Female'] },
+        phone: { type: String  },
        phone: { type: String , required: true , unique: true },
         friends: { type: Number , default: 0},
         profilePicture: { type: Buffer },
         followedProfil : { type: Number ,  default: 0},
         followingProfil : { type: Number ,  default: 0},
-        password: { type: String, required : [true, 'Please add a correct password '], minlenght : [6, 'password should have at least 6 characters'] },
+        password: { type: String},
         role : { type: Number , default: 0}
     }, { timestamps: true});
 
