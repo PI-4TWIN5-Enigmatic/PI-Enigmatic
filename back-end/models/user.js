@@ -7,11 +7,12 @@ const userSchema = new mongoose.Schema(
         firstName: {
             type: String,
             trim: true,
-<<<<<<< HEAD
+
             required : [true, 'Please add your first name '],
-=======
            required : [true, 'Please add your fisrt name '],
->>>>>>> fdc548810c8f73c752f0b1fcbb629e6fa3a021f1
+
+           required : [true, 'Please add your fisrt name '],
+
             maxlength : 32
         },
         lastName: {
