@@ -7,7 +7,12 @@ const userSchema = new mongoose.Schema(
         firstName: {
             type: String,
             trim: true,
+
+            required : [true, 'Please add your first name '],
            required : [true, 'Please add your fisrt name '],
+
+           required : [true, 'Please add your fisrt name '],
+
             maxlength : 32
         },
         lastName: {
@@ -19,6 +24,7 @@ const userSchema = new mongoose.Schema(
         email: {
             type: String,
             required: true,
+            unique: true,
             validate: {
               validator: function(v) {
                 return /\S+@\S+\.\S+/.test(v);
