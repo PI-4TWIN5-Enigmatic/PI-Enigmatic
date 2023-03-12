@@ -134,6 +134,8 @@ exports.getUser = async (req, res ) =>{
   }catch(err){
     
           res.status(404).json({error:err.message});
+  }
+}
 
 exports.forgetPassword = async (req , res , next)=>{
     const {email} =req.body;
