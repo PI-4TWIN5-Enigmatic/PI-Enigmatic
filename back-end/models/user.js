@@ -7,18 +7,23 @@ const userSchema = new mongoose.Schema(
         firstName: {
             type: String,
             trim: true,
-            required : [true, 'Please add your fisrt name '],
+<<<<<<< HEAD
+            required : [true, 'Please add your first name '],
+=======
+           required : [true, 'Please add your fisrt name '],
+>>>>>>> fdc548810c8f73c752f0b1fcbb629e6fa3a021f1
             maxlength : 32
         },
         lastName: {
             type: String,
             trim: true,
-            required : [true, 'Please add your last name '],
+          required : [true, 'Please add your last name '],
             maxlength : 32
         },
         email: {
             type: String,
             required: true,
+            unique: true,
             validate: {
               validator: function(v) {
                 return /\S+@\S+\.\S+/.test(v);
@@ -27,12 +32,54 @@ const userSchema = new mongoose.Schema(
             }
           },
         occupation: {
-            type: String,
+            type: String,enum: ['Student ', 'Employee'],
             trim: true,
            
+
+           required : [true, 'Please add your occupation '],
+            maxlength : 32
         },
+        isActive: {
+          type: Boolean,
+        
+          default: false
+    
+         
+      },
+      isBanned: {
+        type: Boolean,
+       
+        default: false
+  
+       
+    },
+    googleId: {
+      type: String,
+      trim: true
+    
+
+     
+  },
+  secret: {
+    type: String,
+   
+  
+
+   
+},
+score: {
+  type: Number,
+
+},
+specialUser: {
+  type: Boolean,
+  default: false
+
+ 
+},
         sexe: { type: String, enum: ['Male', 'Female'] },
         phone: { type: String  },
+       phone: { type: String , required: true , unique: true },
         friends: { type: Number , default: 0},
         profilePicture: { type: Buffer },
         followedProfil : { type: Number ,  default: 0},
