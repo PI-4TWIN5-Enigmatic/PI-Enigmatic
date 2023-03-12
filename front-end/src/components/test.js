@@ -39,6 +39,25 @@ const Test = () => {
             console.log();
         }
     }
+
+    const handlesubmitt = async (e) =>{
+        e.preventDefault();
+        try {
+            const login = await axios.post('/api/login' ,{
+                
+                email,
+                password
+
+            })
+            console.log(login)
+
+            if(login.data.success == true){
+                setValues({ email: '',password:''})
+            }
+        } catch (error) {
+            console.log();
+        }
+    }
   return (
     <main>
         <div className="main-wrapper pb-0 mb-0">
@@ -58,17 +77,19 @@ const Test = () => {
                                     </div>
                                 </div>
                             </div>
+
+
                             <div className="col-lg-6">
                                 <div className="login-area">
                                     <div className="row align-items-center">
                                         <div className="col-12 col-sm">
-                                            <input type="text" placeholder="Email or Userame" className="single-field"/>
+                <input onChange={handleChange("email")}  type="email" className="single-field" placeholder="Email" value={email}/>
                                         </div>
                                         <div className="col-12 col-sm">
-                                            <input type="password" placeholder="Password" className="single-field"/>
+                 <input   onChange={handleChange("password")}  type="password" className="single-field" placeholder="Password" value={password}/>
                                         </div>
                                         <div className="col-12 col-sm-auto">
-                                            <button className="login-btn">Login</button>
+                                        <button  onClick={handlesubmitt} className="submit-btn">login</button>
                                         </div>
                                     </div>
                                 </div>
@@ -76,6 +97,8 @@ const Test = () => {
                         </div>
                     </div>
                 </div>
+
+
                 <div className="timeline-page-wrapper">
                     <div className="container-fluid p-0">
                         <div className="row no-gutters">

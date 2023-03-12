@@ -1,6 +1,7 @@
 const express = require('express')
 const router = express.Router()
 const {signup,getListUser,forgetPassword,emailSend,changerPass , login,banUser,unbanUser} = require("../controllers/user")
+const{verifyToken}=require ("../middleware/auth")
 
 
 router.get('/', function (req, res) {
@@ -13,6 +14,7 @@ router.get('/users/getAll',getListUser)
 //Envoyer mail avec OPT
 router.post("/password",emailSend);
 
+
   //forget password
 router.post('/forgetPassword',changerPass)
 
@@ -21,9 +23,9 @@ router.post('/forgetPassword',changerPass)
 router.post('/signup', signup)
 
 router.post('/login', login)
-router.post('/banuser',banUser)
+router.post('/banuser',verifyToken,banUser)
 
-router.post('/unbanuser',unbanUser)
+router.post('/unbanuser',verifyToken,unbanUser)
 
 
 module.exports = router;

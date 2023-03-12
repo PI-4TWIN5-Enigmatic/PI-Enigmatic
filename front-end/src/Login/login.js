@@ -1,6 +1,4 @@
-
-
-function Signup() {
+function login() {
     return (
 <>
 
@@ -121,4 +119,4 @@ function Signup() {
     );
 }
 
-export default Signup
+export default login

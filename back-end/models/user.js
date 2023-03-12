@@ -28,7 +28,7 @@ const userSchema = new mongoose.Schema(
             }
           },
         occupation: {
-            type: String,enum: ['Student ', 'Employee'],
+            type: String,enum: ['Student', 'Employee'],
             trim: true,
            required : [true, 'Please add your occupation '],
             maxlength : 32
@@ -37,7 +37,7 @@ const userSchema = new mongoose.Schema(
           type: Boolean,
         
           default: false
-    
+  
          
       },
       isBanned: {
@@ -62,7 +62,7 @@ const userSchema = new mongoose.Schema(
    
 },
 score: {
-  type: number,
+  type: Number,
 
 },
 specialUser: {
