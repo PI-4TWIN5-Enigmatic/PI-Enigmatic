@@ -62,7 +62,7 @@ const userSchema = new mongoose.Schema(
    
 },
 score: {
-  type: number,
+  type: Number,
 
 },
 specialUser: {

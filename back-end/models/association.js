@@ -29,7 +29,7 @@ const associationSchema = new mongoose.Schema(
         },
         sector: {
             type: String,
-            enum: ['Health ', 'Nature','Education','Poverty'],
+            enum: ['Health', 'Nature','Education','Poverty'],
             trim: true,
             required: true
         },
@@ -70,9 +70,8 @@ const associationSchema = new mongoose.Schema(
             trim: true,
         },
         founder: {
-            type: user,
-            trim: true,
-            required : [true, 'Please add the founder of the association '],
+            
+           type: mongoose.Schema.Types.ObjectId, ref: 'user' ,
         },
         logoPicture: { type: Buffer },
         phone: { type: String , required: true , unique: true },
