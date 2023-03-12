@@ -19,7 +19,6 @@ const userSchema = new mongoose.Schema(
         email: {
             type: String,
             required: true,
-            unique: true,
             validate: {
               validator: function(v) {
                 return /\S+@\S+\.\S+/.test(v);
@@ -30,16 +29,15 @@ const userSchema = new mongoose.Schema(
         occupation: {
             type: String,
             trim: true,
-            required : [true, 'Please add your occupation '],
-            maxlength : 32
+           
         },
         sexe: { type: String, enum: ['Male', 'Female'] },
-        phone: { type: String , required: true , unique: true },
+        phone: { type: String  },
         friends: { type: Number , default: 0},
         profilePicture: { type: Buffer },
         followedProfil : { type: Number ,  default: 0},
         followingProfil : { type: Number ,  default: 0},
-        password: { type: String, required : [true, 'Please add a correct password '], minlenght : [6, 'password should have at least 6 characters'] },
+        password: { type: String},
         role : { type: Number , default: 0}
     }, { timestamps: true});
 
