@@ -7,19 +7,16 @@ const userSchema = new mongoose.Schema(
         firstName: {
             type: String,
             trim: true,
-           required : [true, 'Please add your fisrt name '],
-            maxlength : 32
+         
         },
         lastName: {
             type: String,
             trim: true,
-          required : [true, 'Please add your last name '],
-            maxlength : 32
+         
         },
         email: {
             type: String,
-            required: true,
-            unique: true,
+          
             validate: {
               validator: function(v) {
                 return /\S+@\S+\.\S+/.test(v);
@@ -35,17 +32,11 @@ const userSchema = new mongoose.Schema(
         isActive: {
           type: Boolean,
         
-          default: false
+          default: true
   
          
       },
-      isBanned: {
-        type: Boolean,
-       
-        default: false
-  
-       
-    },
+      isBanned: Date,
     googleId: {
       type: String,
       trim: true
@@ -78,9 +69,13 @@ specialUser: {
 },
         sexe: { type: String, enum: ['Male', 'Female'] },
         phone: { type: String  },
-        profilePicture: { type: String },
+        friends: { type: Number , default: 0},
+        profilePicture: { type: Buffer },
+        followedProfil : { type: Number ,  default: 0},
+        followingProfil : { type: Number ,  default: 0},
         password: { type: String},
-        verified: {type:Boolean,default:false}
+        role : { type: Number , default: 0},
+        isAdmin:Boolean
     }, { timestamps: true});
 
 userSchema.pre('save', function(next) {

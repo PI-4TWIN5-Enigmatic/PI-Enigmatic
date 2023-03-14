@@ -1,11 +1,23 @@
 import React, { useState } from 'react'
 import axios from 'axios'
 import ReCAPTCHA from 'react-google-recaptcha';
+import GoogleButton from 'react-google-button'
+
 
 
 
 
 function Signup() {
+
+
+    const signInGoogle=()=>{
+        
+        window.location.replace("http://localhost:8000/auth/google");
+    
+  }
+
+
+
     const [values,setValues] = useState({
         firstName: '',
         lastName: '',
@@ -306,7 +318,23 @@ function Signup() {
                                                  
 
                                                 </div>
-                                                
+
+                                                <div className="col-12 ">
+                                                    <div className="col-12 ">
+                                                         <p>Or</p> 
+
+                                                            <div>
+                                                            <GoogleButton
+                                                                type="light" // can be light or dark
+                                                                onClick={ signInGoogle }
+                                                                />
+                                                                         
+                                                            </div>
+                    
+                                                            </div>       
+                                                    
+                                                    </div>
+
                                             </div>
                                             <h6 className="terms-condition">I have read & accepted the <a href="#">terms of use</a></h6>
                                         </form>

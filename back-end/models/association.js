@@ -41,7 +41,7 @@ const associationSchema = new mongoose.Schema(
       isActive: {
         type: Boolean,
         trim: true,
-        default: false
+        default: true
          },
        
 
