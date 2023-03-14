@@ -1,42 +1,214 @@
+import React, { useState } from 'react'
+import axios from 'axios'
+import ReCAPTCHA from 'react-google-recaptcha';
+
 
 
 function Signup() {
-    return (
-<>
+    const [values,setValues] = useState({
+        firstName: '',
+        lastName: '',
+        phone: '',
+        email: '',
+        occupation: '',
+        password: '',
+        profilePicture:'',
+        sexe:'',
+     })
 
-<main>
-        <div class="main-wrapper pb-0 mb-0">
-            <div class="timeline-wrapper">
-                <div class="timeline-header">
-                    <div class="container-fluid p-0">
-                        <div class="row no-gutters align-items-center">
-                            <div class="col-lg-6">
-                                <div class="timeline-logo-area d-flex align-items-center">
-                                    <div class="timeline-logo">
+
+
+
+    const [errors,setErrors] = useState(
+        {
+            firstName: '',
+            lastName: '',
+            phone: '',
+            email: '',
+            occupation: '',
+            password: '',
+            profilePicture:'',
+            sexe:'',
+            recaptcha:'',
+
+        }
+    )
+
+    const formValidation = () => {
+        
+        let etat = true ;
+        let localError = {
+            firstName: '',
+            lastName: '',
+            phone: '',
+            email: '',
+            occupation: '',
+            password: '',
+            profilePicture:'',
+            sexe:'',
+            recaptcha:'',
+
+        }
+        if(values.firstName === "" ){
+           localError.firstName = " Firstname required" ;
+           etat = false;
+        }
+        if(values.lastName === "" ){
+            localError.lastName = " Lastname required" ;
+            etat = false;
+
+         }
+         if(values.phone === "" ){
+            localError.phone = " Phone required" ;
+            etat = false;
+
+        }
+        if(values.email === "" ){
+            localError.email = " Email required" ;
+            etat = false;
+
+         }
+         if(values.occupation === "" ){
+            localError.occupation = " occupation required" ;
+            etat = false;
+
+         }
+         if(values.sexe === "" ){
+            localError.sexe = " Gender required" ;
+            etat = false;
+
+         }
+         if(values.password === "" || values.password.length <8 ){
+            localError.password = " Password required ans min 8 caracters" ;
+            etat = false;
+
+         }
+         if(values.profilePicture === "" ){
+            localError.profilePicture = " ProfilePicture required " ;
+            etat = false;
+
+         }
+         if(recaptcha === "" ){
+            localError.recaptcha = " Recaptcha required " ;
+            etat = false;
+
+         }
+
+         setErrors(localError)
+        //  console.log(localError)
+         return etat ; 
+          
+
+    }
+
+    const {firstName,lastName,phone,email,occupation,password,profilePicture,sexe} = values ;
+
+   
+
+    const handleChange = data => (e) => {
+        console.log(e.target.value);
+        setValues({...values,[data]: e.target.value})
+        
+    }
+
+    const handlePhoto = (e) => {
+       setValues({...values,profilePicture:e.target.files[0]})
+       console.log(values.profilePicture);
+    }
+
+    const handleSubmit = async (e) =>{
+        e.preventDefault();
+        const isFormValid = formValidation();
+        if(isFormValid){
+
+            try {
+                const signUser = await axios.post('/api/signup' ,{
+                    firstName,
+                    lastName,
+                    email,
+                    phone,
+                    occupation,
+                    password,
+                    profilePicture,
+                    recaptcha,
+                    sexe,
+    
+                })
+                console.log(signUser)
+                console.log(recaptcha)
+
+    
+                if(signUser.data.success === true){
+                    setValues({firstName: '',lastName: '', email: '', phone:'', occupation: '',password:'',profilePicture:'',sexe:''})
+                }
+            } catch (error) {
+                console.log();
+            }
+
+        }else{
+            console.log("form invalid")
+        }
+        
+    }
+
+    const handlesubmitt = async (e) =>{
+        e.preventDefault();
+        try {
+            const login = await axios.post('/api/login' ,{
+                
+                email,
+                password
+
+            })
+            console.log(login)
+
+            if(login.data.success === true){
+                setValues({ email: '',password:''})
+            }
+        } catch (error) {
+            console.log();
+        }
+    }
+
+    const [recaptcha, setRecaptchaValue] = useState('');
+    const SITE_KEY ='6Lc5RvskAAAAAGjZouqU3C4sFmAeUpjJ0UD9ErRK'
+
+    const  onChange = value =>{
+        setRecaptchaValue(value)
+    }
+
+  return (
+    <main>
+        <div className="main-wrapper pb-0 mb-0">
+            <div className="timeline-wrapper">
+                <div className="timeline-header">
+                    <div className="container-fluid p-0">
+                        <div className="row no-gutters align-items-center">
+                            <div className="col-lg-6">
+                                <div className="timeline-logo-area d-flex align-items-center">
+                                    <div className="timeline-logo">
                                         <a href="index.html">
                                             <img src="assets/images/logo/logo.png" alt="timeline logo"/>
                                         </a>
                                     </div>
-                                    <div class="timeline-tagline">
-                                        <h6 class="tagline">It’s helps you to connect and share with the people in your life</h6>
+                                    <div className="timeline-tagline">
+                                        <h6 className="tagline">It’s helps you to connect and share with the people in your life</h6>
                                     </div>
                                 </div>
                             </div>
 
 
-
-
-                            <div class="col-lg-6">
-                                <div class="login-area">
-                                    <div class="row align-items-center">
-                                        <div class="col-12 col-sm">
-                                            <input type="text" placeholder="Email or Userame" class="single-field"/>
+                            <div className="col-lg-6">
+                                <div className="login-area">
+                                    <div className="row align-items-center">
+                                        <div className="col-12 col-sm">
+                <input onChange={handleChange("email")}  type="email" className="single-field" placeholder="Email" value={email}/>
                                         </div>
-                                        <div class="col-12 col-sm">
-                                            <input type="password" placeholder="Password" class="single-field"/>
+                                        <div className="col-12 col-sm">
+                 <input   onChange={handleChange("password")}  type="password" className="single-field" placeholder="Password" value={password}/>
                                         </div>
-                                        <div class="col-12 col-sm-auto">
-                                            <button class="login-btn">Login</button>
+                                        <div className="col-12 col-sm-auto">
+                                        <button  onClick={handlesubmitt} className="submit-btn">login</button>
                                         </div>
                                     </div>
                                 </div>
@@ -46,66 +218,79 @@ function Signup() {
                 </div>
 
 
-
-
-
-
-                
-                <div class="timeline-page-wrapper">
-                    <div class="container-fluid p-0">
-                        <div class="row no-gutters">
-                            <div class="col-lg-6 order-2 order-lg-1">
-                                <div class="timeline-bg-content bg-img" data-bg="assets/images/timeline/adda-timeline.jpg">
-                                    <h3 class="timeline-bg-title">Let’s see what’s happening to you and your world. Welcome in Give Back.</h3>
+                <div className="timeline-page-wrapper">
+                    <div className="container-fluid p-0">
+                        <div className="row no-gutters">
+                            <div className="col-lg-6 order-2 order-lg-1">
+                                <div className="timeline-bg-content bg-img" data-bg="assets/images/timeline/adda-timeline.jpg">
+                                    <h3 className="timeline-bg-title">Let’s see what’s happening to you and your world. Welcome in Give Back.</h3>
                                 </div>
                             </div>
-                            <div class="col-lg-6 order-1 order-lg-2 d-flex align-items-center justify-content-center">
-                                <div class="signup-form-wrapper">
-                                    <h1 class="create-acc text-center">Create An Account</h1>
-                                    <div class="signup-inner text-center">
-                                        <h3 class="title">Wellcome to Adda</h3>
-                                        <form class="signup-inner--form">
-                                            <div class="row">
-                                                <div class="col-12">
-                                                    <input type="email" class="single-field" placeholder="Email"/>
+                            <div className="col-lg-6 order-1 order-lg-2 d-flex align-items-center justify-content-center">
+                                <div className="signup-form-wrapper">
+                                    <h1 className="create-acc text-center">Create An Account</h1>
+                                    <div className="signup-inner text-center">
+                                        <h3 className="title">Wellcome to Give Back</h3>
+                                        <form className="signup-inner--form">
+                                            <div className="row">
+                                                <div className="col-12">
+                                                    <input onChange={handleChange("email")}  type="email" className="single-field" placeholder="Email" value={email}/>
+                                                    {errors.email !== " " ? <div style={{textAlign:'left' , paddingBottom:'10px', color: 'rgb(220,71,52)'}} >{errors.email} </div> : ''}
                                                 </div>
-                                                <div class="col-md-6">
-                                                    <input type="text" class="single-field" placeholder="First Name"/>
+                                                <div className="col-md-6">
+                                                    <input onChange={handleChange("firstName")}  type="text" className="single-field" placeholder="First Name" value={firstName}/>
+                                                    {errors.firstName !== " " ? <div style={{textAlign:'left' , paddingBottom:'10px' , color: 'rgb(220,71,52)'}} >{errors.firstName} </div> : ''}
                                                 </div>
-                                                <div class="col-md-6">
-                                                    <input type="text" class="single-field" placeholder="Last Name"/>
+                                                <div className="col-md-6">
+                                                    <input  onChange={handleChange("lastName")}  type="text" className="single-field" placeholder="Last Name" value={lastName}/>
+                                                    {errors.lastName !== " " ? <div style={{textAlign:'left' , paddingBottom:'10px'  , color: 'rgb(220,71,52)'}} >{errors.lastName} </div> : ''}
+
                                                 </div>
-                                                <div class="col-12">
-                                                    <input type="password" class="single-field" placeholder="Password"/>
+                                                <div className="col-12">
+                                                    <input   onChange={handleChange("password")}  type="password" className="single-field" placeholder="Password" value={password}/>
+                                                    {errors.password !== " " ? <div style={{textAlign:'left', paddingBottom:'10px'  , color: 'rgb(220,71,52)'}} >{errors.password} </div> : ''}
+
                                                 </div>
-                                                <div class="col-md-6">
-                                                    <select class="nice-select" name="sortby">
-                                                        <option value="trending">Gender</option>
-                                                        <option value="sales">Male</option>
-                                                        <option value="sales">Female</option>
+                                                <div className="col-md-12">
+                                                    <select className="nice-select" onChange={handleChange("sexe")} value={sexe} name="sortby">
+                                                        <option value="">Gender</option>
+                                                        <option value="Male">Male</option>
+                                                        <option value="Female">Female</option>
                                                     </select>
+                                                    {errors.sexe !== "" ? <div style={{textAlign:'left' , paddingBottom:'10px'  , color: 'rgb(220,71,52)'}} >{errors.sexe} </div> : ''}
+
                                                 </div>
-                                                <div class="col-md-6">
-                                                    <select class="nice-select" name="sortby">
-                                                        <option value="trending">Age</option>
-                                                        <option value="sales">18+</option>
-                                                        <option value="sales">18-</option>
+                                                <div className="col-12">
+                                                    <input onChange={handleChange("phone")}  type="text" className="single-field" placeholder="Phone number" value={phone} />
+                                                    {errors.phone !== " " ? <div style={{textAlign:'left' , paddingBottom:'10px'  , color: 'rgb(220,71,52)'}} >{errors.phone} </div> : ''}
+
+                                                </div>
+                                                <div className="col-12">
+                                                    <select className="nice-select" onChange={handleChange("occupation")} value={occupation} name="sortby">
+                                                        <option value="">Occupation</option>
+                                                        <option value="Student">Student</option>
+                                                        <option value="Employee">Employee</option>
                                                     </select>
+                                                    {errors.occupation !== "" ? <div style={{textAlign:'left' , paddingBottom:'10px'  , color: 'rgb(220,71,52)'}} >{errors.occupation} </div> : ''}
+
                                                 </div>
-                                                <div class="col-12">
-                                                    <select class="nice-select" name="sortby">
-                                                        <option value="trending">Country</option>
-                                                        <option value="sales">Bangladesh</option>
-                                                        <option value="sales">Noakhali</option>
-                                                        <option value="sales">Australia</option>
-                                                        <option value="sales">China</option>
-                                                    </select>
+                                                <div className="col-12">
+                                                    <input onChange={handlePhoto}  type="file" accept=".png, .jpg, .jpeg" name="photo" />
+                                                    {errors.profilePicture !== " " ? <div style={{textAlign:'left' , paddingBottom:'10px'  , color: 'rgb(220,71,52)'}} >{errors.profilePicture} </div> : ''}
+
                                                 </div>
-                                                <div class="col-12">
-                                                    <button class="submit-btn">Create Account</button>
+                                                <div className="col-12">
+                                                    <ReCAPTCHA sitekey={SITE_KEY}
+                                                    onChange={onChange}
+                                                    />
+                                                {errors.recaptcha !== " " ? <div style={{textAlign:'left' , paddingBottom:'10px'  , color: 'rgb(220,71,52)'}} >{errors.recaptcha} </div> : ''}
+
+                                                </div> 
+                                                <div className="col-12">
+                                                    <button  onClick={handleSubmit} className="submit-btn">Create Account</button>
                                                 </div>
                                             </div>
-                                            <h6 class="terms-condition">I have read & accepted the <a href="#">terms of use</a></h6>
+                                            <h6 className="terms-condition">I have read & accepted the <a href="#">terms of use</a></h6>
                                         </form>
                                     </div>
                                 </div>
@@ -116,9 +301,7 @@ function Signup() {
             </div>
         </div>
 </main>
-</>
-        
-    );
+  )
 }
 
 export default Signup

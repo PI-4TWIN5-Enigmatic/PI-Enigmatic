@@ -3,6 +3,8 @@ const OtpData =require ("../models/otp");
 var bcrypt = require('bcrypt');
 const nodemailer = require('nodemailer');
 const crypto = require('crypto');
+const multer = require('multer');
+const { v4: uuidv4 } = require('uuid');
 const transport = nodemailer.createTransport({
     service: 'Gmail',
     auth: {
@@ -15,6 +17,13 @@ const transport = nodemailer.createTransport({
 
 const jwt=require("jsonwebtoken")
 
+
+exports.uploads = async (req,res) => {
+  const { file} = req ; 
+  res.send({
+    file: file.ori
+  })
+}
 
 exports.signup = async (req,res,next) =>{
 
@@ -45,6 +54,57 @@ exports.signup = async (req,res,next) =>{
    }
 }
 
+exports.UpdateUser = async (req, res) => {
+  try {
+      const data = await User.findOneAndUpdate(
+        { _id: req.params.id },
+        req.body,
+        { new: true }
+      );
+      res.status(201).json(data);
+    
+  } catch (error) {
+    console.log(error.message);
+  }
+};
+
+exports.deactivateAccount = async (req, res) => {
+
+  const user = await User.findById({ _id: req.params.id });
+ 
+  // check if user account is already deactivated
+  if (!user.isActive) {
+    return res
+      .status(400)
+      .send({ success: false, error: "User account is already deactivated" });
+  } else {
+    user.isActive = false;
+    await user.save();
+    res.status(200).json({ success: true, message: "User account has been deactivated" });
+  }  
+};
+
+exports.activateAccount = async (req, res) => {
+  
+  const user = await User.findById({ _id: req.params.id });
+ 
+  // check if user account is already deactivated
+  if (user.isActive) {
+    return res
+      .status(400)
+      .send({ success: false, error: "User account is already activated" });
+  } else {
+    user.isActive = true;
+    await user.save();
+    res.status(200).json({ success: true, message: "User account has been activated" });
+  }
+
+  // ban user
+  
+};
+
+
+
 /* LOGGING IN */
 exports.login = async (req, res) => {
   try {
@@ -62,9 +122,8 @@ exports.login = async (req, res) => {
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
+  
 };
-
-
 exports.unbanUser = async (req, res) => {
   const { firstName } = req.body;
 
@@ -88,8 +147,6 @@ exports.unbanUser = async (req, res) => {
   res.status(200).json({ success: true, message: "User has been unbanned" });
 };
 
-
-
 exports. banUser = async (req, res) => {
   const { firstName } = req.body;
 
@@ -112,9 +169,6 @@ exports. banUser = async (req, res) => {
 
   res.status(200).json({ success: true, message: "User has been banned" });
 };
-
-
-
 
 //get list user 
 exports.getListUser = async (req, res,next) => {
@@ -229,6 +283,29 @@ exports.changerPass =async (req,res)=>{
     }
     res.status(200).json(response);
 }
+
+// Multer configurations
+const storage = multer.diskStorage({
+  destination: function(req, file, cb) {
+      cb(null, './public');
+  },
+  filename: function(req, file, cb) {   
+      cb(null, uuidv4() + '-' + Date.now() + path.extname(file.originalname));
+  }
+});
+
+const fileFilter = (req, file, cb) => {
+  const allowedFileTypes = ['image/jpeg', 'image/jpg', 'image/png'];
+  if(allowedFileTypes.includes(file.mimetype)) {
+      cb(null, true);
+  } else {
+      cb(null, false);
+  }
+}
+
+
+let upload = multer({ storage, fileFilter }).single('receipt');
+
 
 
 

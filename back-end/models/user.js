@@ -1,4 +1,3 @@
-
 const mongoose = require('mongoose')
 const bcrypt = require('bcrypt');
 const saltRounds = 10;
@@ -28,12 +27,12 @@ const userSchema = new mongoose.Schema(
         occupation: {
             type: String,enum: ['Student', 'Employee'],
             trim: true,
-          
+            maxlength : 32
         },
         isActive: {
           type: Boolean,
         
-          default: false
+          default: true
   
          
       },
@@ -53,13 +52,19 @@ const userSchema = new mongoose.Schema(
   },
   secret: {
     type: String,
+    
    
   
 
    
 },
+recaptcha:{
+  type: String
+},
 score: {
   type: Number,
+  default: 0
+
 
 },
 specialUser: {

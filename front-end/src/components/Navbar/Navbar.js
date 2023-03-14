@@ -43,7 +43,7 @@ const Navbar = () => {
                     
                     <div className="brand-logo text-center">
                         <a href="index.html">
-                            <img src="../assets/images/logo/logo.png" alt="brand logo" />
+                            <img src="assets/images/logo/logo.png" alt="brand logo" />
                         </a>
                     </div>
                    
