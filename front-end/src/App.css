@@ -1,0 +1,63 @@
+@import 'bootstrap/dist/css/bootstrap.min.css';
+@import 'bootstrap/dist/css/bootstrap.min.css';
+@import './assets/css/vendor/bicon.min.css';
+/* @import './assets/css/vendor/flaticon.css'; */
+@import './assets/css/plugins/plyr.css';
+@import './assets/css/plugins/slick.min.css';
+@import './assets/css/plugins/nice-select.css';
+@import './assets/css/plugins/perfect-scrollbar.css';
+/* @import './assets/css/plugins/lightgallery.min.css';  */
+@import './assets/css/style.css';
+/* @import './assets/images/favicon.ico'; */
+/* @import './assets/js/vendor/modernizr-3.6.0.min.js'; */
+/* @import './assets/js/vendor/jquery-3.3.1.min.js'; */
+/* @import './assets/js/vendor/popper.min.js'; */
+/* @import './assets/js/vendor/bootstrap.min.js'; */
+/* @import './assets/js/plugins/slick.min.js'; */
+/* @import './assets/js/plugins/nice-select.min.js'; */
+/* @import './assets/js/plugins/plyr.min.js'; */
+/* @import './assets/js/plugins/perfect-scrollbar.min.js'; */
+/* @import './assets/js/plugins/lightgallery-all.min.js'; */
+/* @import './assets/js/plugins/imagesloaded.pkgd.min.js'; */
+/* @import './assets/js/plugins/isotope.pkgd.min.js'; */
+/* @import './assets/js/main.js';  */
+
+
+.App {
+  text-align: center;
+}
+
+.App-logo {
+  height: 40vmin;
+  pointer-events: none;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .App-logo {
+    animation: App-logo-spin infinite 20s linear;
+  }
+}
+
+.App-header {
+  background-color: #282c34;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(10px + 2vmin);
+  color: white;
+}
+
+.App-link {
+  color: #61dafb;
+}
+
+@keyframes App-logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
