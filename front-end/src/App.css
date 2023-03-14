@@ -1,3 +1,28 @@
+@import 'bootstrap/dist/css/bootstrap.min.css';
+@import 'bootstrap/dist/css/bootstrap.min.css';
+@import './assets/css/vendor/bicon.min.css';
+/* @import './assets/css/vendor/flaticon.css'; */
+@import './assets/css/plugins/plyr.css';
+@import './assets/css/plugins/slick.min.css';
+@import './assets/css/plugins/nice-select.css';
+@import './assets/css/plugins/perfect-scrollbar.css';
+/* @import './assets/css/plugins/lightgallery.min.css';  */
+@import './assets/css/style.css';
+/* @import './assets/images/favicon.ico'; */
+/* @import './assets/js/vendor/modernizr-3.6.0.min.js'; */
+/* @import './assets/js/vendor/jquery-3.3.1.min.js'; */
+/* @import './assets/js/vendor/popper.min.js'; */
+/* @import './assets/js/vendor/bootstrap.min.js'; */
+/* @import './assets/js/plugins/slick.min.js'; */
+/* @import './assets/js/plugins/nice-select.min.js'; */
+/* @import './assets/js/plugins/plyr.min.js'; */
+/* @import './assets/js/plugins/perfect-scrollbar.min.js'; */
+/* @import './assets/js/plugins/lightgallery-all.min.js'; */
+/* @import './assets/js/plugins/imagesloaded.pkgd.min.js'; */
+/* @import './assets/js/plugins/isotope.pkgd.min.js'; */
+/* @import './assets/js/main.js';  */
+
+
 .App {
   text-align: center;
 }

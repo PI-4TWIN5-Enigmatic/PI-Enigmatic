@@ -9,6 +9,27 @@ router.get('/', function (req, res) {
   })
 
   //get list users
+router.get('/users/getAll',getListUser)
+
+  //GET_USER_BY_ID
+router.get("/:id" , getUser);
+
+
+//Envoyer mail avec OPT
+router.post("/password",emailSend);
+
+
+  //forget password
+router.post('/forgetPassword',changerPass)
+
+
+
+router.post('/signup', signup)
+
+router.post('/login', login)
+router.post('/banuser',verifyToken,banUser)
+
+router.post('/unbanuser',verifyToken,unbanUser)
 router.get('/users/getAll', getListUser)
   //update User
 router.put('/updateUser/:id',UpdateUser)

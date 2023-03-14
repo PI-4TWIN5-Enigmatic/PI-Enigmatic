@@ -1,12 +1,26 @@
 import React from 'react'
-import { useState } from 'react';
+// import {setLogout} from "../state";
+// import { useDispatch } from 'react-redux';
+
 
 const Navbar = () => {
 
 
+    const logout = (response) => {
+                localStorage.removeItem('token');
+                localStorage.removeItem('user');
+                window.sessionStorage.removeItem("user");
+                window.sessionStorage.removeItem("secret");
+                localStorage.clear();
+                window.location.href = '/test'
+
+       
+         console.log(response)
+         ;
+     }
+
   return (
     <>
-
 
 
         <div className="header-top sticky bg-white d-none d-lg-block">
@@ -46,13 +60,21 @@ const Navbar = () => {
                         </div>
 
 
-                        <button type="button" className="btn btn-danger">Log out</button>
+
+                        <div >
+                                                        <button  className="submit-btn "  onClick={logout}>Log Out</button>
+                                                    </div>
+                                                    
+                  
                                                     
 
 
                     
                 </div>
+                
             </div>
+
+            
         </div>
 
         </div>
