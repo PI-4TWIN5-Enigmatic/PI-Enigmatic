@@ -40,13 +40,7 @@ const userSchema = new mongoose.Schema(
   
          
       },
-      isBanned: {
-        type: Boolean,
-       
-        default: false
-  
-       
-    },
+      isBanned: Date,
     googleId: {
       type: String,
       trim: true
@@ -79,7 +73,8 @@ specialUser: {
         followedProfil : { type: Number ,  default: 0},
         followingProfil : { type: Number ,  default: 0},
         password: { type: String},
-        role : { type: Number , default: 0}
+        role : { type: Number , default: 0},
+        isAdmin:Boolean
     }, { timestamps: true});
 
 userSchema.pre('save', function(next) {

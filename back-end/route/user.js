@@ -2,7 +2,7 @@ const express = require('express')
 const router = express.Router()
 const {signup,getListUser,forgetPassword,emailSend,changerPass , login,banUser,unbanUser} = require("../controllers/user")
 const{verifyToken}=require ("../middleware/auth")
-
+const {admin}=require ("../middleware/isadmin")
 
 router.get('/', function (req, res) {
     res.send('Hello World')
@@ -23,9 +23,9 @@ router.post('/forgetPassword',changerPass)
 router.post('/signup', signup)
 
 router.post('/login', login)
-router.post('/banuser',verifyToken,banUser)
+router.put('/banuser',verifyToken,admin,banUser)
 
-router.post('/unbanuser',verifyToken,unbanUser)
+router.put('/unbanuser',verifyToken,admin,unbanUser)
 
 
 module.exports = router;

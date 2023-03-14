@@ -1,5 +1,6 @@
 const User = require("../models/user");
 const OtpData =require ("../models/otp");
+const mongoose = require('mongoose');
 var bcrypt = require('bcrypt');
 const nodemailer = require('nodemailer');
 const crypto = require('crypto');
@@ -10,6 +11,7 @@ const transport = nodemailer.createTransport({
       pass: 'ukvyhcpmnytcvnfp'
     }
   });
+
   
 
 
@@ -52,36 +54,43 @@ exports.login = async (req, res) => {
     const user = await User.findOne({ email: email });
     if (!user) return res.status(400).json({ msg: "User does not exist. " });
 
+
     const isMatch = await bcrypt.compare(password, user.password);
     if (!isMatch) return res.status(400).json({ msg: "Invalid credentials. " });
+   
     // check if user is banned
-    if (user.isBanned)  return res.status(403).send({ success: false, error: "Your account has been banned" });
-     const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET);
+    if (user.isBanned > new Date()) {
+      return res.status(403).send({ success: false, error: "Your account has been banned" });
+    }  
+     const token = jwt.sign({ id: user._id,isAdmin:user.isAdmin}, process.env.JWT_SECRET);
      delete user.password;
     res.status(200).json({ token, user });
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
   
+
+   
+  
 };
 exports.unbanUser = async (req, res) => {
-  const { firstName } = req.body;
+  const { userId } = req.body;
 
   // check if user exists in the database
-  const user = await User.findOne({ firstName });
+  const user = await User.findOne({ _id: mongoose.Types.ObjectId(userId) });
   if (!user) {
     return res.status(404).send({ success: false, error: "User not found" });
   }
 
   // check if user is already unbanned
-  if (!user.isBanned) {
+  if (user.isBanned == null || user.isBanned < new Date()) {
     return res
       .status(400)
       .send({ success: false, error: "User is already unbanned" });
   }
 
   // unban user
-  user.isBanned = false;
+  user.isBanned = null;
   await user.save();
 
   res.status(200).json({ success: true, message: "User has been unbanned" });
@@ -90,23 +99,16 @@ exports.unbanUser = async (req, res) => {
 
 
 exports. banUser = async (req, res) => {
-  const { firstName } = req.body;
+  const { userId, banDate } = req.body;
 
   // check if user exists in the database
-  const user = await User.findOne({ firstName });
+  const user = await User.findOne({ _id: mongoose.Types.ObjectId(userId) });
   if (!user) {
     return res.status(404).send({ success: false, error: "User not found" });
   }
-
-  // check if user is already unbanned
-  if (user.isBanned) {
-    return res
-      .status(400)
-      .send({ success: false, error: "User is already banned" });
-  }
-
+  console.log(banDate);
   // ban user
-  user.isBanned = true;
+  user.isBanned = new Date(banDate);
   await user.save();
 
   res.status(200).json({ success: true, message: "User has been banned" });
