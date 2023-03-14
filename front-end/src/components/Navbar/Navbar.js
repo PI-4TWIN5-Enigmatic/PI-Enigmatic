@@ -46,7 +46,7 @@ const Navbar = () => {
                         </div>
 
 
-                        <button type="button" class="btn btn-danger">Log out</button>
+                        <button type="button" className="btn btn-danger">Log out</button>
                                                     
 
 

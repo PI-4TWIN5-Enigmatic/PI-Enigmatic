@@ -60,6 +60,7 @@ const Users = () => {
       <CTableDataCell>{item.lastName}</CTableDataCell>
       <CTableDataCell>{item.email}</CTableDataCell>
       <CTableDataCell>{item.occupation}</CTableDataCell>
+      
     </CTableRow>
         )
   }

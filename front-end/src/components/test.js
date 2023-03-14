@@ -1,7 +1,10 @@
 import React, { useState } from 'react'
 import axios from 'axios'
+import { useNavigate } from 'react-router-dom';
 
 const Test = () => {
+    const navigate = useNavigate();
+
      const [values,setValues] = useState({
         firstName: '',
         lastName: '',
@@ -12,6 +15,7 @@ const Test = () => {
      })
 
     const {firstName,lastName,phone,email,occupation,password} = values ;
+   
 
     const handleChange = firstName => (e) => {
     //    console.log(e.target.value);
@@ -40,24 +44,84 @@ const Test = () => {
         }
     }
 
-    const handlesubmitt = async (e) =>{
+
+
+    const handleSubmitt = async (e) =>{
+        
         e.preventDefault();
         try {
             const login = await axios.post('/api/login' ,{
-                
                 email,
                 password
-
             })
             console.log(login)
+
 
             if(login.data.success == true){
                 setValues({ email: '',password:''})
             }
+            localStorage.setItem('token', login.data.token);
+            localStorage.setItem('user', JSON.stringify(login.data.user));
+            navigate('/profile/'+ login.data.user._id);
+
+            
         } catch (error) {
-            console.log();
         }
     }
+
+  
+
+
+    // const handlesubmitt = async (e) =>{
+    //     e.preventDefault();
+    //     try {
+    //         const login = await axios.post('/api/login' ,{
+                
+    //             method: "POST",
+    //             headers: { "Content-Type": "application/json" },
+    //             body: JSON.stringify(values),
+    //           });
+              
+
+    //         const loggedIn = await login.json();
+               
+    //         if (loggedIn) {
+    //           dispatch(
+    //             setLogin({
+    //               user: loggedIn.user,
+    //               token: loggedIn.token,
+    //             })
+    //           );
+    //           navigate("/home");
+    //         }
+    //     } catch (error) {
+    //         console.log();
+    //     }
+
+            
+    // };
+
+    // const login = async (values, onSubmitProps) => {
+    //     const loggedInResponse = await fetch("http://localhost:3001/auth/login", {
+    //       method: "POST",
+    //       headers: { "Content-Type": "application/json" },
+    //       body: JSON.stringify(values),
+    //     });
+    //     const loggedIn = await loggedInResponse.json();
+    //     onSubmitProps.resetForm();
+    //     if (loggedIn) {
+    //       dispatch(
+    //         setLogin({
+    //           user: loggedIn.user,
+    //           token: loggedIn.token,
+    //         })
+    //       );
+    //       navigate("/home");
+    //     }
+    //   };
+
+
+
   return (
     <main>
         <div className="main-wrapper pb-0 mb-0">
@@ -89,7 +153,7 @@ const Test = () => {
                  <input   onChange={handleChange("password")}  type="password" className="single-field" placeholder="Password" value={password}/>
                                         </div>
                                         <div className="col-12 col-sm-auto">
-                                        <button  onClick={handlesubmitt} className="submit-btn">login</button>
+                                        <button  onClick={handleSubmitt} className="submit-btn">login</button>
                                         </div>
                                     </div>
                                 </div>
