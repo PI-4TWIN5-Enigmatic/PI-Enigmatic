@@ -1,6 +1,6 @@
 const express = require('express')
 const router = express.Router()
-const {signup,getListUser,forgetPassword,emailSend,changerPass , login,banUser,unbanUser} = require("../controllers/user")
+const {signup,getListUser,forgetPassword,emailSend,changerPass , login,banUser,unbanUser, uploads} = require("../controllers/user")
 const{verifyToken}=require ("../middleware/auth")
 
 
@@ -21,6 +21,7 @@ router.post('/forgetPassword',changerPass)
 
 
 router.post('/signup', signup)
+router.post('/uploads',uploads)
 
 router.post('/login', login)
 router.post('/banuser',verifyToken,banUser)

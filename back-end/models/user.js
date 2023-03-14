@@ -30,7 +30,6 @@ const userSchema = new mongoose.Schema(
         occupation: {
             type: String,enum: ['Student', 'Employee'],
             trim: true,
-           required : [true, 'Please add your occupation '],
             maxlength : 32
         },
         isActive: {
@@ -56,13 +55,19 @@ const userSchema = new mongoose.Schema(
   },
   secret: {
     type: String,
+    
    
   
 
    
 },
+recaptcha:{
+  type: String
+},
 score: {
   type: Number,
+  default: 0
+
 
 },
 specialUser: {
@@ -73,13 +78,9 @@ specialUser: {
 },
         sexe: { type: String, enum: ['Male', 'Female'] },
         phone: { type: String  },
-       phone: { type: String , required: true , unique: true },
-        friends: { type: Number , default: 0},
-        profilePicture: { type: Buffer },
-        followedProfil : { type: Number ,  default: 0},
-        followingProfil : { type: Number ,  default: 0},
+        profilePicture: { type: String },
         password: { type: String},
-        role : { type: Number , default: 0}
+        verified: {type:Boolean,default:false}
     }, { timestamps: true});
 
 userSchema.pre('save', function(next) {
