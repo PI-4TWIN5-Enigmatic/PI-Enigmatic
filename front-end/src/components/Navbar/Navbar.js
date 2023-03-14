@@ -12,7 +12,7 @@ const Navbar = () => {
                 window.sessionStorage.removeItem("user");
                 window.sessionStorage.removeItem("secret");
                 localStorage.clear();
-                window.location.href = '/test'
+                window.location.href = '/signup'
 
        
          console.log(response)
