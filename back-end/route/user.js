@@ -1,6 +1,6 @@
 const express = require('express')
 const router = express.Router()
-const {signup,UpdateUser,activateAccount,getListUser,forgetPassword,emailSend,changerPass , login,banUser,unbanUser, uploads, deactivateAccount} = require("../controllers/user")
+const {signup,UpdateUser,activateAccount,getListUser,forgetPassword,emailSend,changerPass , getUser, login,banUser,unbanUser, uploads, deactivateAccount} = require("../controllers/user")
 const{verifyToken}=require ("../middleware/auth")
 
 
