@@ -8,8 +8,11 @@ import LikedPages from './LikedPages'
 import RecentNotifications from './RecentNotifications'
 import Advertissement from './Advertissement'
 import Friends from './Friends'
+import { useParams } from "react-router-dom";
+
 const ProfilePage = () => {
- 
+    const {id} = useParams();
+    const token = localStorage.getItem('token');
 
   return (
     <>

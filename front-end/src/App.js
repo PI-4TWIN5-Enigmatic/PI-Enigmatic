@@ -6,12 +6,13 @@ import ProfilePage from './components/profilePage/ProfilePage'
 
 
 function App() {
+
   return (
    <BrowserRouter>
     <Routes>
     <Route path="/signup" element={<Signup />}></Route>
     <Route path="*" element={<NotFound />}></Route>
-    <Route path="/profile" element={<ProfilePage />}></Route>
+    <Route path="/profile/:id" element={<ProfilePage />}></Route>
     </Routes>
    </BrowserRouter>
    
