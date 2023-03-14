@@ -17,7 +17,7 @@ const About = () => {
                     <div className="profile-picture-box">
                         <figure className="profile-picture">
                             <a >
-                                <img src="assets/images/profile/profile-1.jpg" alt="profile picture" />
+                                <img src="../assets/images/profile/profile-1.jpg" alt="profile picture" />
                             </a>
                         </figure>
                     </div>

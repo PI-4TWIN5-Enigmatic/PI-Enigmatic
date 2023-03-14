@@ -15,7 +15,7 @@ router.get(
     // Successful authentication, redirect home.
     console.log(req);
     res.redirect(
-      "http://localhost:3000"
+      `http://localhost:3000/profile/${req.user.id}`
     );
   }
 );
