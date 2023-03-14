@@ -4,6 +4,7 @@ import ReCAPTCHA from 'react-google-recaptcha';
 
 
 
+
 function Signup() {
     const [values,setValues] = useState({
         firstName: '',
@@ -15,10 +16,6 @@ function Signup() {
         profilePicture:'',
         sexe:'',
      })
-
-
-
-
     const [errors,setErrors] = useState(
         {
             firstName: '',
@@ -33,6 +30,8 @@ function Signup() {
 
         }
     )
+
+    const [url,setUrl] = useState("")
 
     const formValidation = () => {
         
@@ -111,15 +110,24 @@ function Signup() {
         
     }
 
-    const handlePhoto = (e) => {
-       setValues({...values,profilePicture:e.target.files[0]})
-       console.log(values.profilePicture);
-    }
+    // const handlePhoto = (e) => {
+    //    setValues({...values,profilePicture:e.target.files[0]})
+    //    console.log(values.profilePicture.name);
+    // }
 
     const handleSubmit = async (e) =>{
         e.preventDefault();
+      
         const isFormValid = formValidation();
         if(isFormValid){
+            const data = new FormData()
+            data.append("file",values.profilePicture)
+            data.append("upload_preset","enigmatic")
+            data.append("cloud_name","dtisuumvj")
+            console.log(data)
+            await axios.post("https://api.cloudinary.com/v1_1/dtisuumvj/image/upload",data)
+            .then((result) => setUrl(result.data.secure_url))
+            
 
             try {
                 const signUser = await axios.post('/api/signup' ,{
@@ -129,14 +137,15 @@ function Signup() {
                     phone,
                     occupation,
                     password,
-                    profilePicture,
+                    profilePicture: "test.png",
                     recaptcha,
                     sexe,
     
                 })
                 console.log(signUser)
                 console.log(recaptcha)
-
+               
+        
     
                 if(signUser.data.success === true){
                     setValues({firstName: '',lastName: '', email: '', phone:'', occupation: '',password:'',profilePicture:'',sexe:''})
@@ -176,6 +185,12 @@ function Signup() {
     const  onChange = value =>{
         setRecaptchaValue(value)
     }
+
+    const onChangeImage = (e) => {
+       
+            setValues({...values,profilePicture:e.target.files[0]})
+               console.log(values.profilePicture);
+          };
 
   return (
     <main>
@@ -275,7 +290,7 @@ function Signup() {
 
                                                 </div>
                                                 <div className="col-12">
-                                                    <input onChange={handlePhoto}  type="file" accept=".png, .jpg, .jpeg" name="photo" />
+                                                    <input onChange={onChangeImage}  type="file" accept=".png, .jpg, .jpeg" name="photo" />
                                                     {errors.profilePicture !== " " ? <div style={{textAlign:'left' , paddingBottom:'10px'  , color: 'rgb(220,71,52)'}} >{errors.profilePicture} </div> : ''}
 
                                                 </div>
@@ -288,7 +303,10 @@ function Signup() {
                                                 </div> 
                                                 <div className="col-12">
                                                     <button  onClick={handleSubmit} className="submit-btn">Create Account</button>
+                                                 
+
                                                 </div>
+                                                
                                             </div>
                                             <h6 className="terms-condition">I have read & accepted the <a href="#">terms of use</a></h6>
                                         </form>

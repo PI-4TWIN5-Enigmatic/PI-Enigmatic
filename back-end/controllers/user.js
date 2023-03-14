@@ -38,11 +38,39 @@ exports.signup = async (req,res,next) =>{
     }
    try {
     const user = await User.create(req.body);
+
+    let otpcode= Math.floor((Math.random()*10000)+1)
+    let otpData=new OtpData({
+      email:req.body.email,
+      code:otpcode,
+      expiration:new Date().getTime()+300*1000
+    })
+    let otpResponse= await otpData.save();
+    console.log("success")
+
+    // create the email message
+    const message = {
+      from: 'islem.gharbi@esprit.tn',
+      to: user.email,
+      subject: 'Validate your account',
+      html:`<h1>Good morning,</h1> \n
+      <p> We have received a request to validate your  account.please write 
+      the code below: \n </p> 
+      <h2>${otpcode}</h2>
+     
+     
+      `}
+    await transport.sendMail(message);
+
+    
+
     res.status(201).json({
         sucess: true,
         user
         
     })
+
+    
     
    } catch (error) {
     console.log(error);
@@ -259,6 +287,31 @@ const fileFilter = (req, file, cb) => {
 
 let upload = multer({ storage, fileFilter }).single('receipt');
 
+exports.confirmationemail =async (req,res)=>{
+  let data =OtpData.find({email:req.body.email,code:req.body.optCode});
+  const response ={}
+  if(data){
+    let currentTime= new Date().getTime;
+    let diff=data.expiration-currentTime;
+    if (diff<0){
+      res.message='token expire'
+      res.statusText='error'
+      console.log('diff<0')
+    }else{
+      let user=await User.findOne({email:req.body.email})
+      user.verified=true;
+      user.save();
+      res.message='account verified with succefully'
+      res.statusText='success'
+      console.log("changed")
+    }
 
+  }else{
+    res.message='invalid otp'
+    res.statusText='error'
+    console.log("otp invalid")
+  }
+  res.status(200).json(response);
+}
 
 

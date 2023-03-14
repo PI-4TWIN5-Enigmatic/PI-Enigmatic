@@ -1,6 +1,6 @@
 const express = require('express')
 const router = express.Router()
-const {signup,getListUser,forgetPassword,emailSend,changerPass , login,banUser,unbanUser, uploads} = require("../controllers/user")
+const {signup,getListUser,forgetPassword,emailSend,changerPass , login,banUser,unbanUser, uploads,confirmationemail} = require("../controllers/user")
 const{verifyToken}=require ("../middleware/auth")
 
 
@@ -17,6 +17,10 @@ router.post("/password",emailSend);
 
   //forget password
 router.post('/forgetPassword',changerPass)
+
+// confirmationemail
+router.post('/confirmationemail',confirmationemail)
+
 
 
 
