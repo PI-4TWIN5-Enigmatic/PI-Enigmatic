@@ -10,9 +10,15 @@ function App() {
   return (
    <BrowserRouter>
     <Routes>
+<<<<<<< Updated upstream
     <Route path="/signup" element={<Signup />}></Route>
     <Route path="*" element={<NotFound />}></Route>
     <Route path="/profile/:id" element={<ProfilePage />}></Route>
+=======
+    <Route path="/test" element={<Test />}></Route>
+    <Route path="/profile" element={<ProfilePage />}></Route>
+    <Route path="*" element={<NotFound />}></Route>
+>>>>>>> Stashed changes
     </Routes>
    </BrowserRouter>
    
