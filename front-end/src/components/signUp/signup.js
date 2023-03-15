@@ -56,6 +56,10 @@ function Signup() {
     const [password, setPassword] = useState('');
     const [profilePicture, setProfilePicture] = useState('');
     const [sexe, setSexe] = useState('');
+    const [passwordd, setPasswordd] = useState('');
+    const [emaill, setEmaill] = useState('');
+
+
 
     const [errors,setErrors] = useState(
         {
@@ -197,23 +201,39 @@ function Signup() {
   
 
   
+      const handleSubmitt = async (e) => {
+        
 
-    const handlesubmitt = async (e) =>{
         e.preventDefault();
+        console.log(passwordd,emaill)
         try {
-            const login = await axios.post('/api/login' ,{
-                
-                email,
-                password
+            const login = await axios.post('http://localhost:8000/api/login-user', {
+                emaill,
+                passwordd,
+
 
             })
             console.log(login)
-            localStorage.setItem("token",login.data.token)
-           
+
+            if (login.data.success == true) {
+              //  setValues({ email: '', password: ''})
+              
+                localStorage.setItem('token', login.data.token);
+                localStorage.setItem('user', JSON.stringify(login.data.user));
+
+
+                if (login.data.user.isAdmin) {
+                    window.location.href = "http://localhost:4000/users"
+                } else {
+                    navigate('/profile/' + login.data.user._id);
+                }
+            }
+
         } catch (error) {
-            console.log();
+            console.log(error)
         }
     }
+
 
     const [recaptcha, setRecaptchaValue] = useState('');
     const SITE_KEY ='6Lc5RvskAAAAAGjZouqU3C4sFmAeUpjJ0UD9ErRK'
@@ -250,13 +270,21 @@ function Signup() {
                                 <div className="login-area" style={{backgroundColor:'white'}}>
                                     <div className="row align-items-center">
                                         <div className="col-12 col-sm">
+<<<<<<< HEAD
                                          <input onChange={(event) => setEmail(event.target.value)}  type="email"  className="single-field" placeholder="Email" value={email}/>
+=======
+                                         <input onChange={(event) => setEmaill(event.target.value)}  type="email" className="single-field" placeholder="Email" value={emaill}/>
+>>>>>>> 3fe8a12cfe9ae2e263888f72674e75a574a22801
                                         </div>
                                         <div className="col-12 col-sm">
-                                       <input    onChange={(event) => setPassword(event.target.value)}  type="password" className="single-field" placeholder="Password" value={password}/>
+                                       <input    onChange={(event) => setPasswordd(event.target.value)}  type="password" className="single-field" placeholder="Password" value={passwordd}/>
                                         </div>
                                         <div className="col-12 col-sm-auto">
+<<<<<<< HEAD
                                         <button  onClick={handlesubmitt} className="submit-btn" style={{borderRadius: 30}}>login</button>
+=======
+                                        <button  onClick={handleSubmitt} className="submit-btn">login</button>
+>>>>>>> 3fe8a12cfe9ae2e263888f72674e75a574a22801
                                         </div>
                                     </div>
                                 </div>
