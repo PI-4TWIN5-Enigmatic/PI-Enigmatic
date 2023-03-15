@@ -38,7 +38,6 @@ router.post("/login-user", loginuser)
 router.put('/banuser',verifyToken,admin,banUser)
 
 router.put('/unbanuser',verifyToken,admin,unbanUser)
-router.post('/unbanuser',verifyToken,unbanUser)
 router.get('/users/getAll', getListUser)
   //update User
 router.put('/updateUser/:id',UpdateUser)
@@ -48,8 +47,6 @@ router.post("/password",emailSend);
 router.post('/forgetPassword',changerPass)
 router.post('/signup', signup)
 router.post('/uploads',uploads)
-router.post('/banuser',verifyToken,banUser)
-router.post('/unbanuser', verifyToken, unbanUser)
 router.post('/deactivateAccount/:id', deactivateAccount)
 router.post('/activateAccount/:id', activateAccount)
 
