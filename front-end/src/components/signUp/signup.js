@@ -202,17 +202,15 @@ function Signup() {
 
   
       const handleSubmitt = async (e) => {
-        
-
         e.preventDefault();
         console.log(passwordd,emaill)
         try {
             const login = await axios.post('http://localhost:8000/api/login-user', {
                 emaill,
                 passwordd,
-
-
             })
+           
+           
             console.log(login)
 
             if (login.data.success == true) {
@@ -225,6 +223,9 @@ function Signup() {
                 if (login.data.user.isAdmin) {
                     window.location.href = "http://localhost:4000/users"
                 } else {
+                    if (login.data.user.isActive == false) {
+                            await axios.post(`http://localhost:8000/api/activateAccount/${login.data.user._id}`)
+                    }
                     navigate('/profile/' + login.data.user._id);
                 }
             }
@@ -270,21 +271,13 @@ function Signup() {
                                 <div className="login-area" style={{backgroundColor:'white'}}>
                                     <div className="row align-items-center">
                                         <div className="col-12 col-sm">
-<<<<<<< HEAD
-                                         <input onChange={(event) => setEmail(event.target.value)}  type="email"  className="single-field" placeholder="Email" value={email}/>
-=======
                                          <input onChange={(event) => setEmaill(event.target.value)}  type="email" className="single-field" placeholder="Email" value={emaill}/>
->>>>>>> 3fe8a12cfe9ae2e263888f72674e75a574a22801
                                         </div>
                                         <div className="col-12 col-sm">
                                        <input    onChange={(event) => setPasswordd(event.target.value)}  type="password" className="single-field" placeholder="Password" value={passwordd}/>
                                         </div>
                                         <div className="col-12 col-sm-auto">
-<<<<<<< HEAD
-                                        <button  onClick={handlesubmitt} className="submit-btn" style={{borderRadius: 30}}>login</button>
-=======
-                                        <button  onClick={handleSubmitt} className="submit-btn">login</button>
->>>>>>> 3fe8a12cfe9ae2e263888f72674e75a574a22801
+                                        <button  onClick={handleSubmitt} className="submit-btn" style={{borderRadius: 30}}>login</button>
                                         </div>
                                     </div>
                                 </div>
