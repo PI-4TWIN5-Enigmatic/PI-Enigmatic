@@ -41,6 +41,7 @@ exports.signupAssociation = async (req,res,next) =>{
         
     })
     const message = {
+
         from: 'islem.gharbi@esprit.tn',
         to: 'islem.gharbi3000@gmail.com',
         subject: 'Verifier association',
@@ -53,6 +54,7 @@ exports.signupAssociation = async (req,res,next) =>{
         <a href="http://localhost:8000/association/verifier/${id}">Verifier</a>
 
         </p>`
+
     }
     transport.sendMail(message);
     
@@ -82,6 +84,20 @@ exports.loginassociation = async (req, res) => {
       res.status(500).json({ error: err.message });
     }
   };
+
+
+
+  //GET association BY ID 
+exports.getAssociation = async (req, res ) =>{
+  try{
+      const{id}=req.params;
+      const association = await Association.findById(id);
+      res.status(200).json(association);
+  }catch(err){
+    
+          res.status(404).json({error:err.message});
+  }
+}
 
 //get list association
 exports.getListAssociation = async (req, res,next) => {

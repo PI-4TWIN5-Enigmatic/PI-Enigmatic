@@ -1,7 +1,51 @@
 import React, { useState } from 'react'
 import axios from 'axios'
+import Modal from 'react-bootstrap/Modal';
+import { Button } from 'react-bootstrap';
+import Form from 'react-bootstrap/Form';
+import { ToastContainer, toast } from 'react-toastify';
+import { useNavigate } from 'react-router-dom';
+
+
+
+
+
+
 
 const Test = () => {
+
+    const navigate = useNavigate();
+
+//Modal
+const [show, setShow] = useState(false);
+const handleClose = () => setShow(false);
+const handleShow = () => setShow(true);
+//Modal
+
+const [emailVerif, setEmailVerif] = useState('');
+//sendMailToResetPasswordFunction
+
+const handleVerif = (e) => {
+    e.preventDefault();
+    axios.post('http://127.0.0.1:8000/api/password', {emailVerif})
+      .then((response) => {
+        console.log(response.data);
+        toast.info(response.data);
+        if (response.data === 'Code sent to your email !') {
+            navigate("/changerPassword")
+          }
+        // Do something with the response, like show a success message
+      })
+      .catch((error) => {
+        console.log(error);
+       
+        // Do something with the error, like show an error message
+      });}
+      
+
+
+
+
      const [values,setValues] = useState({
         firstName: '',
         lastName: '',
@@ -59,6 +103,7 @@ const Test = () => {
         }
     }
   return (
+    <>
     <main>
         <div className="main-wrapper pb-0 mb-0">
             <div className="timeline-wrapper">
@@ -159,7 +204,7 @@ const Test = () => {
                                                     <button  onClick={handleSubmit} className="submit-btn">Create Account</button>
                                                 </div>
                                             </div>
-                                            <h6 className="terms-condition">I have read & accepted the <a href="#">terms of use</a></h6>
+                                            <h6 className="terms-condition">Forget your password ?! <a  onClick={handleShow}>Click here</a></h6>
                                         </form>
                                     </div>
                                 </div>
@@ -169,7 +214,40 @@ const Test = () => {
                 </div>
             </div>
         </div>
+
+      
 </main>
+
+
+<Modal show={show} onHide={handleClose}>
+        <Modal.Header closeButton>
+          <Modal.Title>Reset Password</Modal.Title>
+        </Modal.Header>
+        <Form onSubmit={handleVerif}>
+            <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
+              <Form.Label>Email address</Form.Label>
+              <Form.Control
+                type="email"
+                placeholder="name@example.com"
+                autoFocus
+                name='email'
+               
+                value={emailVerif}
+                onChange={(e) => setEmailVerif(e.target.value)}
+              />
+            </Form.Group>
+           
+          </Form>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={handleClose}>
+            Close
+          </Button>
+          <Button variant="success" type='submit' onClick={handleVerif}>
+            Save Changes
+          </Button>
+        </Modal.Footer>
+      </Modal>
+</>
   )
 }
 

@@ -137,32 +137,25 @@ exports.getUser = async (req, res ) =>{
   }
 }
 
-exports.forgetPassword = async (req , res , next)=>{
-    const {email} =req.body;
-    try{
-        const oldUser = await User.findOne({email});
-        if (!oldUser){
-            return res.send("User not exist !")
-        }
-    }catch (error) {}
-}
+
 
 
 exports.emailSend = async (req , res , next )=>{
-
+ 
   try {
     // find the user with the given email address
-    const user = await User.findOne({ email: req.body.email });
-    res.send(user)
+    const user = await User.findOne({ email:req.body.emailVerif });
+   
     // if no user is found, send an error response
     if (!user) {
-      return res.status(404).json({ error: 'User not found' });
+      return res.send("User not exist !")
+     
     }
 
    
     let otpcode= Math.floor((Math.random()*10000)+1)
     let otpData=new OtpData({
-      email:req.body.email,
+      email:req.body.emailVerif,
       code:otpcode,
       expiration:new Date().getTime()+300*1000
     })
@@ -191,7 +184,7 @@ exports.emailSend = async (req , res , next )=>{
     
     await transport.sendMail(message);
     // send a success response
-    return res.status(200).json({ message: 'Code sent' });
+    return res.send("Code sent to your email !")
   } catch (error) {
     // handle errors
     console.error(error);
@@ -202,30 +195,39 @@ exports.emailSend = async (req , res , next )=>{
 
 
 exports.changerPass =async (req,res)=>{
-    let data =OtpData.find({email:req.body.email,code:req.body.optCode});
-    const response ={}
-    if(data){
-      let currentTime= new Date().getTime;
-      let diff=data.expiration-currentTime;
-      if (diff<0){
-        res.message='token expire'
-        res.statusText='error'
-        console.log('diff<0')
-      }else{
-        let user=await User.findOne({email:req.body.email})
-        user.password=req.body.password;
-        user.save();
-        res.message='password changed succefully'
-        res.statusText='success'
-        console.log("changed")
-      }
+  const data = await OtpData.findOne({email:req.body.email,code:req.body.optCode});
+  try{
+  if(data){
+    const now = new Date().getTime();
+    let diff=data.expiration.getTime();
+    let difference = diff-now
 
-    }else{
-      res.message='invalid otp'
+    if (difference < 0){
+      res.message='token expire'
       res.statusText='error'
-      console.log("otp invalid")
+      return res.send("opt expired !")
+      
+      }else{
+      let user=await User.findOne({email:req.body.email})
+      user.password=req.body.password;
+      user.save();
+      res.message='password changed succefully'
+      res.statusText='success'
+      
+      console.log("changed")
+      return res.send("Password changed successfully !")
     }
-    res.status(200).json(response);
+
+  }else{
+    res.message='invalid otp'
+    res.statusText='error'
+    
+    return res.send("Invalid OTP code!")
+}
+  }catch (error) {
+    // handle errors
+    console.error(error);
+  }
 }
 
 

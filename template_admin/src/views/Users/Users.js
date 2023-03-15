@@ -55,7 +55,7 @@ const Users = () => {
     {
   
         User.map((item, index)=>
-        <CTableRow key={index}  >
+        <CTableRow key={item._id}  >
       <CTableDataCell  >{item.firstName}</CTableDataCell>
       <CTableDataCell>{item.lastName}</CTableDataCell>
       <CTableDataCell>{item.email}</CTableDataCell>

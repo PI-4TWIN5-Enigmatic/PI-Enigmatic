@@ -103,7 +103,7 @@ function login() {
                                                     <button class="submit-btn">Create Account</button>
                                                 </div>
                                             </div>
-                                            <h6 class="terms-condition">I have read & accepted the <a href="#">terms of use</a></h6>
+                                            <h6 class="terms-condition">Forgot your password <a href="#">Click here</a></h6>
                                         </form>
                                     </div>
                                 </div>
