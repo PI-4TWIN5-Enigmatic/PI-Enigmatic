@@ -151,6 +151,12 @@ exports.loginuser = async (req, res) => {
     if (user.isBanned > new Date()) {
       return res.status(403).send({ success: false, error: "Your account has been banned" });
     } 
+    if (user.isVerified = false) {
+      return res.status(403).send({ success: false, error: "Your account is not activated" });
+    } 
+    if (user.isActive = false) {
+      return res.status(403).send({ success: false, error: "Your account is not activated" });
+    } 
         
      const token = jwt.sign({ id: user._id,isAdmin:user.isAdmin}, process.env.JWT_SECRET);
      delete user.password;
