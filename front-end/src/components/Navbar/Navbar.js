@@ -62,7 +62,7 @@ const Navbar = () => {
 
 
                         <div >
-                                                        <button  className="submit-btn "  onClick={logout}>Log Out</button>
+                                                        <button style={{borderRadius: 30,marginBottom:15}} className="submit-btn "  onClick={logout}>Log Out</button>
                                                     </div>
                                                     
                   

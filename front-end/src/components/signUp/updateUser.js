@@ -1,6 +1,7 @@
 import React, { useEffect,useState } from 'react'
 import axios from 'axios'
-import { useNavigate,useParams } from 'react-router-dom';
+import { Navigate, useNavigate,useParams } from 'react-router-dom';
+import { toast } from 'react-toastify';
 
 
 function UpdateUser() {
@@ -13,7 +14,11 @@ function UpdateUser() {
     const [profilePicture, setProfilePicture] = useState('');
     const [sexe, setSexe] = useState('');
     const navigate = useNavigate()
-    const {id} = useParams();
+    const { id } = useParams();
+    //Modal
+    const [show, setShow] = useState(false);
+    const handleClose = () => setShow(false);
+    const handleShow = () => setShow(true);
 
     const [errors,setErrors] = useState(
         {
@@ -138,7 +143,7 @@ function UpdateUser() {
                 })
                     .then(response => {
                         console.log(response);
-                        navigate('/')
+                        navigate(`/profile/${id}`)
                         // Handle success response
                     })
                     .catch(error => {
@@ -156,6 +161,20 @@ function UpdateUser() {
     }
     
     };
+
+    async function handleDeactivate () {
+        
+        if (window.confirm('Are you sure you want to deactivate your account ?')) {
+            await axios.post(`http://localhost:8000/api/deactivateAccount/${id}`)
+           
+                .then((response) => {
+                    navigate('/signup')
+                    toast.info("User account has been deactivated")
+                    
+                    console.log(response) 
+            }
+        )}
+    }
     
     return (
         <>
@@ -223,14 +242,11 @@ function UpdateUser() {
                                                  
                                                 <div className="col-12">
                                                     <button  onClick={handleSubmit} className="submit-btn">Update Account</button>
-                                                 
-
-                                                </div>
-
-                                               
-
+                                                        </div>
+                                                        <h6 className="terms-condition">Deactivate Account ? <a onClick={handleDeactivate} className="link-danger">click here</a></h6>
                                             </div>
-                                        </form>
+                                                </form>
+                                                    
                                             </div>
                                         </div>
                                     </div>
@@ -240,6 +256,8 @@ function UpdateUser() {
                     </div>
                 </div>
             </main>
+          
+            
         </>
         
             );

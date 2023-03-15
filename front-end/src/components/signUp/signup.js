@@ -255,10 +255,11 @@ function Signup() {
                                 <div className="timeline-logo-area d-flex align-items-center">
                                     <div className="timeline-logo">
                                         <a href="index.html">
-                                            <img src="assets/images/logo/logo.png" alt="timeline logo"/>
+                                            <img src="assets/images/logo/logoGive.jpg " style={{width : 100}} alt="timeline logo"/>
                                         </a>
                                     </div>
                                     <div className="timeline-tagline">
+                                  
                                         <h6 className="tagline">It’s helps you to connect and share with the people in your life</h6>
                                     </div>
                                 </div>
@@ -266,16 +267,24 @@ function Signup() {
 
 
                             <div className="col-lg-6">
-                                <div className="login-area">
+                                <div className="login-area" style={{backgroundColor:'white'}}>
                                     <div className="row align-items-center">
                                         <div className="col-12 col-sm">
+<<<<<<< HEAD
+                                         <input onChange={(event) => setEmail(event.target.value)}  type="email"  className="single-field" placeholder="Email" value={email}/>
+=======
                                          <input onChange={(event) => setEmaill(event.target.value)}  type="email" className="single-field" placeholder="Email" value={emaill}/>
+>>>>>>> 3fe8a12cfe9ae2e263888f72674e75a574a22801
                                         </div>
                                         <div className="col-12 col-sm">
                                        <input    onChange={(event) => setPasswordd(event.target.value)}  type="password" className="single-field" placeholder="Password" value={passwordd}/>
                                         </div>
                                         <div className="col-12 col-sm-auto">
+<<<<<<< HEAD
+                                        <button  onClick={handlesubmitt} className="submit-btn" style={{borderRadius: 30}}>login</button>
+=======
                                         <button  onClick={handleSubmitt} className="submit-btn">login</button>
+>>>>>>> 3fe8a12cfe9ae2e263888f72674e75a574a22801
                                         </div>
                                     </div>
                                 </div>
@@ -290,13 +299,15 @@ function Signup() {
                         <div className="row no-gutters">
                             <div className="col-lg-6 order-2 order-lg-1">
                                 <div className="timeline-bg-content bg-img" data-bg="assets/images/timeline/adda-timeline.jpg">
-                                    <h3 className="timeline-bg-title">Let’s see what’s happening to you and your world. Welcome in Give Back.</h3>
+                                  
+                                <img src="assets/images/logo/logoGive.jpg " style={{width : 6000, height : 1000}} alt="timeline logo"/>
+                                    {/* <h3 className="timeline-bg-title" style={{color: "red"}}>Let’s see what’s happening to you and your world. Welcome in Give Back.</h3> */}
                                 </div>
                             </div>
                             <div className="col-lg-6 order-1 order-lg-2 d-flex align-items-center justify-content-center">
-                                <div className="signup-form-wrapper">
+                                <div className="signup-form-wrapper" >
                                     <h1 className="create-acc text-center">Create An Account</h1>
-                                    <div className="signup-inner text-center">
+                                    <div className="signup-inner text-center" style={{borderRadius: 30}}>
                                         <h3 className="title">Wellcome to Give Back</h3>
                                         <form className="signup-inner--form">
                                             <div className="row">
@@ -355,7 +366,7 @@ function Signup() {
 
                                                 </div> 
                                                 <div className="col-12">
-                                                    <button  onClick={handleSubmit} className="submit-btn">Create Account</button>
+                                                    <button  onClick={handleSubmit} className="submit-btn" style={{borderRadius: 30}}>Create Account</button>
                                                  
 
                                                 </div>
