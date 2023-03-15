@@ -339,29 +339,38 @@ const fileFilter = (req, file, cb) => {
 let upload = multer({ storage, fileFilter }).single('receipt');
 
 exports.confirmationemail =async (req,res)=>{
-  let data =OtpData.find({email:req.body.email,code:req.body.optCode});
-  const response ={}
+  const data = await OtpData.findOne({email:req.body.email,code:req.body.optCode});
+  try{
   if(data){
-    let currentTime= new Date().getTime;
-    let diff=data.expiration-currentTime;
-    if (diff<0){
+    const now = new Date().getTime();
+    let diff=data.expiration.getTime();
+    let difference = diff-now
+
+    if (difference < 0){
       res.message='token expire'
       res.statusText='error'
-      console.log('diff<0')
-    }else{
+      return res.send("opt expired !")
+      
+      }else{
       let user=await User.findOne({email:req.body.email})
       user.isVerified=true;
       user.save();
-      res.message='account verified with succefully'
+      res.message='password changed succefully'
       res.statusText='success'
+      
       console.log("changed")
+      return res.send("Account verified")
     }
 
   }else{
     res.message='invalid otp'
     res.statusText='error'
-    console.log("otp invalid")
+    
+    return res.send("Invalid OTP code!")
+}
+  }catch (error) {
+    // handle errors
+    console.error(error);
   }
-  res.status(200).json(response);
 }
 

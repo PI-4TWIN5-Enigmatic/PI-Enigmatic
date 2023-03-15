@@ -20,13 +20,12 @@ function Verif  ()  {
         
     
         axios.post("http://127.0.0.1:8000/api/confirmationemail", { email,optCode })
-        .then((response)=> { toast.success("Account verified") 
-        Navigate('/signup')
-
-          }
+        .then((response)=> { toast.info(response.data) 
+            if(response.data===""){
+                Navigate('/signup');}}
         )
-        .catch(toast.success("Email or password invalid"))
         
+               
         
         
         
