@@ -69,6 +69,13 @@ specialUser: {
 },
         sexe: { type: String, enum: ['Male', 'Female'] },
         phone: { type: String  },
+        isVerified: {
+          type: Boolean,
+        
+          default: false
+  
+         
+      },
         friends: { type: Number , default: 0},
         profilePicture: { type: String },
         followedProfil : { type: Number ,  default: 0},

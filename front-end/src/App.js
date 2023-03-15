@@ -14,6 +14,7 @@ import Signup from './components/signUp/signup'
 
 
 import Create from './components/association/create';
+import Verif from './components/signUp/verif';
 
 
 
@@ -26,6 +27,7 @@ function App() {
    <BrowserRouter>
     <Routes>
     <Route path="/signup" element={<Signup />}></Route>
+    <Route path="/verif" element={<Verif />}></Route>
     <Route path="/association/cree" element={<Create />}></Route>
     
 

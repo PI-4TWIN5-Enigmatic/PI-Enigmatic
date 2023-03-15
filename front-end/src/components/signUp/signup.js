@@ -10,6 +10,7 @@ import { Button, Form, Modal } from 'react-bootstrap';
 
 
 
+
 function Signup() {
 
 
@@ -23,7 +24,7 @@ function Signup() {
     
     const [emailVerif, setEmailVerif] = useState('');
     //sendMailToResetPasswordFunction
-    
+
     const handleVerif = (e) => {
         e.preventDefault();
         axios.post('http://127.0.0.1:8000/api/password', {emailVerif})
@@ -41,25 +42,21 @@ function Signup() {
             // Do something with the error, like show an error message
           });}
 
-
     const signInGoogle=()=>{
         
         window.location.replace("http://localhost:8000/auth/google");
     
   }
 
+    const [firstName, setFirstName] = useState('');
+    const [lastName, setLastName] = useState('');
+    const [phone, setPhone] = useState('');
+    const [email, setEmail] = useState('');
+    const [occupation, setOccupation] = useState('');
+    const [password, setPassword] = useState('');
+    const [profilePicture, setProfilePicture] = useState('');
+    const [sexe, setSexe] = useState('');
 
-
-    const [values,setValues] = useState({
-        firstName: '',
-        lastName: '',
-        phone: '',
-        email: '',
-        occupation: '',
-        password: '',
-        profilePicture:'',
-        sexe:'',
-     })
     const [errors,setErrors] = useState(
         {
             firstName: '',
@@ -75,7 +72,6 @@ function Signup() {
         }
     )
 
-    const [url,setUrl] = useState("")
 
     const formValidation = () => {
         
@@ -92,41 +88,41 @@ function Signup() {
             recaptcha:'',
 
         }
-        if(values.firstName === "" ){
+        if(firstName === "" ){
            localError.firstName = " Firstname required" ;
            etat = false;
         }
-        if(values.lastName === "" ){
+        if(lastName === "" ){
             localError.lastName = " Lastname required" ;
             etat = false;
 
          }
-         if(values.phone === "" ){
+         if(phone === "" ){
             localError.phone = " Phone required" ;
             etat = false;
 
         }
-        if(values.email === "" ){
+        if(email === "" ){
             localError.email = " Email required" ;
             etat = false;
 
          }
-         if(values.occupation === "" ){
+         if(occupation === "" ){
             localError.occupation = " occupation required" ;
             etat = false;
 
          }
-         if(values.sexe === "" ){
+         if(sexe === "" ){
             localError.sexe = " Gender required" ;
             etat = false;
 
          }
-         if(values.password === "" || values.password.length <8 ){
+         if(password === "" || password.length <8 ){
             localError.password = " Password required ans min 8 caracters" ;
             etat = false;
 
          }
-         if(values.profilePicture === "" ){
+         if(profilePicture === "" ){
             localError.profilePicture = " ProfilePicture required " ;
             etat = false;
 
@@ -144,65 +140,63 @@ function Signup() {
 
     }
 
-    const {firstName,lastName,phone,email,occupation,password,profilePicture,sexe} = values ;
-
-   
-
-    const handleChange = data => (e) => {
-        console.log(e.target.value);
-        setValues({...values,[data]: e.target.value})
-        
-    }
-
-    // const handlePhoto = (e) => {
-    //    setValues({...values,profilePicture:e.target.files[0]})
-    //    console.log(values.profilePicture.name);
-    // }
-
-    const handleSubmit = async (e) =>{
-        e.preventDefault();
-      
+    const handleSubmit = (event) => {
+        event.preventDefault();
         const isFormValid = formValidation();
         if(isFormValid){
-            const data = new FormData()
-            data.append("file",values.profilePicture)
-            data.append("upload_preset","enigmatic")
-            data.append("cloud_name","dtisuumvj")
-            console.log(data)
-            await axios.post("https://api.cloudinary.com/v1_1/dtisuumvj/image/upload",data)
-            .then((result) => setUrl(result.data.secure_url))
-            
+            const dataimg = new FormData()
+            dataimg.append("file",profilePicture)
+            dataimg.append("upload_preset","enigmatic")
+            dataimg.append("cloud_name","dtisuumvj")
+            axios.post("https://api.cloudinary.com/v1_1/dtisuumvj/image/upload",dataimg)
+            .then((result)=> {
+                console.log(result.data.secure_url)
 
-            try {
-                const signUser = await axios.post('/api/signup' ,{
-                    firstName,
-                    lastName,
-                    email,
-                    phone,
-                    occupation,
-                    password,
-                    profilePicture: "test.png",
-                    recaptcha,
-                    sexe,
+            const data = {
+                firstName,
+                lastName,
+                phone,
+                email,
+                occupation,
+                password,
+                profilePicture: result.data.secure_url,
+                sexe,
+                recaptcha,
     
-                })
-                console.log(signUser)
-                console.log(recaptcha)
-               
-        
-    
-                if(signUser.data.success === true){
-                    setValues({firstName: '',lastName: '', email: '', phone:'', occupation: '',password:'',profilePicture:'',sexe:''})
-                }
-            } catch (error) {
-                console.log();
             }
+
+            axios.post('/api/signup',data)
+            .then(response => {
+                console.log(response);
+                toast.success("Please check your email account")
+                navigate("/verif")
+                // Handle success response
+            })
+            .catch(error => {
+                console.error(error);
+                // Handle error response
+            });
+            
+            })
+
+            
 
         }else{
             console.log("form invalid")
         }
+
+
         
-    }
+      };
+
+
+   
+
+   
+
+  
+
+  
 
     const handlesubmitt = async (e) =>{
         e.preventDefault();
@@ -214,10 +208,8 @@ function Signup() {
 
             })
             console.log(login)
-
-            if(login.data.success === true){
-                setValues({ email: '',password:''})
-            }
+            localStorage.setItem("token",login.data.token)
+           
         } catch (error) {
             console.log();
         }
@@ -230,11 +222,7 @@ function Signup() {
         setRecaptchaValue(value)
     }
 
-    const onChangeImage = (e) => {
-       
-            setValues({...values,profilePicture:e.target.files[0]})
-               console.log(values.profilePicture);
-          };
+  
 
   return (
     <main>
@@ -261,10 +249,10 @@ function Signup() {
                                 <div className="login-area">
                                     <div className="row align-items-center">
                                         <div className="col-12 col-sm">
-                <input onChange={handleChange("email")}  type="email" className="single-field" placeholder="Email" value={email}/>
+                                         <input onChange={(event) => setEmail(event.target.value)}  type="email" className="single-field" placeholder="Email" value={email}/>
                                         </div>
                                         <div className="col-12 col-sm">
-                 <input   onChange={handleChange("password")}  type="password" className="single-field" placeholder="Password" value={password}/>
+                                       <input    onChange={(event) => setPassword(event.target.value)}  type="password" className="single-field" placeholder="Password" value={password}/>
                                         </div>
                                         <div className="col-12 col-sm-auto">
                                         <button  onClick={handlesubmitt} className="submit-btn">login</button>
@@ -293,25 +281,26 @@ function Signup() {
                                         <form className="signup-inner--form">
                                             <div className="row">
                                                 <div className="col-12">
-                                                    <input onChange={handleChange("email")}  type="email" className="single-field" placeholder="Email" value={email}/>
+                                                    <input  value={email}
+                                                      onChange={(event) => setEmail(event.target.value)} type="email" className="single-field" placeholder="Email" />
                                                     {errors.email !== " " ? <div style={{textAlign:'left' , paddingBottom:'10px', color: 'rgb(220,71,52)'}} >{errors.email} </div> : ''}
                                                 </div>
                                                 <div className="col-md-6">
-                                                    <input onChange={handleChange("firstName")}  type="text" className="single-field" placeholder="First Name" value={firstName}/>
+                                                    <input  onChange={(event) => setFirstName(event.target.value)}  type="text" className="single-field" placeholder="First Name" value={firstName}/>
                                                     {errors.firstName !== " " ? <div style={{textAlign:'left' , paddingBottom:'10px' , color: 'rgb(220,71,52)'}} >{errors.firstName} </div> : ''}
                                                 </div>
                                                 <div className="col-md-6">
-                                                    <input  onChange={handleChange("lastName")}  type="text" className="single-field" placeholder="Last Name" value={lastName}/>
+                                                    <input   onChange={(event) => setLastName(event.target.value)}  type="text" className="single-field" placeholder="Last Name" value={lastName}/>
                                                     {errors.lastName !== " " ? <div style={{textAlign:'left' , paddingBottom:'10px'  , color: 'rgb(220,71,52)'}} >{errors.lastName} </div> : ''}
 
                                                 </div>
                                                 <div className="col-12">
-                                                    <input   onChange={handleChange("password")}  type="password" className="single-field" placeholder="Password" value={password}/>
+                                                    <input  onChange={(event) => setPassword(event.target.value)} type="password" className="single-field" placeholder="Password" value={password}/>
                                                     {errors.password !== " " ? <div style={{textAlign:'left', paddingBottom:'10px'  , color: 'rgb(220,71,52)'}} >{errors.password} </div> : ''}
 
                                                 </div>
                                                 <div className="col-md-12">
-                                                    <select className="nice-select" onChange={handleChange("sexe")} value={sexe} name="sortby">
+                                                    <select className="nice-select" onChange={(event) => setSexe(event.target.value)} value={sexe} name="sortby">
                                                         <option value="">Gender</option>
                                                         <option value="Male">Male</option>
                                                         <option value="Female">Female</option>
@@ -320,12 +309,12 @@ function Signup() {
 
                                                 </div>
                                                 <div className="col-12">
-                                                    <input onChange={handleChange("phone")}  type="text" className="single-field" placeholder="Phone number" value={phone} />
+                                                    <input  onChange={(event) => setPhone(event.target.value)}  type="text" className="single-field" placeholder="Phone number" value={phone} />
                                                     {errors.phone !== " " ? <div style={{textAlign:'left' , paddingBottom:'10px'  , color: 'rgb(220,71,52)'}} >{errors.phone} </div> : ''}
 
                                                 </div>
                                                 <div className="col-12">
-                                                    <select className="nice-select" onChange={handleChange("occupation")} value={occupation} name="sortby">
+                                                    <select className="nice-select"  onChange={(event) => setOccupation(event.target.value)} value={occupation} name="sortby">
                                                         <option value="">Occupation</option>
                                                         <option value="Student">Student</option>
                                                         <option value="Employee">Employee</option>
@@ -334,7 +323,7 @@ function Signup() {
 
                                                 </div>
                                                 <div className="col-12">
-                                                    <input onChange={onChangeImage}  type="file" accept=".png, .jpg, .jpeg" name="photo" />
+                                                    <input   onChange={(event) => setProfilePicture(event.target.files[0])}    type="file" accept=".png, .jpg, .jpeg" name="photo" />
                                                     {errors.profilePicture !== " " ? <div style={{textAlign:'left' , paddingBottom:'10px'  , color: 'rgb(220,71,52)'}} >{errors.profilePicture} </div> : ''}
 
                                                 </div>
@@ -366,11 +355,10 @@ function Signup() {
                                                             </div>       
                                                     
                                                     </div>
+                                                    <h6 className="terms-condition">Forget your password !? <a onClick={handleShow}>click here !</a></h6>
 
                                             </div>
-
-                                            <h6 className="terms-condition">Forget your password !? <a onClick={handleShow}>click here !</a></h6>
-
+                                            <h6 className="terms-condition">I have read & accepted the <a href="#">terms of use</a></h6>
                                         </form>
                                     </div>
                                 </div>
@@ -409,7 +397,6 @@ function Signup() {
         </Modal.Footer>
       </Modal>
 </main>
-
   )
 }
 
