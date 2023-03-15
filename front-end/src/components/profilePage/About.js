@@ -1,6 +1,6 @@
 import React from 'react'
 import { useState,useEffect } from 'react';
-import { useParams } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import axios from 'axios'
 
 
@@ -71,7 +71,7 @@ if(!user) return null ;
                                     <li><a href="photos.html">photos</a></li>
                                     <li><a href="friends.html">friends</a></li>
                                     <li><a href="about.html">more</a></li>
-                                    <li className="d-inline-block d-md-none"><a href="profile.html">edit profile</a></li> 
+                                    <li className="d-inline-block d-md-none"><Link to={`user/update/${id}`}>edit profile</Link></li> 
                                 </ul>
                             </nav>
                             
@@ -88,7 +88,7 @@ if(!user) return null ;
                 <div className="col-lg-2 col-md-3 d-none d-md-block">
                     
                     <div className="profile-edit-panel">
-                        <button className="edit-btn">edit profile</button>
+                        <button  ><Link className="edit-btn" to={`http://localhost:3000/user/update/${id}`}>edit profile</Link></button>
                     </div>
                 </div>
 
