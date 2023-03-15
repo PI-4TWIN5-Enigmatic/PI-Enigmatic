@@ -52,7 +52,7 @@ function organizeAsso(){
       await axios.get(`http://127.0.0.1:8000/association/verifier/${id}`)
       .then(()=> {
        
-      organizeAsso()
+     
       
     }) };
       
@@ -82,7 +82,7 @@ function organizeAsso(){
       <CTableDataCell>{item.sector}</CTableDataCell>
       <CTableDataCell>{item.email}</CTableDataCell>
       <CTableDataCell>
-        <CButton onClick={() => verifierAssociation(item._id)} color="success" variant="ghost">Verifier</CButton>
+        
         <Link to={`/association/${item._id}`}><CButton   color="info" variant="ghost">Details</CButton></Link>
         
         

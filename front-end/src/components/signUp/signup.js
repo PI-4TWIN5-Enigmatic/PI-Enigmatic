@@ -403,7 +403,7 @@ function Signup() {
           <Button variant="secondary" onClick={handleClose}>
             Close
           </Button>
-          <Button variant="success" type='submit' onClick={handleVerif}>
+          <Button variant="danger" type='submit' onClick={handleVerif}>
             Save Changes
           </Button>
         </Modal.Footer>

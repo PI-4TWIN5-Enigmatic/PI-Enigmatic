@@ -1,11 +1,14 @@
 import { CButton, CCard, CCardBody, CCardHeader, CCardTitle, CListGroup, CListGroupItem } from '@coreui/react';
+import axios from 'axios';
 import React, { useEffect, useState } from 'react'
 
-import { Link, useParams } from 'react-router-dom';
+import { Link, useNavigate, useParams } from 'react-router-dom';
+import { toast } from 'react-toastify';
 
 
 
 const AssociationDetails = ( ) => {
+  const Navigate = useNavigate();
   const { id} = useParams();
   const [association, setAssociation] = useState({});
 
@@ -17,6 +20,20 @@ const AssociationDetails = ( ) => {
     }
     fetchAssociation();
   }, [id]);
+
+  async function verifierAssociation(id) {
+    if (window.confirm(`Are you sure you want to verify this association  ?`)) {
+    await axios.get(`http://127.0.0.1:8000/association/verifier/${id}`)
+    .then((response)=> { toast.info(response.data) 
+      
+        if(response.data==="Account updated successfully"){
+          Navigate('/associations');
+      }
+   
+    
+  }) };}
+
+
 
   if (!association) {
     return <div>Association NOT FOUND</div>;
@@ -51,6 +68,8 @@ const AssociationDetails = ( ) => {
 </CListGroup>
 
 <br></br>
+{association.isVerified === false && <CButton onClick={() => verifierAssociation(association._id)} color="success" variant="ghost">Verifier</CButton>}
+
 <Link to={`/associations`}><CButton color="dark">Go Back</CButton></Link>
 
 
