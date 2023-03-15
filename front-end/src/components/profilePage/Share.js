@@ -10,7 +10,7 @@ const Share = () => {
                                 <div className ="profile-thumb">
                                     <a href="#">
                                         <figure className ="profile-thumb-middle">
-                                            <img src="assets/images/profile/profile-small-37.jpg" alt="profile picture" />
+                                            <img src="../assets/images/profile/profile-small-37.jpg" alt="profile picture" />
                                         </figure>
                                     </a>
                                 </div>

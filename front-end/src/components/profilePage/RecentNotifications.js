@@ -12,7 +12,7 @@ const RecentNotifications = () => {
                                             <div className ="profile-thumb">
                                                 <a href="#">
                                                     <figure className ="profile-thumb-small">
-                                                        <img src="assets/images/profile/profile-small-9.jpg" alt="profile picture" />
+                                                        <img src="../assets/images/profile/profile-small-9.jpg" alt="profile picture" />
                                                     </figure>
                                                 </a>
                                             </div>
@@ -26,7 +26,7 @@ const RecentNotifications = () => {
                                             <div className ="profile-thumb">
                                                 <a href="#">
                                                     <figure className ="profile-thumb-small">
-                                                        <img src="assets/images/profile/profile-small-35.jpg" alt="profile picture" />
+                                                        <img src="../assets/images/profile/profile-small-35.jpg" alt="profile picture" />
                                                     </figure>
                                                 </a>
                                             </div>
@@ -40,7 +40,7 @@ const RecentNotifications = () => {
                                             <div className ="profile-thumb">
                                                 <a href="#">
                                                     <figure className ="profile-thumb-small">
-                                                        <img src="assets/images/profile/profile-small-15.jpg" alt="profile picture" />
+                                                        <img src="../assets/images/profile/profile-small-15.jpg" alt="profile picture" />
                                                     </figure>
                                                 </a>
                                             </div>
@@ -54,7 +54,7 @@ const RecentNotifications = () => {
                                             <div className ="profile-thumb">
                                                 <a href="#">
                                                     <figure className ="profile-thumb-small">
-                                                        <img src="assets/images/profile/profile-small-6.jpg" alt="profile picture" />
+                                                        <img src="../assets/images/profile/profile-small-6.jpg" alt="profile picture" />
                                                     </figure>
                                                 </a>
                                             </div>
@@ -68,7 +68,7 @@ const RecentNotifications = () => {
                                             <div className ="profile-thumb">
                                                 <a href="#">
                                                     <figure className ="profile-thumb-small">
-                                                        <img src="assets/images/profile/profile-small-34.jpg" alt="profile picture" />
+                                                        <img src="../assets/images/profile/profile-small-34.jpg" alt="profile picture" />
                                                     </figure>
                                                 </a>
                                             </div>

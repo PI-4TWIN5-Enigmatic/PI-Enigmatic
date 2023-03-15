@@ -121,3 +121,51 @@ exports.verifiedAsso = async (req,res,next)=>{
       });
 
 }
+
+exports.UpdateAssociation = async (req, res) => {
+  try {
+      const data = await Association.findOneAndUpdate(
+        { _id: req.params.id },
+        req.body,
+        { new: true }
+      );
+      res.status(201).json(data);
+    
+  } catch (error) {
+    console.log(error.message);
+  }
+};
+exports.deactivateAccount = async (req, res) => {
+
+  const association = await Association.findById({ _id: req.params.id });
+ 
+  // check if user account is already deactivated
+  if (!association.isActive) {
+    return res
+      .status(400)
+      .send({ success: false, error: "association account is already deactivated" });
+  } else {
+    association.isActive = false;
+    await association.save();
+    res.status(200).json({ success: true, message: "association account has been deactivated" });
+  }  
+};
+
+exports.activateAccount = async (req, res) => {
+  
+  const association = await Association.findById({ _id: req.params.id });
+ 
+  // check if user account is already deactivated
+  if (association.isActive) {
+    return res
+      .status(400)
+      .send({ success: false, error: "association account is already activated" });
+  } else {
+    association.isActive = true;
+    await association.save();
+    res.status(200).json({ success: true, message: "association account has been activated" });
+  }
+
+  // ban user
+  
+};

@@ -12,7 +12,7 @@ const Friends = () => {
                                             <div className="profile-thumb">
                                                 <a href="#">
                                                     <figure className="profile-thumb-small">
-                                                        <img src="assets/images/profile/profile-small-10.jpg" alt="profile picture" />
+                                                        <img src="../assets/images/profile/profile-small-10.jpg" alt="profile picture" />
                                                     </figure>
                                                 </a>
                                             </div>
@@ -22,15 +22,15 @@ const Friends = () => {
                                                 <p className="list-subtitle"><a href="#">10 mutual</a></p>
                                             </div>
                                             <button className="like-button">
-                                                <img className="heart" src="assets/images/icons/heart.png" alt="" /> 
-                                                <img className="heart-color" src="assets/images/icons/heart-color.png" alt="" />
+                                                <img className="heart" src="../assets/images/icons/heart.png" alt="" /> 
+                                                <img className="heart-color" src="../assets/images/icons/heart-color.png" alt="" />
                                             </button>
                                         </li>
                                         <li className="unorder-list">
                                             <div className="profile-thumb">
                                                 <a href="#">
                                                     <figure className="profile-thumb-small">
-                                                        <img src="assets/images/profile/profile-small-2.jpg" alt="profile picture" />
+                                                        <img src="../assets/images/profile/profile-small-2.jpg" alt="profile picture" />
                                                     </figure>
                                                 </a>
                                             </div>
@@ -40,15 +40,15 @@ const Friends = () => {
                                                 <p className="list-subtitle"><a href="#">02 mutual</a></p>
                                             </div>
                                             <button className="like-button active">
-                                                <img className="heart" src="assets/images/icons/heart.png" alt="" />
-                                                <img className="heart-color" src="assets/images/icons/heart-color.png" alt="" />
+                                                <img className="heart" src="../assets/images/icons/heart.png" alt="" />
+                                                <img className="heart-color" src="../assets/images/icons/heart-color.png" alt="" />
                                             </button>
                                         </li>
                                         <li className="unorder-list">
                                             <div className="profile-thumb">
                                                 <a href="#">
                                                     <figure className="profile-thumb-small">
-                                                        <img src="assets/images/profile/profile-small-5.jpg" alt="profile picture" />
+                                                        <img src="../assets/images/profile/profile-small-5.jpg" alt="profile picture" />
                                                     </figure>
                                                 </a>
                                             </div>
@@ -58,15 +58,15 @@ const Friends = () => {
                                                 <p className="list-subtitle"><a href="#">drama</a></p>
                                             </div>
                                             <button className="like-button">
-                                                <img className="heart" src="assets/images/icons/heart.png" alt="" />
-                                                <img className="heart-color" src="assets/images/icons/heart-color.png" alt="" />
+                                                <img className="heart" src="../assets/images/icons/heart.png" alt="" />
+                                                <img className="heart-color" src="../assets/images/icons/heart-color.png" alt="" />
                                             </button>
                                         </li>
                                         <li className="unorder-list">
                                             <div className="profile-thumb">
                                                 <a href="#">
                                                     <figure className="profile-thumb-small">
-                                                        <img src="assets/images/profile/profile-small-14.jpg" alt="profile picture" />
+                                                        <img src="../assets/images/profile/profile-small-14.jpg" alt="profile picture" />
                                                     </figure>
                                                 </a>
                                             </div>
@@ -76,8 +76,8 @@ const Friends = () => {
                                                 <p className="list-subtitle"><a href="#">fitness</a></p>
                                             </div>
                                             <button className="like-button">
-                                                <img className="heart" src="assets/images/icons/heart.png" alt="" />
-                                                <img className="heart-color" src="assets/images/icons/heart-color.png" alt="" />
+                                                <img className="heart" src="../assets/images/icons/heart.png" alt="" />
+                                                <img className="heart-color" src="../assets/images/icons/heart-color.png" alt="" />
                                             </button>
                                         </li>
                                     </ul>

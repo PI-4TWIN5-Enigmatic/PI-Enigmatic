@@ -16,7 +16,7 @@ const Memories = () => {
                                                 <div className ="gallery-tem">
                                                     <figure className ="post-thumb">
                                                         <a className ="gallery-selector" href="assets/images/gallery/gallery-1.jpg">
-                                                            <img src="assets/images/gallery/gallery-1.jpg" alt="sweet memory" />
+                                                            <img src="../assets/images/gallery/gallery-1.jpg" alt="sweet memory" />
                                                         </a>
                                                     </figure>
                                                 </div>
@@ -25,7 +25,7 @@ const Memories = () => {
                                                 <div className ="gallery-tem">
                                                     <figure className ="post-thumb">
                                                         <a className ="gallery-selector" href="assets/images/gallery/gallery-2.jpg">
-                                                            <img src="assets/images/gallery/gallery-2.jpg" alt="sweet memory" />
+                                                            <img src="../assets/images/gallery/gallery-2.jpg" alt="sweet memory" />
                                                         </a>
                                                     </figure>
                                                 </div>
@@ -34,7 +34,7 @@ const Memories = () => {
                                                 <div className ="gallery-tem">
                                                     <figure className ="post-thumb">
                                                         <a className ="gallery-selector" href="assets/images/gallery/gallery-3.jpg">
-                                                            <img src="assets/images/gallery/gallery-3.jpg" alt="sweet memory" />
+                                                            <img src="../assets/images/gallery/gallery-3.jpg" alt="sweet memory" />
                                                         </a>
                                                     </figure>
                                                 </div>
@@ -43,7 +43,7 @@ const Memories = () => {
                                                 <div className ="gallery-tem">
                                                     <figure className ="post-thumb">
                                                         <a className ="gallery-selector" href="assets/images/gallery/gallery-4.jpg">
-                                                            <img src="assets/images/gallery/gallery-4.jpg" alt="sweet memory" />
+                                                            <img src="../assets/images/gallery/gallery-4.jpg" alt="sweet memory" />
                                                         </a>
                                                     </figure>
                                                 </div>
@@ -52,7 +52,7 @@ const Memories = () => {
                                                 <div className ="gallery-tem">
                                                     <figure className ="post-thumb">
                                                         <a className ="gallery-selector" href="assets/images/gallery/gallery-5.jpg">
-                                                            <img src="assets/images/gallery/gallery-5.jpg" alt="sweet memory" />
+                                                            <img src="../assets/images/gallery/gallery-5.jpg" alt="sweet memory" />
                                                         </a>
                                                     </figure>
                                                 </div>
@@ -61,7 +61,7 @@ const Memories = () => {
                                                 <div className ="gallery-tem">
                                                     <figure className ="post-thumb">
                                                         <a className ="gallery-selector" href="assets/images/gallery/gallery-6.jpg">
-                                                            <img src="assets/images/gallery/gallery-6.jpg" alt="sweet memory" />
+                                                            <img src="../assets/images/gallery/gallery-6.jpg" alt="sweet memory" />
                                                         </a>
                                                     </figure>
                                                 </div>
@@ -70,7 +70,7 @@ const Memories = () => {
                                                 <div className ="gallery-tem">
                                                     <figure className ="post-thumb">
                                                         <a className ="gallery-selector" href="assets/images/gallery/gallery-7.jpg">
-                                                            <img src="assets/images/gallery/gallery-7.jpg" alt="sweet memory" />
+                                                            <img src="../assets/images/gallery/gallery-7.jpg" alt="sweet memory" />
                                                         </a>
                                                     </figure>
                                                 </div>
@@ -79,7 +79,7 @@ const Memories = () => {
                                                 <div className ="gallery-tem">
                                                     <figure className ="post-thumb">
                                                         <a className ="gallery-selector" href="assets/images/gallery/gallery-8.jpg">
-                                                            <img src="assets/images/gallery/gallery-8.jpg" alt="sweet memory" />
+                                                            <img src="../assets/images/gallery/gallery-8.jpg" alt="sweet memory" />
                                                         </a>
                                                     </figure>
                                                 </div>
@@ -88,7 +88,7 @@ const Memories = () => {
                                                 <div className ="gallery-tem">
                                                     <figure className ="post-thumb">
                                                         <a className ="gallery-selector" href="assets/images/gallery/gallery-9.jpg">
-                                                            <img src="assets/images/gallery/gallery-9.jpg" alt="sweet memory" />
+                                                            <img src="../assets/images/gallery/gallery-9.jpg" alt="sweet memory" />
                                                         </a>
                                                     </figure>
                                                 </div>

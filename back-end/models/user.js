@@ -7,19 +7,16 @@ const userSchema = new mongoose.Schema(
         firstName: {
             type: String,
             trim: true,
-           required : [true, 'Please add your fisrt name '],
-            maxlength : 32
+         
         },
         lastName: {
             type: String,
             trim: true,
-          required : [true, 'Please add your last name '],
-            maxlength : 32
+         
         },
         email: {
             type: String,
-            required: true,
-            unique: true,
+          
             validate: {
               validator: function(v) {
                 return /\S+@\S+\.\S+/.test(v);
@@ -30,23 +27,16 @@ const userSchema = new mongoose.Schema(
         occupation: {
             type: String,enum: ['Student', 'Employee'],
             trim: true,
-           required : [true, 'Please add your occupation '],
             maxlength : 32
         },
         isActive: {
           type: Boolean,
         
-          default: false
+          default: true
   
          
       },
-      isBanned: {
-        type: Boolean,
-       
-        default: false
-  
-       
-    },
+      isBanned: Date,
     googleId: {
       type: String,
       trim: true
@@ -56,13 +46,19 @@ const userSchema = new mongoose.Schema(
   },
   secret: {
     type: String,
+    
    
   
 
    
 },
+recaptcha:{
+  type: String
+},
 score: {
   type: Number,
+  default: 0
+
 
 },
 specialUser: {
@@ -73,13 +69,13 @@ specialUser: {
 },
         sexe: { type: String, enum: ['Male', 'Female'] },
         phone: { type: String  },
-       phone: { type: String , required: true , unique: true },
         friends: { type: Number , default: 0},
         profilePicture: { type: Buffer },
         followedProfil : { type: Number ,  default: 0},
         followingProfil : { type: Number ,  default: 0},
         password: { type: String},
-        role : { type: Number , default: 0}
+        role : { type: Number , default: 0},
+        isAdmin:Boolean
     }, { timestamps: true});
 
 userSchema.pre('save', function(next) {
