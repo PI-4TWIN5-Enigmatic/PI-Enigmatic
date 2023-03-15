@@ -268,7 +268,7 @@ function Signup() {
 
 
                             <div className="col-lg-6">
-                                <div className="login-area" style={{backgroundColor:'white'}}>
+                                <div className="login-area" >
                                     <div className="row align-items-center">
                                         <div className="col-12 col-sm">
                                          <input onChange={(event) => setEmaill(event.target.value)}  type="email" className="single-field" placeholder="Email" value={emaill}/>
