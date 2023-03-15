@@ -267,24 +267,16 @@ function Signup() {
 
 
                             <div className="col-lg-6">
-                                <div className="login-area" style={{backgroundColor:'white'}}>
+                                <div className="login-area" >
                                     <div className="row align-items-center">
                                         <div className="col-12 col-sm">
-<<<<<<< HEAD
-                                         <input onChange={(event) => setEmail(event.target.value)}  type="email"  className="single-field" placeholder="Email" value={email}/>
-=======
                                          <input onChange={(event) => setEmaill(event.target.value)}  type="email" className="single-field" placeholder="Email" value={emaill}/>
->>>>>>> 3fe8a12cfe9ae2e263888f72674e75a574a22801
                                         </div>
                                         <div className="col-12 col-sm">
                                        <input    onChange={(event) => setPasswordd(event.target.value)}  type="password" className="single-field" placeholder="Password" value={passwordd}/>
                                         </div>
                                         <div className="col-12 col-sm-auto">
-<<<<<<< HEAD
-                                        <button  onClick={handlesubmitt} className="submit-btn" style={{borderRadius: 30}}>login</button>
-=======
                                         <button  onClick={handleSubmitt} className="submit-btn">login</button>
->>>>>>> 3fe8a12cfe9ae2e263888f72674e75a574a22801
                                         </div>
                                     </div>
                                 </div>
