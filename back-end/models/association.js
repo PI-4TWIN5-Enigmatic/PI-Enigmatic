@@ -73,9 +73,8 @@ const associationSchema = new mongoose.Schema(
             
            type: mongoose.Schema.Types.ObjectId, ref: 'user' ,
         },
-        logoPicture: { type: Buffer },
+        logoPicture: { type: String },
         phone: { type: String , required: true , unique: true },
-        password: { type: String, required : [true, 'Please add a correct password '], minlenght : [6, 'password should have at least 6 characters'] },
     }, { timestamps: true});
 
     associationSchema.pre('save', function(next) {

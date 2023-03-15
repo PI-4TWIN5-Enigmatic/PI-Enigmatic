@@ -3,6 +3,7 @@ import Signup from './components/signUp/signup'
 import NotFound from './components/NotFound';
 import {BrowserRouter,Route, Routes} from 'react-router-dom'
 import ProfilePage from './components/profilePage/ProfilePage'
+import Create from './components/association/create';
 
 
 function App() {
@@ -12,6 +13,7 @@ function App() {
    <BrowserRouter>
     <Routes>
     <Route path="/signup" element={<Signup />}></Route>
+    <Route path="/association/cree" element={<Create />}></Route>
     <Route path="*" element={<NotFound />}></Route>
     <Route path="/profile/:id" element={<ProfilePage />}></Route>
     </Routes>
