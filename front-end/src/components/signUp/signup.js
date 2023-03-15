@@ -10,6 +10,7 @@ import { Button, Form, Modal } from 'react-bootstrap';
 
 
 
+
 function Signup() {
 
 
@@ -167,6 +168,8 @@ function Signup() {
             axios.post('/api/signup',data)
             .then(response => {
                 console.log(response);
+                toast.success("Please check your email account")
+                navigate("/verif")
                 // Handle success response
             })
             .catch(error => {

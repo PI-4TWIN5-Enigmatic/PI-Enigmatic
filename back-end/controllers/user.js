@@ -350,7 +350,7 @@ exports.confirmationemail =async (req,res)=>{
       console.log('diff<0')
     }else{
       let user=await User.findOne({email:req.body.email})
-      user.verified=true;
+      user.isVerified=true;
       user.save();
       res.message='account verified with succefully'
       res.statusText='success'
