@@ -23,6 +23,7 @@ import {
 
 
 const Users = () => {
+ 
 
     const  [User,setUser]=useState([]);
     useEffect(() => {
@@ -34,12 +35,26 @@ const Users = () => {
   
       fetchData();
     }, []);
+
+    const filteredUsers = User
+
+    const [searchTerm, setSearchTerm] = useState('');
+
+    const handleSearch = (event) => {
+      setSearchTerm(event.target.value);
+       filteredUsers = User.filter((user) =>
+      user.firstName.toLowerCase().includes(searchTerm.toLowerCase())
+    );
+    };
+  
+   
     return(
         <>
      
        <CCard className="text-center">
   <CCardHeader  > <CCardTitle>User Management</CCardTitle></CCardHeader>
   <CCardBody>
+  <input type="text" placeholder="Search by username" onChange={handleSearch} />
    
   <CTable hover>
   <CTableHead>
@@ -52,9 +67,10 @@ const Users = () => {
     </CTableRow>
   </CTableHead>
   <CTableBody >
+  
     {
   
-        User.map((item, index)=>
+        filteredUsers.map((item, index)=>
         <CTableRow key={item._id}  >
       <CTableDataCell  >{item.firstName}</CTableDataCell>
       <CTableDataCell>{item.lastName}</CTableDataCell>
