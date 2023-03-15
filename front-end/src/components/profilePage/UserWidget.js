@@ -63,9 +63,8 @@ const{
                                         <ul className ="author-into-list">
                                             <li><a href="#"><i className ="bi bi-office-bag"></i>{occupation}</a></li>
                                             <li><a href="#"><i className ="bi bi-home"></i>{email}</a></li>
-                                            <li><a href="#"><i className ="bi bi-location-pointer"></i>{phone}</a></li>
-                                            <li><a href="#"><i className="bi bi-heart-beat"></i>{sexe}</a></li>
-                                            <li><a href="#"><i className ="bi bi-heart-beat"></i>{sexe}</a></li>
+                                            <li><a href="#"><i className ="bi bi-phone"></i>{phone}</a></li>
+                                            <li><a href="#"><i className="bi bi-gender"></i>{sexe}</a></li>
                                         </ul>
                                        
                                                 
