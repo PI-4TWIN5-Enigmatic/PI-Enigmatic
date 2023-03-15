@@ -70,7 +70,7 @@ specialUser: {
         sexe: { type: String, enum: ['Male', 'Female'] },
         phone: { type: String  },
         friends: { type: Number , default: 0},
-        profilePicture: { type: Buffer },
+        profilePicture: { type: String },
         followedProfil : { type: Number ,  default: 0},
         followingProfil : { type: Number ,  default: 0},
         password: { type: String},

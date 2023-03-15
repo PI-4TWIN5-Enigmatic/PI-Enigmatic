@@ -21,10 +21,13 @@ import {
   CTableRow,
 } from '@coreui/react'
 import { Link } from 'react-router-dom';
+import { MDBCol, MDBIcon } from "mdbreact";
+
 
 
 
 const Associations = () => {
+    const[query,setQuery]=useState('')
     const  [association,setAssociation]=useState([]);
     const verifiedAssociations = [];
     const unverifiedAssociations = [];
@@ -59,6 +62,24 @@ function organizeAsso(){
     }
     return(
         <>
+
+<MDBCol md="6">
+      <div className="input-group md-form form-sm form-1 pl-0">
+        <div className="input-group-prepend">
+          <span className="input-group-text purple lighten-3" id="basic-text1">
+          </span>
+        </div>
+        <input
+          className="form-control my-0 py-1"
+          type="text"
+          placeholder="Search"
+          aria-label="Search"
+          onChange={(e)=>setQuery(e.target.value)}
+        />
+      </div>
+    </MDBCol>
+
+    <br></br>
        
        <CCard className="text-center">
   <CCardHeader  > <CCardTitle>Associations Non Verifié</CCardTitle></CCardHeader>
@@ -76,7 +97,8 @@ function organizeAsso(){
   <CTableBody>
     {
 
-        unverifiedAssociations.map((item, index)=>
+        unverifiedAssociations.filter((association)=>association.name.toLowerCase().includes(query))
+        .map((item, index)=>
         <CTableRow key={index} >
       <CTableDataCell >{item.name}</CTableDataCell>
       <CTableDataCell>{item.sector}</CTableDataCell>
@@ -120,7 +142,8 @@ function organizeAsso(){
   <CTableBody>
     {
 
-        verifiedAssociations.map((item, index)=>
+        verifiedAssociations.filter((association)=>association.name.toLowerCase().includes(query))
+        .map((item, index)=>
         <CTableRow key={index} >
       <CTableDataCell >{item.name}</CTableDataCell>
       <CTableDataCell>{item.sector}</CTableDataCell>
