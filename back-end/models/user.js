@@ -81,8 +81,12 @@ specialUser: {
         followedProfil : { type: Number ,  default: 0},
         followingProfil : { type: Number ,  default: 0},
         password: { type: String},
-        role : { type: Number , default: 0},
-        isAdmin:Boolean
+        role: {
+          type: String,
+          default: "user",
+          enum: ["user", "admin"]
+        },    
+          isAdmin:Boolean
     }, { timestamps: true});
 
 userSchema.pre('save', function(next) {
