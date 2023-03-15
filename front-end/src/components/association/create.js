@@ -31,7 +31,6 @@ function Create() {
 
         }
     )
-    const [url,setUrl] = useState("")
 
 
     const formValidation = () => {
@@ -114,12 +113,12 @@ function Create() {
             dataimg.append("upload_preset","enigmatic")
             dataimg.append("cloud_name","dtisuumvj")
             console.log(dataimg)
+
              axios.post("https://api.cloudinary.com/v1_1/dtisuumvj/image/upload",dataimg)
-            .then((result) => setUrl(result.data.secure_url))
-        // Send form data to server or update parent component state
-        console.log(name, email, location, description, sector, validator, foundationDate, webSite, logoPicture, phone,country);
-         // Create a new object to send to the server
-         const data = {
+            .then((result) => {
+            
+       
+        const data = {
             name,
             email,
             location,
@@ -130,11 +129,11 @@ function Create() {
             webSite,
             phone,
             country,
-            logoPicture: url,
+            logoPicture: result.data.secure_url,
         };
 
         // Send a POST request to the backend API
-         axios.post('/association/signupAssociation', data)
+         axios.post('/association/signupAssociation', data,{headers:{Authorization:"Bearer "+localStorage.getItem("token")}})
             .then(response => {
                 console.log(response);
                 // Handle success response
@@ -143,7 +142,12 @@ function Create() {
                 console.error(error);
                 // Handle error response
             });
+            })
 
+            // Send form data to server or update parent component state
+       // console.log(name, email, location, description, sector, validator, foundationDate, webSite, logoPicture, phone,country);
+         // Create a new object to send to the server
+       
     }else{
         console.log("form invalid")
     }
