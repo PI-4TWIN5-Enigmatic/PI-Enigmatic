@@ -169,7 +169,7 @@ function Signup() {
     
             }
 
-            axios.post('/api/signup',data)
+            axios.post('http://localhost:8000/api/signup',data)
             .then(response => {
                 console.log(response);
                 toast.success("Please check your email account")
@@ -219,13 +219,15 @@ function Signup() {
                 localStorage.setItem('token', login.data.token);
                 localStorage.setItem('user', JSON.stringify(login.data.user));
 
-
+                console.log(login.data.user.isActive)
+                if (!login.data.user.isActive) {
+                            await axios.post(`http://localhost:8000/api/activateAccount/${login.data.user._id}`)
+                }
+                
                 if (login.data.user.isAdmin) {
                     window.location.href = "http://localhost:4000/users"
                 } else {
-                    if (login.data.user.isActive == false) {
-                            await axios.post(`http://localhost:8000/api/activateAccount/${login.data.user._id}`)
-                    }
+                    
                     navigate('/profile/' + login.data.user._id);
                 }
             }
