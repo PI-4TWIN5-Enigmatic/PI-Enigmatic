@@ -136,34 +136,39 @@ exports.activateAccount = async (req, res) => {
 
 
 /* LOGGING IN */
-exports.login = async (req, res) => {
+exports.loginuser = async (req, res) => {
   try {
-    const { email, password } = req.body;
-    const user = await User.findOne({ email: email });
+    const { emaill, passwordd} = req.body;
+    const user = await User.findOne({ email: emaill });
     if (!user) return res.status(400).json({ msg: "User does not exist. " });
 
 
-    const isMatch = await bcrypt.compare(password, user.password);
+    const isMatch = await bcrypt.compare(passwordd, user.password);
     if (!isMatch) return res.status(400).json({ msg: "Invalid credentials. " });
-   
+
+  
     // check if user is banned
     if (user.isBanned > new Date()) {
       return res.status(403).send({ success: false, error: "Your account has been banned" });
     } 
-    if (user.isVerified == false ) {
-      return res.status(403).send({ success: false, error: "Your account is not acctivated" });
-    }  
+    if (user.isVerified = false) {
+      return res.status(403).send({ success: false, error: "Your account is not activated" });
+    } 
+    if (user.isActive = false) {
+      return res.status(403).send({ success: false, error: "Your account is not activated" });
+    } 
+        
      const token = jwt.sign({ id: user._id,isAdmin:user.isAdmin}, process.env.JWT_SECRET);
      delete user.password;
-    res.status(200).json({ token, user });
+    res.status(200).json({ token, user, success: true });
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
-  
+};
 
    
   
-};
+
 exports.unbanUser = async (req, res) => {
   const { userId } = req.body;
 
