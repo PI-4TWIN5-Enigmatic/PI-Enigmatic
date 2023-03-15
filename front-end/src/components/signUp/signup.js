@@ -2,12 +2,44 @@ import React, { useState } from 'react'
 import axios from 'axios'
 import ReCAPTCHA from 'react-google-recaptcha';
 import GoogleButton from 'react-google-button'
+import { useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
+import { Button, Form, Modal } from 'react-bootstrap';
 
 
 
 
 
 function Signup() {
+
+
+    const navigate = useNavigate();
+
+    //Modal
+    const [show, setShow] = useState(false);
+    const handleClose = () => setShow(false);
+    const handleShow = () => setShow(true);
+    //Modal
+    
+    const [emailVerif, setEmailVerif] = useState('');
+    //sendMailToResetPasswordFunction
+    
+    const handleVerif = (e) => {
+        e.preventDefault();
+        axios.post('http://127.0.0.1:8000/api/password', {emailVerif})
+          .then((response) => {
+            console.log(response.data);
+            toast.info(response.data);
+            if (response.data === 'Code sent to your email !') {
+                navigate("/changerPassword")
+              }
+            // Do something with the response, like show a success message
+          })
+          .catch((error) => {
+            console.log(error);
+           
+            // Do something with the error, like show an error message
+          });}
 
 
     const signInGoogle=()=>{
@@ -336,11 +368,9 @@ function Signup() {
                                                     </div>
 
                                             </div>
-<<<<<<< HEAD
-                                            <h6 class="terms-condition">Forgot your password !? <a href="#">Click here</a></h6>
-=======
-                                            <h6 className="terms-condition">I have read & accepted the <a href="#">terms of use</a></h6>
->>>>>>> 896e70ea4b01d8e3d39955a00acd864a12788558
+
+                                            <h6 className="terms-condition">Forget your password !? <a onClick={handleShow}>click here !</a></h6>
+
                                         </form>
                                     </div>
                                 </div>
@@ -350,7 +380,36 @@ function Signup() {
                 </div>
             </div>
         </div>
+        <Modal show={show} onHide={handleClose}>
+        <Modal.Header closeButton>
+          <Modal.Title>Reset Password</Modal.Title>
+        </Modal.Header>
+        <Form onSubmit={handleVerif}>
+            <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
+              <Form.Label>Email address</Form.Label>
+              <Form.Control
+                type="email"
+                placeholder="name@example.com"
+                autoFocus
+                name='email'
+               
+                value={emailVerif}
+                onChange={(e) => setEmailVerif(e.target.value)}
+              />
+            </Form.Group>
+           
+          </Form>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={handleClose}>
+            Close
+          </Button>
+          <Button variant="success" type='submit' onClick={handleVerif}>
+            Save Changes
+          </Button>
+        </Modal.Footer>
+      </Modal>
 </main>
+
   )
 }
 

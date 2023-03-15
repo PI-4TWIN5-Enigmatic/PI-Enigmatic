@@ -1,12 +1,7 @@
 const express = require('express')
 const router = express.Router()
-<<<<<<< HEAD
-const {signupAssociation , getListAssociation, verifiedAsso, loginassociation, getAssociation} = require("../controllers/association")
+const {signupAssociation ,activateAccount,deactivateAccount,UpdateAssociation,getListAssociation, verifiedAsso, loginassociation, getAssociation} = require("../controllers/association")
 
-
-=======
-const {signupAssociation ,activateAccount,deactivateAccount,UpdateAssociation,getListAssociation, verifiedAsso, loginassociation} = require("../controllers/association")
->>>>>>> 896e70ea4b01d8e3d39955a00acd864a12788558
 
 router.post('/signupAssociation', signupAssociation)
 router.post('/loginassociation', loginassociation)

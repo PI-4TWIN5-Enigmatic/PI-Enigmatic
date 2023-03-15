@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import axios from 'axios'
-<<<<<<< HEAD
+import GoogleButton from 'react-google-button'
 import Modal from 'react-bootstrap/Modal';
 import { Button } from 'react-bootstrap';
 import Form from 'react-bootstrap/Form';
@@ -47,11 +47,11 @@ const handleVerif = (e) => {
 
 
 
-     const [values,setValues] = useState({
-=======
-import GoogleButton from 'react-google-button'
+    
 
-const Test = () => {
+
+
+
 
 
           const signInGoogle=()=>{
@@ -65,7 +65,7 @@ const Test = () => {
 
 
     const [values, setValues] = useState({
->>>>>>> 896e70ea4b01d8e3d39955a00acd864a12788558
+
         firstName: '',
         lastName: '',
         phone: '',
@@ -121,7 +121,7 @@ const Test = () => {
             console.log();
         }
     }
-<<<<<<< HEAD
+
   return (
     <>
     <main>
@@ -138,26 +138,7 @@ const Test = () => {
                                         </a>
                                     </div>
                                     <div className="timeline-tagline">
-                                        <h6 className="tagline">It’s helps you to connect and share with the people in your life</h6>
-=======
-    return (
-        <main>
-            <div className="main-wrapper pb-0 mb-0">
-                <div className="timeline-wrapper">
-                    <div className="timeline-header">
-                        <div className="container-fluid p-0">
-                            <div className="row no-gutters align-items-center">
-                                <div className="col-lg-6">
-                                    <div className="timeline-logo-area d-flex align-items-center">
-                                        <div className="timeline-logo">
-                                            <a href="index.html">
-                                                <img src="assets/images/logo/logo.png" alt="timeline logo" />
-                                            </a>
-                                        </div>
-                                        <div className="timeline-tagline">
-                                            <h6 className="tagline">It’s helps you to connect and share with the people in your life</h6>
-                                        </div>
->>>>>>> 896e70ea4b01d8e3d39955a00acd864a12788558
+
                                     </div>
                                 </div>
 
@@ -182,7 +163,7 @@ const Test = () => {
                     </div>
 
 
-<<<<<<< HEAD
+
                 <div className="timeline-page-wrapper">
                     <div className="container-fluid p-0">
                         <div className="row no-gutters">
@@ -245,14 +226,7 @@ const Test = () => {
                                             </div>
                                             <h6 className="terms-condition">Forget your password ?! <a  onClick={handleShow}>Click here</a></h6>
                                         </form>
-=======
-                    <div className="timeline-page-wrapper">
-                        <div className="container-fluid p-0">
-                            <div className="row no-gutters">
-                                <div className="col-lg-6 order-2 order-lg-1">
-                                    <div className="timeline-bg-content bg-img" data-bg="assets/images/timeline/adda-timeline.jpg">
-                                        <h3 className="timeline-bg-title">Let’s see what’s happening to you and your world. Welcome in Give Back.</h3>
->>>>>>> 896e70ea4b01d8e3d39955a00acd864a12788558
+
                                     </div>
                                 </div>
                                 <div className="col-lg-6 order-1 order-lg-2 d-flex align-items-center justify-content-center">
@@ -355,7 +329,9 @@ const Test = () => {
                     </div>
                 </div>
             </div>
-<<<<<<< HEAD
+
+        </div>
+
         </div>
 
       
@@ -392,10 +368,8 @@ const Test = () => {
       </Modal>
 </>
   )
-=======
-        </main>
-    )
->>>>>>> 896e70ea4b01d8e3d39955a00acd864a12788558
+
+ 
 }
 
 export default Test

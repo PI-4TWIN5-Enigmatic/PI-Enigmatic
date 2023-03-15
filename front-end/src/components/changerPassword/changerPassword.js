@@ -30,7 +30,7 @@ function ChangerPassword  ()  {
         axios.post("http://127.0.0.1:8000/api/forgetPassword", { email, password,optCode })
         .then((response)=> { toast.info(response.data) 
             if(response.data==="Password changed successfully !"){
-                Navigate('/test');}}
+                Navigate('/signup');}}
         )
         
         

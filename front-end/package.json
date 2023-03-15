@@ -15,21 +15,15 @@
     "react": "^18.2.0",
     "react-bootstrap": "^2.7.2",
     "react-dom": "^18.2.0",
-<<<<<<< HEAD
-    "react-router-dom": "^6.9.0",
-    "react-scripts": "^5.0.1",
-    "react-toastify": "^9.1.1",
-    "web-vitals": "^2.1.4"
-=======
     "react-google-button": "^0.7.2",
     "react-google-recaptcha": "^2.1.0",
     "react-icons": "^4.8.0",
     "react-redux": "^8.0.5",
-    "react-router-dom": "^6.8.2",
-    "react-scripts": "5.0.1",
+    "react-router-dom": "^6.9.0",
+    "react-scripts": "^5.0.1",
+    "react-toastify": "^9.1.1",
     "web-vitals": "^2.1.4",
     "yup": "^1.0.2"
->>>>>>> 896e70ea4b01d8e3d39955a00acd864a12788558
   },
   "scripts": {
     "start": "react-scripts start",
