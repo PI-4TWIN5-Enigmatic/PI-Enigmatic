@@ -1,8 +1,12 @@
 import React, { useState } from 'react';
 import axios from 'axios';
+import { Navigate, useNavigate } from 'react-router-dom';
+
 
 
 function Create() {
+    const Navigate = useNavigate();
+
     const [name, setName] = useState('');
     const [email, setEmail] = useState('');
     const [location, setLocation] = useState('');
@@ -14,6 +18,7 @@ function Create() {
     const [logoPicture, setLogoPicture] = useState('');
     const [phone, setPhone] = useState('');
     const [country, setCountry] = useState('');
+
 
     const [errors,setErrors] = useState(
         {
@@ -136,6 +141,7 @@ function Create() {
          axios.post('/association/signupAssociation', data,{headers:{Authorization:"Bearer "+localStorage.getItem("token")}})
             .then(response => {
                 console.log(response);
+                Navigate('/profile')
                 // Handle success response
             })
             .catch(error => {
