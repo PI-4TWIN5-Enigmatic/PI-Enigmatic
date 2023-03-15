@@ -16,56 +16,58 @@ const jwt=require("jsonwebtoken")
 
 
 exports.signupAssociation = async (req,res,next) =>{
-    const {email} = req.body ;
-    const {name} = req.body ;
-    const {validator} = req.body ;
-    var id;
-    const associationExists = await Association.findOne({email});
+  const {email} = req.body ;
+  const {name} = req.body ;
+  const {validator} = req.body ;
+  var id;
+  const associationExists = await Association.findOne({email});
 
 
-    
+  
 
-    if(associationExists){
-        return res.status(400).json({
-            sucess: false,
-            message: "Email already existy"
-        })
-    }
-   try {
-    const association = await Association.create(req.body).then((doc) => {
-   id = doc._id;
-      });
-    res.status(201).json({
-        sucess: true,
-        association
-        
-    })
-    const message = {
+  if(associationExists){
+      return res.status(400).json({
+          sucess: false,
+          message: "Email already existy"
+      })
+  }
+  
+ try {
+  console.log(req.user)
+  const association = await Association.create({...req.body,founder:req.user.id}).then((doc) => {
+ id = doc._id;
 
-        from: 'islem.gharbi@esprit.tn',
-        to: 'islem.gharbi3000@gmail.com',
-        subject: 'Verifier association',
-        html:`<h1>Good morning ,</h1> \n  <p>
-        A new association asked for permission to be verified <br> \n
-        <b>Name : </b> ${name} <br>
-        <b>Email : </b> ${email} <br>
-        <b>Validator : </b> ${validator} <br>
-        If you want to verify this association press this button <br>
-        <a href="http://localhost:8000/association/verifier/${id}">Verifier</a>
+   
+    });
+  res.status(201).json({
+      sucess: true,
+      association
+      
+  })
+  const message = {
+      from: 'islem.gharbi@esprit.tn',
+      to: 'islem.gharbi3000@gmail.com',
+      subject: 'Verifier association',
+      html:`<h1>Good morning ,</h1> \n  <p>
+      A new association asked for permission to be verified <br> \n
+      <b>Name : </b> ${name} <br>
+      <b>Email : </b> ${email} <br>
+      <b>Validator : </b> ${validator} <br>
+      If you want to verify this association press this button <br>
+      <a href="http://localhost:8000/association/verifier/${id}">Verifier</a>
 
-        </p>`
-
-    }
-    transport.sendMail(message);
-    
-   } catch (error) {
-    console.log(error);
-    res.status(201).json({
-        sucess: false,
-        message: error.message
-        
-    })
-   }
+      </p>`
+  }
+  transport.sendMail(message);
+  
+ } catch (error) {
+  console.log(error);
+  res.status(201).json({
+      sucess: false,
+      message: error.message
+      
+  })
+ }
 }
 /* LOGGING IN */
 exports.loginassociation = async (req, res) => {
@@ -124,6 +126,7 @@ exports.verifiedAsso = async (req,res,next)=>{
 
 exports.UpdateAssociation = async (req, res) => {
   try {
+    
       const data = await Association.findOneAndUpdate(
         { _id: req.params.id },
         req.body,
