@@ -126,6 +126,7 @@ exports.verifiedAsso = async (req,res,next)=>{
 
 exports.UpdateAssociation = async (req, res) => {
   try {
+    
       const data = await Association.findOneAndUpdate(
         { _id: req.params.id },
         req.body,
