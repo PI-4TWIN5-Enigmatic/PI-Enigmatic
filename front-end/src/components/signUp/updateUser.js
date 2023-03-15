@@ -2,6 +2,8 @@ import React, { useEffect,useState } from 'react'
 import axios from 'axios'
 import { Navigate, useNavigate,useParams } from 'react-router-dom';
 import { toast } from 'react-toastify';
+import Navbar from '../Navbar/Navbar'
+
 
 
 function UpdateUser() {
@@ -178,7 +180,7 @@ function UpdateUser() {
     
     return (
         <>
-        
+         <Navbar />
         <main>
                 <div className="main-wrapper pb-0 mb-0">
                     <div className="timeline-wrapper">

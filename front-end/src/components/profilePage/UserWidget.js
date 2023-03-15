@@ -1,6 +1,6 @@
 import React from 'react'
 import { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import {Link, useParams } from 'react-router-dom';
 
 
 
@@ -64,8 +64,14 @@ const{
                                             <li><a href="#"><i className ="bi bi-office-bag"></i>{occupation}</a></li>
                                             <li><a href="#"><i className ="bi bi-home"></i>{email}</a></li>
                                             <li><a href="#"><i className ="bi bi-location-pointer"></i>{phone}</a></li>
+                                            <li><a href="#"><i className="bi bi-heart-beat"></i>{sexe}</a></li>
                                             <li><a href="#"><i className ="bi bi-heart-beat"></i>{sexe}</a></li>
                                         </ul>
+                                       
+                                                
+                                                <div className="profile-edit-panel">
+                                                          <button  ><Link className="edit-btn" to={`http://localhost:3000/user/update/${id}`}>edit profile</Link></button>
+                                                </div>
                                     </div>
                                 </div>
                             </div>
