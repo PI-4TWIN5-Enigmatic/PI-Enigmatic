@@ -1,5 +1,6 @@
 const User = require("../models/user");
 const OtpData =require ("../models/otp");
+const mongoose = require('mongoose');
 var bcrypt = require('bcrypt');
 const nodemailer = require('nodemailer');
 const crypto = require('crypto');
@@ -12,6 +13,7 @@ const transport = nodemailer.createTransport({
       pass: 'ukvyhcpmnytcvnfp'
     }
   });
+
   
 
 
@@ -82,6 +84,57 @@ exports.signup = async (req,res,next) =>{
    }
 }
 
+exports.UpdateUser = async (req, res) => {
+  try {
+      const data = await User.findOneAndUpdate(
+        { _id: req.params.id },
+        req.body,
+        { new: true }
+      );
+      res.status(201).json(data);
+    
+  } catch (error) {
+    console.log(error.message);
+  }
+};
+
+exports.deactivateAccount = async (req, res) => {
+
+  const user = await User.findById({ _id: req.params.id });
+ 
+  // check if user account is already deactivated
+  if (!user.isActive) {
+    return res
+      .status(400)
+      .send({ success: false, error: "User account is already deactivated" });
+  } else {
+    user.isActive = false;
+    await user.save();
+    res.status(200).json({ success: true, message: "User account has been deactivated" });
+  }  
+};
+
+exports.activateAccount = async (req, res) => {
+  
+  const user = await User.findById({ _id: req.params.id });
+ 
+  // check if user account is already deactivated
+  if (user.isActive) {
+    return res
+      .status(400)
+      .send({ success: false, error: "User account is already activated" });
+  } else {
+    user.isActive = true;
+    await user.save();
+    res.status(200).json({ success: true, message: "User account has been activated" });
+  }
+
+  // ban user
+  
+};
+
+
+
 /* LOGGING IN */
 exports.login = async (req, res) => {
   try {
@@ -89,68 +142,63 @@ exports.login = async (req, res) => {
     const user = await User.findOne({ email: email });
     if (!user) return res.status(400).json({ msg: "User does not exist. " });
 
+
     const isMatch = await bcrypt.compare(password, user.password);
     if (!isMatch) return res.status(400).json({ msg: "Invalid credentials. " });
+   
     // check if user is banned
-    if (user.isBanned)  return res.status(403).send({ success: false, error: "Your account has been banned" });
-     const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET);
+    if (user.isBanned > new Date()) {
+      return res.status(403).send({ success: false, error: "Your account has been banned" });
+    }  
+     const token = jwt.sign({ id: user._id,isAdmin:user.isAdmin}, process.env.JWT_SECRET);
      delete user.password;
     res.status(200).json({ token, user });
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
   
+
+   
+  
 };
 exports.unbanUser = async (req, res) => {
-  const { firstName } = req.body;
+  const { userId } = req.body;
 
   // check if user exists in the database
-  const user = await User.findOne({ firstName });
+  const user = await User.findOne({ _id: mongoose.Types.ObjectId(userId) });
   if (!user) {
     return res.status(404).send({ success: false, error: "User not found" });
   }
 
   // check if user is already unbanned
-  if (!user.isBanned) {
+  if (user.isBanned == null || user.isBanned < new Date()) {
     return res
       .status(400)
       .send({ success: false, error: "User is already unbanned" });
   }
 
   // unban user
-  user.isBanned = false;
+  user.isBanned = null;
   await user.save();
 
   res.status(200).json({ success: true, message: "User has been unbanned" });
 };
 
-
-
 exports. banUser = async (req, res) => {
-  const { firstName } = req.body;
+  const { userId, banDate } = req.body;
 
   // check if user exists in the database
-  const user = await User.findOne({ firstName });
+  const user = await User.findOne({ _id: mongoose.Types.ObjectId(userId) });
   if (!user) {
     return res.status(404).send({ success: false, error: "User not found" });
   }
-
-  // check if user is already unbanned
-  if (user.isBanned) {
-    return res
-      .status(400)
-      .send({ success: false, error: "User is already banned" });
-  }
-
+  console.log(banDate);
   // ban user
-  user.isBanned = true;
+  user.isBanned = new Date(banDate);
   await user.save();
 
   res.status(200).json({ success: true, message: "User has been banned" });
 };
-
-
-
 
 //get list user 
 exports.getListUser = async (req, res,next) => {
@@ -175,32 +223,25 @@ exports.getUser = async (req, res ) =>{
   }
 }
 
-exports.forgetPassword = async (req , res , next)=>{
-    const {email} =req.body;
-    try{
-        const oldUser = await User.findOne({email});
-        if (!oldUser){
-            return res.send("User not exist !")
-        }
-    }catch (error) {}
-}
+
 
 
 exports.emailSend = async (req , res , next )=>{
-
+ 
   try {
     // find the user with the given email address
-    const user = await User.findOne({ email: req.body.email });
-    res.send(user)
+    const user = await User.findOne({ email:req.body.emailVerif });
+   
     // if no user is found, send an error response
     if (!user) {
-      return res.status(404).json({ error: 'User not found' });
+      return res.send("User not exist !")
+     
     }
 
    
     let otpcode= Math.floor((Math.random()*10000)+1)
     let otpData=new OtpData({
-      email:req.body.email,
+      email:req.body.emailVerif,
       code:otpcode,
       expiration:new Date().getTime()+300*1000
     })
@@ -229,7 +270,7 @@ exports.emailSend = async (req , res , next )=>{
     
     await transport.sendMail(message);
     // send a success response
-    return res.status(200).json({ message: 'Code sent' });
+    return res.send("Code sent to your email !")
   } catch (error) {
     // handle errors
     console.error(error);
@@ -240,30 +281,39 @@ exports.emailSend = async (req , res , next )=>{
 
 
 exports.changerPass =async (req,res)=>{
-    let data =OtpData.find({email:req.body.email,code:req.body.optCode});
-    const response ={}
-    if(data){
-      let currentTime= new Date().getTime;
-      let diff=data.expiration-currentTime;
-      if (diff<0){
-        res.message='token expire'
-        res.statusText='error'
-        console.log('diff<0')
-      }else{
-        let user=await User.findOne({email:req.body.email})
-        user.password=req.body.password;
-        user.save();
-        res.message='password changed succefully'
-        res.statusText='success'
-        console.log("changed")
-      }
+  const data = await OtpData.findOne({email:req.body.email,code:req.body.optCode});
+  try{
+  if(data){
+    const now = new Date().getTime();
+    let diff=data.expiration.getTime();
+    let difference = diff-now
 
-    }else{
-      res.message='invalid otp'
+    if (difference < 0){
+      res.message='token expire'
       res.statusText='error'
-      console.log("otp invalid")
+      return res.send("opt expired !")
+      
+      }else{
+      let user=await User.findOne({email:req.body.email})
+      user.password=req.body.password;
+      user.save();
+      res.message='password changed succefully'
+      res.statusText='success'
+      
+      console.log("changed")
+      return res.send("Password changed successfully !")
     }
-    res.status(200).json(response);
+
+  }else{
+    res.message='invalid otp'
+    res.statusText='error'
+    
+    return res.send("Invalid OTP code!")
+}
+  }catch (error) {
+    // handle errors
+    console.error(error);
+  }
 }
 
 // Multer configurations
@@ -285,6 +335,7 @@ const fileFilter = (req, file, cb) => {
   }
 }
 
+
 let upload = multer({ storage, fileFilter }).single('receipt');
 
 exports.confirmationemail =async (req,res)=>{
@@ -300,7 +351,6 @@ exports.confirmationemail =async (req,res)=>{
     }else{
       let user=await User.findOne({email:req.body.email})
       user.verified=true;
-      user.password=req.body.password;
       user.save();
       res.message='account verified with succefully'
       res.statusText='success'
@@ -314,5 +364,4 @@ exports.confirmationemail =async (req,res)=>{
   }
   res.status(200).json(response);
 }
-
 
