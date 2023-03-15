@@ -1,6 +1,6 @@
 const express = require('express')
 const router = express.Router()
-const {signup,UpdateUser,activateAccount,getListUser,forgetPassword,emailSend,changerPass , getUser, login,banUser,unbanUser, uploads, deactivateAccount,confirmationemail} = require("../controllers/user")
+const {signup,UpdateUser,activateAccount,getListUser,forgetPassword,emailSend,changerPass , getUser, loginuser,banUser,unbanUser, uploads, deactivateAccount,confirmationemail} = require("../controllers/user")
 const{verifyToken}=require ("../middleware/auth")
 const {admin}=require ("../middleware/isadmin")
 
@@ -30,11 +30,14 @@ router.post('/confirmationemail',confirmationemail)
 
 router.post('/signup', signup)
 
-router.post('/login', login)
+
+// Users Login Route
+router.post("/login-user", loginuser)
+
+
 router.put('/banuser',verifyToken,admin,banUser)
 
 router.put('/unbanuser',verifyToken,admin,unbanUser)
-router.post('/unbanuser',verifyToken,unbanUser)
 router.get('/users/getAll', getListUser)
   //update User
 router.put('/updateUser/:id',UpdateUser)
@@ -44,9 +47,6 @@ router.post("/password",emailSend);
 router.post('/forgetPassword',changerPass)
 router.post('/signup', signup)
 router.post('/uploads',uploads)
-router.post('/login', login)
-router.post('/banuser',verifyToken,banUser)
-router.post('/unbanuser', verifyToken, unbanUser)
 router.post('/deactivateAccount/:id', deactivateAccount)
 router.post('/activateAccount/:id', activateAccount)
 

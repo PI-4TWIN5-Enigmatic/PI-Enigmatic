@@ -1,12 +1,10 @@
-import React, { useState } from 'react';
+import React, { useEffect,useState } from 'react';
 import axios from 'axios';
-import { Navigate, useNavigate } from 'react-router-dom';
+import { useNavigate,useParams } from 'react-router-dom';
 
 
 
-function Create() {
-    const Navigate = useNavigate();
-
+function Update() {
     const [name, setName] = useState('');
     const [email, setEmail] = useState('');
     const [location, setLocation] = useState('');
@@ -19,8 +17,9 @@ function Create() {
     const [phone, setPhone] = useState('');
     const [country, setCountry] = useState('');
 
-
-    const [errors,setErrors] = useState(
+    const navigate = useNavigate()
+    const {id} = useParams();
+    const [errors, setErrors] = useState(
         {
             name:'',
             email:'',
@@ -39,7 +38,6 @@ function Create() {
 
 
     const formValidation = () => {
-        
         let etat = true ;
         let localError = {
             name:'',
@@ -108,11 +106,33 @@ function Create() {
     }
 
 
+    const getAssociation = async()=>{
+    const response = await fetch (`http://localhost:8000/association/get/${id}` , {
+    method:"GET",
+    });
+    
+        const data = await response.json();
+        setName(data.name);
+        setEmail(data.email);
+        setLocation(data.location);
+        setDescription(data.description);
+        setSector(data.sector);
+        setValidator(data.validator);
+        setFoundationDate(data.foundationDate);
+        setWebSite(data.webSite);
+        setPhone(data.phone);
+        setCountry(data.country);
+        setLogoPicture(data.logoPicture)
+        console.log(data);
+    };
 
+    useEffect(()=>{
+    getAssociation();
+    }, []);
+    
     const handleSubmit = (e) => {
-        const user = JSON.parse(localStorage.getItem('user'))
-        console.log(user)
         e.preventDefault();
+        console.log(logoPicture)
         const isFormValid = formValidation();
         if(isFormValid){
             const dataimg = new FormData()
@@ -123,37 +143,35 @@ function Create() {
 
              axios.post("https://api.cloudinary.com/v1_1/dtisuumvj/image/upload",dataimg)
             .then((result) => {
-            
-       
-        const data = {
-            name,
-            email,
-            location,
-            description,
-            sector,
-            validator,
-            foundationDate,
-            webSite,
-            phone,
-            country,
-            logoPicture: result.data.secure_url,
-        };
-
-        // Send a POST request to the backend API
-         axios.post('http://localhost:8000/association/signupAssociation', data,{headers:{Authorization:"Bearer "+localStorage.getItem("token")}})
-            .then(response => {
-                console.log(response);
-                Navigate(`/profile/${user._id}`)
-                // Handle success response
-            })
-            .catch(error => {
-                console.error(error);
-                // Handle error response
-            });
+                
+                console.log()
+                // Send a PUT request to the backend API
+                axios.put(`http://localhost:8000/association/UpdateAssociation/${id}`, {
+                    name,
+                    email,
+                    location,
+                    description,
+                    sector,
+                    validator,
+                    foundationDate,
+                    webSite,
+                    phone,
+                    country,
+                    logoPicture:result.data.secure_url
+                })
+                    .then(response => {
+                        console.log(response);
+                        navigate('/')
+                        // Handle success response
+                    })
+                    .catch(error => {
+                        console.error(error);
+                        // Handle error response
+                    });
             })
 
             // Send form data to server or update parent component state
-       // console.log(name, email, location, description, sector, validator, foundationDate, webSite, logoPicture, phone,country);
+        //console.log(name, email, location, description, sector, validator, foundationDate, webSite, logoPicture, phone,country);
          // Create a new object to send to the server
        
     }else{
@@ -161,6 +179,7 @@ function Create() {
     }
     
     };
+    
     return (
         <>
         
@@ -173,7 +192,7 @@ function Create() {
                                 <div className="row no-gutters">
                                     <div className="">
                                         <div className="signup-form-wrapper">
-                                            <h1 className="create-acc text-center">Create An association</h1>
+                                            <h1 className="create-acc text-center">Update An association account </h1>
                                             <div className="signup-inner text-center">
                                                 <h3 className="title">GiveBack</h3>
                                                 <form className="signup-inner--form">
@@ -263,4 +282,4 @@ function Create() {
 
 
 
-export default Create
+export default Update

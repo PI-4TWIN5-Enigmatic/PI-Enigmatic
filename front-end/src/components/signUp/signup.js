@@ -56,6 +56,10 @@ function Signup() {
     const [password, setPassword] = useState('');
     const [profilePicture, setProfilePicture] = useState('');
     const [sexe, setSexe] = useState('');
+    const [passwordd, setPasswordd] = useState('');
+    const [emaill, setEmaill] = useState('');
+
+
 
     const [errors,setErrors] = useState(
         {
@@ -165,7 +169,7 @@ function Signup() {
     
             }
 
-            axios.post('/api/signup',data)
+            axios.post('http://localhost:8000/api/signup',data)
             .then(response => {
                 console.log(response);
                 toast.success("Please check your email account")
@@ -197,23 +201,42 @@ function Signup() {
   
 
   
-
-    const handlesubmitt = async (e) =>{
+      const handleSubmitt = async (e) => {
         e.preventDefault();
+        console.log(passwordd,emaill)
         try {
-            const login = await axios.post('/api/login' ,{
-                
-                email,
-                password
-
+            const login = await axios.post('http://localhost:8000/api/login-user', {
+                emaill,
+                passwordd,
             })
-            console.log(login)
-            localStorage.setItem("token",login.data.token)
            
+           
+            console.log(login)
+
+            if (login.data.success == true) {
+              //  setValues({ email: '', password: ''})
+              
+                localStorage.setItem('token', login.data.token);
+                localStorage.setItem('user', JSON.stringify(login.data.user));
+
+                console.log(login.data.user.isActive)
+                if (!login.data.user.isActive) {
+                            await axios.post(`http://localhost:8000/api/activateAccount/${login.data.user._id}`)
+                }
+                
+                if (login.data.user.isAdmin) {
+                    window.location.href = "http://localhost:4000/users"
+                } else {
+                    
+                    navigate('/profile/' + login.data.user._id);
+                }
+            }
+
         } catch (error) {
-            console.log();
+            console.log(error)
         }
     }
+
 
     const [recaptcha, setRecaptchaValue] = useState('');
     const SITE_KEY ='6Lc5RvskAAAAAGjZouqU3C4sFmAeUpjJ0UD9ErRK'
@@ -235,10 +258,11 @@ function Signup() {
                                 <div className="timeline-logo-area d-flex align-items-center">
                                     <div className="timeline-logo">
                                         <a href="index.html">
-                                            <img src="assets/images/logo/logo.png" alt="timeline logo"/>
+                                            <img src="assets/images/logo/logoGive.jpg " style={{width : 100}} alt="timeline logo"/>
                                         </a>
                                     </div>
                                     <div className="timeline-tagline">
+                                  
                                         <h6 className="tagline">It’s helps you to connect and share with the people in your life</h6>
                                     </div>
                                 </div>
@@ -246,16 +270,16 @@ function Signup() {
 
 
                             <div className="col-lg-6">
-                                <div className="login-area">
+                                <div className="login-area" >
                                     <div className="row align-items-center">
                                         <div className="col-12 col-sm">
-                                         <input onChange={(event) => setEmail(event.target.value)}  type="email" className="single-field" placeholder="Email" value={email}/>
+                                         <input onChange={(event) => setEmaill(event.target.value)}  type="email" className="single-field" placeholder="Email" value={emaill}/>
                                         </div>
                                         <div className="col-12 col-sm">
-                                       <input    onChange={(event) => setPassword(event.target.value)}  type="password" className="single-field" placeholder="Password" value={password}/>
+                                       <input    onChange={(event) => setPasswordd(event.target.value)}  type="password" className="single-field" placeholder="Password" value={passwordd}/>
                                         </div>
                                         <div className="col-12 col-sm-auto">
-                                        <button  onClick={handlesubmitt} className="submit-btn">login</button>
+                                        <button  onClick={handleSubmitt} className="submit-btn" style={{borderRadius: 30}}>login</button>
                                         </div>
                                     </div>
                                 </div>
@@ -270,13 +294,15 @@ function Signup() {
                         <div className="row no-gutters">
                             <div className="col-lg-6 order-2 order-lg-1">
                                 <div className="timeline-bg-content bg-img" data-bg="assets/images/timeline/adda-timeline.jpg">
-                                    <h3 className="timeline-bg-title">Let’s see what’s happening to you and your world. Welcome in Give Back.</h3>
+                                  
+                                <img src="assets/images/logo/logoGive.jpg " style={{width : 6000, height : 1000}} alt="timeline logo"/>
+                                    {/* <h3 className="timeline-bg-title" style={{color: "red"}}>Let’s see what’s happening to you and your world. Welcome in Give Back.</h3> */}
                                 </div>
                             </div>
                             <div className="col-lg-6 order-1 order-lg-2 d-flex align-items-center justify-content-center">
-                                <div className="signup-form-wrapper">
+                                <div className="signup-form-wrapper" >
                                     <h1 className="create-acc text-center">Create An Account</h1>
-                                    <div className="signup-inner text-center">
+                                    <div className="signup-inner text-center" style={{borderRadius: 30}}>
                                         <h3 className="title">Wellcome to Give Back</h3>
                                         <form className="signup-inner--form">
                                             <div className="row">
@@ -335,7 +361,7 @@ function Signup() {
 
                                                 </div> 
                                                 <div className="col-12">
-                                                    <button  onClick={handleSubmit} className="submit-btn">Create Account</button>
+                                                    <button  onClick={handleSubmit} className="submit-btn" style={{borderRadius: 30}}>Create Account</button>
                                                  
 
                                                 </div>

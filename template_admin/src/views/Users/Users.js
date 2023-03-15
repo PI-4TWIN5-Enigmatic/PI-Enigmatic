@@ -34,6 +34,19 @@ const Users = () => {
   
       fetchData();
     }, []);
+
+    const filteredUsers = User
+
+    const [searchTerm, setSearchTerm] = useState('');
+
+    const handleSearch = (event) => {
+      setSearchTerm(event.target.value);
+       filteredUsers = User.filter((user) =>
+      user.firstName.toLowerCase().includes(searchTerm.toLowerCase())
+    );
+    };
+  
+   
     return(
         <>
       <MDBCol md="6">
@@ -56,6 +69,7 @@ const Users = () => {
        <CCard className="text-center">
   <CCardHeader  > <CCardTitle>User Management</CCardTitle></CCardHeader>
   <CCardBody>
+  <input type="text" placeholder="Search by username" onChange={handleSearch} />
    
   <CTable hover>
   <CTableHead>
@@ -68,6 +82,7 @@ const Users = () => {
     </CTableRow>
   </CTableHead>
   <CTableBody >
+  
     {
   
         User.filter((user)=>user.firstName.toLowerCase().includes(query))
