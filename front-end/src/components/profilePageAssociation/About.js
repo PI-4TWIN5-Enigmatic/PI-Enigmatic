@@ -6,35 +6,33 @@ import axios from 'axios'
 
 const About =() => {
 
-    const [user,setUser]= useState(null);
+    const [association,setAssociation]= useState(null);
     const {id} = useParams();
-//     const [userProfileImage, setUserProfileImage] = useState({});
   
   
-    const getUser = async()=>{
-      const response = await fetch (`http://localhost:8000/api/${id}` , {
+    const getAssociation = async()=>{
+      const response = await fetch (`http://localhost:8000/association/get/${id}` , {
       method:"GET",
   
       });
   
       const data = await response.json();
-      setUser(data);
+      setAssociation(data);
       console.log(data);
   };
 
   useEffect(()=>{
-    getUser();
+    getAssociation();
 },[]);
 
-if(!user) return null ;
+if(!association) return null ;
   
 
                 const{
-                    profilePicture
-                }=user;
+                    logoPicture
+                }=association;
                 
 
-//   setUserProfileImage(`data:${user.userPhotoExtensionType};base64, ${Buffer.from(user.profilePicture.data).toString('base64')}`);
                
   return (
     <>
@@ -52,7 +50,7 @@ if(!user) return null ;
                     <div className="profile-picture-box">
                         <figure className="profile-picture">
                             <a >
-                                <img  src={profilePicture} alt="profile picture" width="300px" height="300px"  />
+                                <img  src={logoPicture} alt="profile picture" width="300px" height="300px"  />
                             </a>
                         </figure>
                     </div>
@@ -69,9 +67,9 @@ if(!user) return null ;
                                     <li className="active"><a href="#">timeline</a></li>
                                     <li><a href="about.html">about</a></li>
                                     <li><a href="photos.html">photos</a></li>
-                                    <li><a href="friends.html">friends</a></li>
-                                <li><a href="about.html">more</a></li> 
-                                          
+                                    <li><a href="friends.html">Events</a></li>
+                                    <li><a href="about.html">more</a></li>
+      
                                 </ul>
                             </nav>
                             
@@ -81,11 +79,11 @@ if(!user) return null ;
                     </div>
                     
                 </div>
-                <div className="col-lg-2 col-md-3 d-none d-md-block">
-                    <div className="profile-edit-panel">
-                            <button  ><Link className="edit-btn" to={'http://localhost:3000/association/cree'}>add association</Link></button>
-                    </div>
-                </div>
+
+
+
+
+               
             </div>
         </div>
     </div>

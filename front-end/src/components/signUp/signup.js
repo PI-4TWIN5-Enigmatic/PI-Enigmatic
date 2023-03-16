@@ -169,7 +169,7 @@ function Signup() {
     
             }
 
-            axios.post('/api/signup',data)
+            axios.post('http://localhost:8000/api/signup',data)
             .then(response => {
                 console.log(response);
                 toast.success("Please check your email account")
@@ -202,17 +202,16 @@ function Signup() {
 
   
       const handleSubmitt = async (e) => {
-        
-
         e.preventDefault();
         console.log(passwordd,emaill)
         try {
+            
             const login = await axios.post('http://localhost:8000/api/login-user', {
                 emaill,
                 passwordd,
-
-
             })
+           
+           
             console.log(login)
 
             if (login.data.success == true) {
@@ -221,10 +220,15 @@ function Signup() {
                 localStorage.setItem('token', login.data.token);
                 localStorage.setItem('user', JSON.stringify(login.data.user));
 
-
+                console.log(login.data.user.isActive)
+                if (!login.data.user.isActive) {
+                            await axios.post(`http://localhost:8000/api/activateAccount/${login.data.user._id}`)
+                }
+                
                 if (login.data.user.isAdmin) {
-                    window.location.href = "http://localhost:4000/users"
+                    window.location.href = "http://localhost:4000/"
                 } else {
+                    
                     navigate('/profile/' + login.data.user._id);
                 }
             }
@@ -267,7 +271,7 @@ function Signup() {
 
 
                             <div className="col-lg-6">
-                                <div className="login-area" style={{backgroundColor:'white'}}>
+                                <div className="login-area" >
                                     <div className="row align-items-center">
                                         <div className="col-12 col-sm">
                                          <input onChange={(event) => setEmaill(event.target.value)}  type="email" className="single-field" placeholder="Email" value={emaill}/>
@@ -276,7 +280,7 @@ function Signup() {
                                        <input    onChange={(event) => setPasswordd(event.target.value)}  type="password" className="single-field" placeholder="Password" value={passwordd}/>
                                         </div>
                                         <div className="col-12 col-sm-auto">
-                                        <button  onClick={handleSubmitt} className="submit-btn">login</button>
+                                        <button  onClick={handleSubmitt} className="submit-btn" style={{borderRadius: 30}}>login</button>
                                         </div>
                                     </div>
                                 </div>

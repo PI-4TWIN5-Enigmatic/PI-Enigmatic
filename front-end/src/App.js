@@ -5,7 +5,8 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import 'react-toastify/dist/ReactToastify.css';
 import NotFound from './components/NotFound';
 import {BrowserRouter,Route, Routes} from 'react-router-dom'
-import ProfilePage from './components/profilePage/ProfilePage'
+import ProfilePage from './components/profilePageAssociation/ProfilePage'
+import ProfilePagee from './components/profilePage/ProfilePage'
 import { ToastContainer } from 'react-toastify';
 import ChangerPassword from './components/changerPassword/changerPassword';
 
@@ -27,7 +28,8 @@ function App() {
     <>
 
    <BrowserRouter>
-    <Routes>
+      <Routes>
+    <Route path="/" element={<Signup />}></Route>
     <Route path="/signup" element={<Signup />}></Route>
     <Route path="/verif" element={<Verif />}></Route>
     <Route path="/association/cree" element={<Create />}></Route>
@@ -43,8 +45,9 @@ function App() {
     
     
    
+    <Route path="/association/:id" element={<ProfilePage />}></Route>
 
-    <Route path="/profile/:id" element={<ProfilePage />}></Route>
+    <Route path="/profile/:id" element={<ProfilePagee />}></Route>
     <Route path="*" element={<NotFound />}></Route>
     </Routes>
    </BrowserRouter>

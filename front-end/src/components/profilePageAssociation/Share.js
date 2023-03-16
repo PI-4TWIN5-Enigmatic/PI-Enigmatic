@@ -4,31 +4,31 @@ import { useParams } from 'react-router-dom';
 
 const Share = () => {
 
-    const [user,setUser]= useState(null);
+    const [association,setAssociation]= useState(null);
     const {id} = useParams();
 
     
-    const getUser = async()=>{
-        const response = await fetch (`http://localhost:8000/api/${id}` , {
+    const getAssociation = async()=>{
+        const response = await fetch (`http://localhost:8000/association/get/${id}` , {
         method:"GET",
     
         });
     
         const data = await response.json();
-        setUser(data);
+        setAssociation(data);
         console.log(data);
     };
   
     useEffect(()=>{
-      getUser();
+        getAssociation();
   },[]);
   
-  if(!user) return null ;
+  if(!association) return null ;
     
   
                   const{
-                      profilePicture
-                  }=user;
+                      logoPicture
+                  }=association;
 
 
 
@@ -46,7 +46,7 @@ const Share = () => {
                                 <div className ="profile-thumb">
                                     <a href="#">
                                         <figure className ="profile-thumb-middle">
-                                            <img src={profilePicture} alt="profile picture"  />
+                                            <img src={logoPicture} alt="profile picture"  />
                                         </figure>
                                     </a>
                                 </div>

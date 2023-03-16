@@ -110,6 +110,8 @@ function Create() {
 
 
     const handleSubmit = (e) => {
+        const user = JSON.parse(localStorage.getItem('user'))
+        console.log(user)
         e.preventDefault();
         const isFormValid = formValidation();
         if(isFormValid){
@@ -138,10 +140,10 @@ function Create() {
         };
 
         // Send a POST request to the backend API
-         axios.post('/association/signupAssociation', data,{headers:{Authorization:"Bearer "+localStorage.getItem("token")}})
+         axios.post('http://localhost:8000/association/signupAssociation', data,{headers:{Authorization:"Bearer "+localStorage.getItem("token")}})
             .then(response => {
                 console.log(response);
-                Navigate('/profile')
+                Navigate(`/profile/${user._id}`)
                 // Handle success response
             })
             .catch(error => {
