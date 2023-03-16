@@ -69,7 +69,6 @@ const Users = () => {
        <CCard className="text-center">
   <CCardHeader  > <CCardTitle>User Management</CCardTitle></CCardHeader>
   <CCardBody>
-  <input type="text" placeholder="Search by username" onChange={handleSearch} />
    
   <CTable hover>
   <CTableHead>

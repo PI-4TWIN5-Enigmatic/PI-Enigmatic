@@ -1,90 +1,68 @@
 import React from 'react'
+import { useEffect, useState } from 'react';
 
 const RecentNotifications = () => {
+
+    const  [association,setAssociation]=useState([]);
+
+        const getAssociations = async()=>{
+            const response = await fetch ("http://127.0.0.1:8000/association/getAll" , {
+            method:"GET",
+        
+            });
+        
+            const data = await response.json();
+            setAssociation(data);
+            console.log(data);
+        };
+
+
+        useEffect(()=>{
+            getAssociations();
+        },[]);
+
+
+        const asso = association.map(function(element){
+            return [`${element.name}`];})
+
+            const assoo = association.map(function(element){
+                return [`${element.logoPicture}`];})
+
+                const associa = association.map(function(element){
+                    return [`${element._id}`];})
+
+
   return (
 <>
 
 <div className ="card widget-item">
-                                <h4 className ="widget-title">Recent Notifications</h4>
+                                <h4 className ="widget-title">Non-profit organisation you may like</h4>
                                 <div className ="widget-body">
                                     <ul className ="like-page-list-wrapper">
                                         <li className ="unorder-list">
                                             <div className ="profile-thumb">
                                                 <a href="#">
                                                     <figure className ="profile-thumb-small">
-                                                        <img src="../assets/images/profile/profile-small-9.jpg" alt="profile picture" />
+                                                        <img src={assoo[0]} alt="profile picture" />
                                                     </figure>
                                                 </a>
                                             </div>
 
                                             <div className ="unorder-list-info">
-                                                <h3 className ="list-title"><a href="#">Any one can join with us if you want</a></h3>
-                                                <p className ="list-subtitle">5 min ago</p>
+                                                <h3 className ="list-title"><a href={`http://localhost:3000/association/${associa[0]}`}>{asso[0]}</a></h3>
                                             </div>
                                         </li>
-                                        <li className ="unorder-list">
-                                            <div className ="profile-thumb">
-                                                <a href="#">
-                                                    <figure className ="profile-thumb-small">
-                                                        <img src="../assets/images/profile/profile-small-35.jpg" alt="profile picture" />
-                                                    </figure>
-                                                </a>
-                                            </div>
 
-                                            <div className ="unorder-list-info">
-                                                <h3 className ="list-title"><a href="#">Any one can join with us if you want</a></h3>
-                                                <p className ="list-subtitle">10 min ago</p>
-                                            </div>
-                                        </li>
-                                        <li className ="unorder-list">
-                                            <div className ="profile-thumb">
-                                                <a href="#">
-                                                    <figure className ="profile-thumb-small">
-                                                        <img src="../assets/images/profile/profile-small-15.jpg" alt="profile picture" />
-                                                    </figure>
-                                                </a>
-                                            </div>
-
-                                            <div className ="unorder-list-info">
-                                                <h3 className ="list-title"><a href="#">Any one can join with us if you want</a></h3>
-                                                <p className ="list-subtitle">18 min ago</p>
-                                            </div>
-                                        </li>
-                                        <li className ="unorder-list">
-                                            <div className ="profile-thumb">
-                                                <a href="#">
-                                                    <figure className ="profile-thumb-small">
-                                                        <img src="../assets/images/profile/profile-small-6.jpg" alt="profile picture" />
-                                                    </figure>
-                                                </a>
-                                            </div>
-
-                                            <div className ="unorder-list-info">
-                                                <h3 className ="list-title"><a href="#">Any one can join with us if you want</a></h3>
-                                                <p className ="list-subtitle">25 min ago</p>
-                                            </div>
-                                        </li>
-                                        <li className ="unorder-list">
-                                            <div className ="profile-thumb">
-                                                <a href="#">
-                                                    <figure className ="profile-thumb-small">
-                                                        <img src="../assets/images/profile/profile-small-34.jpg" alt="profile picture" />
-                                                    </figure>
-                                                </a>
-                                            </div>
-
-                                            <div className ="unorder-list-info">
-                                                <h3 className ="list-title"><a href="#">Any one can join with us if you want</a></h3>
-                                                <p className ="list-subtitle">39 min ago</p>
-                                            </div>
-                                        </li>
+                                 
                                     </ul>
                                 </div>
                             </div>
 
 
 
-</>  )
+</>  
+
+)
 }
 
 export default RecentNotifications
