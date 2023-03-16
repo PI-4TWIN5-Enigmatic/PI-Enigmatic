@@ -1,10 +1,12 @@
 import React from 'react'
+import { Link } from 'react-router-dom';
 // import {setLogout} from "../state";
 // import { useDispatch } from 'react-redux';
 
 
 const Navbar = () => {
 
+    const user = JSON.parse(localStorage.getItem('user'))
 
     const logout = (response) => {
                 localStorage.removeItem('token');
@@ -30,7 +32,7 @@ const Navbar = () => {
                                             <div className="header-top-navigation">
                                                 <nav>
                                                     <ul>
-                                                        <li className="active"><a href="">home</a></li>
+                                                        <li className="active">home</li>
                                                         <li className="msg-trigger"><a className="msg-trigger-btn" href="">message</a></li>
                                                         <li className="notification-trigger"><a className="msg-trigger-btn" href="">notification</a> </li>
                                                     </ul>

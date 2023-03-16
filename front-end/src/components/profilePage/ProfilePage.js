@@ -56,7 +56,7 @@ const ProfilePage = () => {
 
         <Navbar />
     <main >
-        <div className ="main-wrapper">
+        <div className ="main-wrapper" style={{backgroundColor:'#bcbcbc42'}}>
             <img className ="profile-banner-large bg-img" src="../assets/images/banner/profile-banner.jpg" />
             
         <About />

@@ -151,8 +151,8 @@ exports.loginuser = async (req, res) => {
     if (user.isBanned > new Date()) {
       return res.status(403).send({ success: false, error: "Your account has been banned" });
     } 
-    if (user.isVerified = false) {
-      return res.status(403).send({ success: false, error: "Your account is not activated" });
+    if (user.isVerified === false) {
+      return  res.status(400).json({ msg: "Invalid credentials. " });
     } 
    
         

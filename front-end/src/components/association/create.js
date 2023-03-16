@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import { Navigate, useNavigate } from 'react-router-dom';
+import Navbar from '../Navbar/Navbar';
 
 
 
@@ -163,7 +164,7 @@ function Create() {
     };
     return (
         <>
-        
+        <Navbar/>
         <main>
                 <div className="main-wrapper pb-0 mb-0">
                     <div className="timeline-wrapper">
