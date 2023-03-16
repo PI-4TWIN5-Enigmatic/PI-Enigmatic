@@ -107,7 +107,7 @@ return (
       {User.filter((user)=>user.firstName.toLowerCase().includes(query)).map((user) => (
        <CTableRow key={user._id}>
            <CTableDataCell  >{user.firstName}</CTableDataCell>
-           <CTableDataCell  >{user.lastname}</CTableDataCell>
+           <CTableDataCell  >{user.lastName}</CTableDataCell>
 
            <CTableDataCell  >{user.email}</CTableDataCell>
 
