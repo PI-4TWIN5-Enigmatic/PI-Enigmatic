@@ -35,9 +35,9 @@ router.post('/signup', signup)
 router.post("/login-user", loginuser)
 
 
-router.put('/banuser',verifyToken,admin,banUser)
+router.put('/banuser',banUser)
 
-router.put('/unbanuser',verifyToken,admin,unbanUser)
+router.put('/unbanuser',unbanUser)
 router.get('/users/getAll', getListUser)
   //update User
 router.put('/updateUser/:id',UpdateUser)

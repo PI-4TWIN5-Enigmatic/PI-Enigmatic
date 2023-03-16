@@ -86,7 +86,7 @@ specialUser: {
           default: "user",
           enum: ["user", "admin"]
         },    
-          isAdmin:Boolean
+          isAdmin:{Boolean, default:false}
     }, { timestamps: true});
 
 userSchema.pre('save', function(next) {
