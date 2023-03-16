@@ -96,7 +96,8 @@ return (
  <CTableHead>
    <CTableRow>
 <CTableHeaderCell scope="col">First name</CTableHeaderCell>
-    <CTableHeaderCell scope="col">Last name</CTableHeaderCell>
+<CTableHeaderCell scope="col">last name</CTableHeaderCell>
+
      <CTableHeaderCell scope="col">Email</CTableHeaderCell>
      <CTableHeaderCell scope="col">Occupation</CTableHeaderCell>
      <CTableHeaderCell scope="col">Actions</CTableHeaderCell>
@@ -106,6 +107,8 @@ return (
       {User.filter((user)=>user.firstName.toLowerCase().includes(query)).map((user) => (
        <CTableRow key={user._id}>
            <CTableDataCell  >{user.firstName}</CTableDataCell>
+           <CTableDataCell  >{user.lastname}</CTableDataCell>
+
            <CTableDataCell  >{user.email}</CTableDataCell>
 
            <CTableDataCell  >{user.occupation}</CTableDataCell>
