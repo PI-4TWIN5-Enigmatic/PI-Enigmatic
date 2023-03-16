@@ -30,9 +30,9 @@ const Navbar = () => {
                                             <div className="header-top-navigation">
                                                 <nav>
                                                     <ul>
-                                                        <li className="active"><a href="index.html">home</a></li>
-                                                        <li className="msg-trigger"><a className="msg-trigger-btn" href="#a">message</a></li>
-                                                        <li className="notification-trigger"><a className="msg-trigger-btn" href="#b">notification</a> </li>
+                                                        <li className="active"><a href="">home</a></li>
+                                                        <li className="msg-trigger"><a className="msg-trigger-btn" href="">message</a></li>
+                                                        <li className="notification-trigger"><a className="msg-trigger-btn" href="">notification</a> </li>
                                                     </ul>
                                                 </nav>
                                             </div>
@@ -43,7 +43,7 @@ const Navbar = () => {
                     
                     <div className="brand-logo text-center">
                         <a href="index.html">
-                            <img src="../assets/images/logo/logo.png" alt="brand logo" />
+                            <img src="../../assets/images/logo/logo.png" alt="brand logo" />
                         </a>
                     </div>
                    

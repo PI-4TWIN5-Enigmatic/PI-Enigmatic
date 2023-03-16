@@ -1,6 +1,7 @@
 import React, { useEffect,useState } from 'react';
 import axios from 'axios';
 import { useNavigate,useParams } from 'react-router-dom';
+import { toast } from 'react-toastify';
 
 
 
@@ -180,13 +181,25 @@ function Update() {
     
     };
     
+    async function handleDeactivate () {
+        
+        if (window.confirm('Are you sure you want to deactivate your association account ?')) {
+            await axios.post(`http://localhost:8000/association/deactivateAccount/${id}`)
+           
+                .then((response) => {
+                    navigate('/signup')
+                    toast.info("Association account has been deactivated")
+                    
+                    console.log(response) 
+            }
+        )}
+    }
     return (
         <>
         
         <main>
                 <div className="main-wrapper pb-0 mb-0">
-                    <div className="timeline-wrapper">
-                       
+                    <div className="timeline-wrapper">     
                         <div className="timeline-page-wrapper">
                             <div className="container-fluid p-0">
                                 <div className="row no-gutters">
@@ -198,6 +211,8 @@ function Update() {
                                                 <form className="signup-inner--form">
                                                     <div className="row">
                                                         <div className="col-12">
+                                                            <img src ={logoPicture}></img>
+                                                                 <br></br><br></br><br></br><br></br>
                                                             <input type="email" value={email} onChange={(e) => setEmail(e.target.value)}  className="single-field" placeholder="Email"/>
                                                             {errors.email !== " " ? <div style={{textAlign:'left' , paddingBottom:'10px', color: 'rgb(220,71,52)'}} >{errors.email} </div> : ''}
 
@@ -260,10 +275,10 @@ function Update() {
                                                         </div>
                                                         
                                                         <div className="col-12">
-                                                            <button  onClick={handleSubmit} className="submit-btn">Create association</button>
+                                                            <button  onClick={handleSubmit} className="submit-btn">Update association</button>
                                                         </div>
                                                     </div>
-                                                    <h6 className="terms-condition">I have read & accepted the <a href="#">terms of use</a></h6>
+                                                        <h6 className="terms-condition">Deactivate Association Account ? <a onClick={handleDeactivate} className="link-danger">click here</a></h6>
                                                 </form>
                                             </div>
                                         </div>

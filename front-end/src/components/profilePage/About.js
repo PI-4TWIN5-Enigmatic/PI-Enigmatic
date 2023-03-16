@@ -70,9 +70,8 @@ if(!user) return null ;
                                     <li><a href="about.html">about</a></li>
                                     <li><a href="photos.html">photos</a></li>
                                     <li><a href="friends.html">friends</a></li>
-                                    <li><a href="about.html">more</a></li>
-                                    <li className="d-inline-block d-md-none"><Link to={'association/cree'}>add association</Link></li> 
-      
+                                <li><a href="about.html">more</a></li> 
+                                          
                                 </ul>
                             </nav>
                             
@@ -82,16 +81,9 @@ if(!user) return null ;
                     </div>
                     
                 </div>
-
-
-
-
                 <div className="col-lg-2 col-md-3 d-none d-md-block">
-                    
                     <div className="profile-edit-panel">
-                            <button  ><Link className="edit-btn" to={`http://localhost:3000/user/update/${id}`}>edit profile</Link></button>
                             <button  ><Link className="edit-btn" to={'http://localhost:3000/association/cree'}>add association</Link></button>
-
                     </div>
                 </div>
             </div>
