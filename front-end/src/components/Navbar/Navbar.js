@@ -1,26 +1,29 @@
 import React from 'react'
 // import {setLogout} from "../state";
 // import { useDispatch } from 'react-redux';
-
+import { Link, useNavigate } from "react-router-dom";
+import { useCookies } from "react-cookie";
 
 const Navbar = () => {
+    const [cookies, setCookies] = useCookies(["access_token"]);
+    const navigate = useNavigate();
+    const user = JSON.parse(localStorage.getItem('user'))
 
+ 
+    const logout = () => {
+        setCookies("access_token", "");
+        window.localStorage.clear();
+        navigate("/");
+      };
 
-    const logout = (response) => {
-                localStorage.removeItem('token');
-                localStorage.removeItem('user');
-                window.sessionStorage.removeItem("user");
-                window.sessionStorage.removeItem("secret");
-                localStorage.clear();
-                window.location.href = '/signup'
-
+      const rediret = () => {
        
-         console.log(response)
-         ;
-     }
+        navigate("/");
+      };
+
 
   return (
-    <>
+    
 
 
         <div className="header-top sticky bg-white d-none d-lg-block">
@@ -30,7 +33,7 @@ const Navbar = () => {
                                             <div className="header-top-navigation">
                                                 <nav>
                                                     <ul>
-                                                        <li className="active"><a href="">home</a></li>
+                                                        <li className="active">home</li>
                                                         <li className="msg-trigger"><a className="msg-trigger-btn" href="">message</a></li>
                                                         <li className="notification-trigger"><a className="msg-trigger-btn" href="">notification</a> </li>
                                                     </ul>
@@ -58,27 +61,26 @@ const Navbar = () => {
                                 <button className="top-search-btn"><i className="flaticon-search"></i></button>
                             </form>
                         </div>
+   <div className="col-md-5">
+                    <div className="header-top-right d-flex align-items-center justify-content-end">
+                      
+                       
+                        {!cookies.access_token ? (
+        <button style={{borderRadius: 30,marginBottom:15}} className="submit-btn "  onClick={rediret}>login/signup</button>
+        ) ||     window.localStorage.clear()
+      : (
+        <button style={{borderRadius: 30,marginBottom:15}} className="submit-btn "  onClick={logout}>Log Out</button>
+        )}
 
 
-
-                        <div >
-                                                        <button style={{borderRadius: 30,marginBottom:15}} className="submit-btn "  onClick={logout}>Log Out</button>
-                                                    </div>
-                                                    
-                  
-                                                    
-
-
-                    
-                </div>
                 
-            </div>
+             </div></div>  </div>  </div></div>  </div>                                 
+                  </div>);};
+                                                    
+
 
             
-        </div>
-
-        </div>
-        </div>
+        
 
 
 
@@ -86,9 +88,5 @@ const Navbar = () => {
     
     
     
-    
-    </>
-  )
-}
-
+ 
 export default Navbar

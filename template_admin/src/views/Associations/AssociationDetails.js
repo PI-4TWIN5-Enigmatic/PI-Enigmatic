@@ -5,9 +5,12 @@ import React, { useEffect, useState } from 'react'
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import { toast } from 'react-toastify';
 
+import { Cookies, useCookies } from "react-cookie";
 
 
 const AssociationDetails = ( ) => {
+  const [cookies, _]=useCookies(['access_token'])
+
   const Navigate = useNavigate();
   const { id} = useParams();
   const [association, setAssociation] = useState({});
@@ -35,7 +38,7 @@ const AssociationDetails = ( ) => {
 
 
 
-  if (!association) {
+  if (!association ) {
     return <div>Association NOT FOUND</div>;
   }
 

@@ -1,6 +1,6 @@
 const express = require('express')
 const router = express.Router()
-const {signup,UpdateUser,activateAccount,getListUser,forgetPassword,emailSend,changerPass , getUser, loginuser,banUser,unbanUser, uploads, deactivateAccount,confirmationemail} = require("../controllers/user")
+const {signup,UpdateUser,activateAccount,getListUser,forgetPassword,emailSend,changerPass ,tokendata, getUser, loginuser,banUser,unbanUser, uploads, deactivateAccount,confirmationemail} = require("../controllers/user")
 const{verifyToken}=require ("../middleware/auth")
 const {admin}=require ("../middleware/isadmin")
 
@@ -12,7 +12,7 @@ router.get('/', function (req, res) {
 router.get('/users/getAll',getListUser)
 
   //GET_USER_BY_ID
-router.get("/:id" , getUser);
+router.get('/getuser/:id' ,getUser);
 
 
 //Envoyer mail avec OPT
@@ -33,14 +33,13 @@ router.post('/signup', signup)
 
 // Users Login Route
 router.post("/login-user", loginuser)
+router.get("/tokendata",verifyToken,tokendata)
 
+router.put('/banuser',verifyToken,banUser)
 
-router.put('/banuser',verifyToken,admin,banUser)
-
-router.put('/unbanuser',verifyToken,admin,unbanUser)
-router.get('/users/getAll', getListUser)
+router.put('/unbanuser',verifyToken,unbanUser)
   //update User
-router.put('/updateUser/:id',UpdateUser)
+router.put('/updateUser/:id',verifyToken,UpdateUser)
 //Envoyer mail avec OPT
 router.post("/password",emailSend);
   //forget password

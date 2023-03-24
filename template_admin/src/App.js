@@ -11,10 +11,13 @@ const loading = (
 
 // Containers
 const DefaultLayout = React.lazy(() => import('./layout/DefaultLayout'))
+const Redirection = React.lazy(() => import('./views/Redirection'))
+
 
 
 
 class App extends Component {
+
   render() {
     return (
       <>
@@ -22,8 +25,9 @@ class App extends Component {
       <HashRouter>
         <Suspense fallback={loading}>
           <Routes>
-          
-            
+
+            <Route path='/redirection/:token' exact name="rediction" element={<Redirection/>}/>
+
             <Route path="*" name="Home" element={<DefaultLayout />} />
           </Routes>
         </Suspense>

@@ -10,21 +10,23 @@ import Advertissement from './Advertissement'
 import Friends from './Friends'
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
+import { useGetUserID } from '../../hooks/useGetUserID'
+
 const ProfilePage = () => {
+const id =window.localStorage.getItem("id");
+
+  const [user,setUser]= useState(null);
 
 
-    const [user,setUser]= useState(null);
-    const {id} = useParams();
- 
+  useEffect(() => {
+      fetch(`http://localhost:8000/api/getuser/${id}`)
+        .then(response => response.json())
+        .then(data => {
+          console.log(data);
+          setUser(data);})
+        .catch(error => console.error(error));
+    }, [id]);
 
-    useEffect(() => {
-        fetch(`http://localhost:8000/api/${id}`)
-          .then(response => response.json())
-          .then(data => {
-            console.log(data);
-            setUser(data);})
-          .catch(error => console.error(error));
-      }, [id]);
 
 
 
@@ -56,7 +58,7 @@ const ProfilePage = () => {
 
         <Navbar />
     <main >
-        <div className ="main-wrapper">
+        <div className ="main-wrapper" style={{backgroundColor:'#bcbcbc42'}}>
             <img className ="profile-banner-large bg-img" src="../assets/images/banner/profile-banner.jpg" />
             
         <About />

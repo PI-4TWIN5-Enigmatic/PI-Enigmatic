@@ -23,10 +23,13 @@ import {
 import { Link } from 'react-router-dom';
 import { MDBCol, MDBIcon } from "mdbreact";
 
+import { Cookies, useCookies } from "react-cookie";
 
 
 
 const Associations = () => {
+  const [cookies, _]=useCookies(['access_token'])
+
     const[query,setQuery]=useState('')
     const  [association,setAssociation]=useState([]);
     const verifiedAssociations = [];
@@ -95,7 +98,7 @@ function organizeAsso(){
     </CTableRow>
   </CTableHead>
   <CTableBody>
-    {
+    {cookies.access_token &&
 
         unverifiedAssociations.filter((association)=>association.name.toLowerCase().includes(query))
         .map((item, index)=>
@@ -140,7 +143,8 @@ function organizeAsso(){
     </CTableRow>
   </CTableHead>
   <CTableBody>
-    {
+    {    cookies.access_token &&
+
 
         verifiedAssociations.filter((association)=>association.name.toLowerCase().includes(query))
         .map((item, index)=>

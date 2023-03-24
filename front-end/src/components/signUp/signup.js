@@ -7,12 +7,13 @@ import { toast } from 'react-toastify';
 import { Button, Form, Modal } from 'react-bootstrap';
 
 
-
+import { useCookies } from "react-cookie";
 
 
 
 function Signup() {
 
+    const [_, setCookies] = useCookies(["access_token"]);
 
     const navigate = useNavigate();
 
@@ -205,6 +206,7 @@ function Signup() {
         e.preventDefault();
         console.log(passwordd,emaill)
         try {
+            
             const login = await axios.post('http://localhost:8000/api/login-user', {
                 emaill,
                 passwordd,
@@ -216,18 +218,25 @@ function Signup() {
             if (login.data.success == true) {
               //  setValues({ email: '', password: ''})
               
-                localStorage.setItem('token', login.data.token);
-                localStorage.setItem('user', JSON.stringify(login.data.user));
-
+              setCookies("access_token", login.data.token);
+              setCookies('user', JSON.stringify(login.data.user));
                 console.log(login.data.user.isActive)
                 if (!login.data.user.isActive) {
                             await axios.post(`http://localhost:8000/api/activateAccount/${login.data.user._id}`)
                 }
                 
                 if (login.data.user.isAdmin) {
-                    window.location.href = "http://localhost:4000/users"
-                } else {
                     
+
+                    window.location.href = "http://localhost:4000/#/redirection/"+login.data.token
+
+                } else {
+
+                    window.localStorage.setItem("id", login.data.id);
+                    window.localStorage.setItem("access_token", login.data.token);
+
+
+
                     navigate('/profile/' + login.data.user._id);
                 }
             }

@@ -151,27 +151,43 @@ exports.loginuser = async (req, res) => {
     if (user.isBanned > new Date()) {
       return res.status(403).send({ success: false, error: "Your account has been banned" });
     } 
-    if (user.isVerified = false) {
-      return res.status(403).send({ success: false, error: "Your account is not activated" });
+    if (user.isVerified === false) {
+      return  res.status(400).json({ msg: "Invalid credentials. " });
     } 
    
         
-     const token = jwt.sign({ id: user._id,isAdmin:user.isAdmin}, process.env.JWT_SECRET);
-     delete user.password;
-    res.status(200).json({ token, user, success: true });
-  } catch (err) {
+     const token = jwt.sign({ user,id: user._id,isAdmin:user.isAdmin,role: user.role}, process.env.JWT_SECRET);
+     res.status(200).json({ token, user, id: user._id,isAdmin:user.isAdmin, success: true });
+    } catch (err) {
     res.status(500).json({ error: err.message });
   }
 };
 
+exports.tokendata=async (req, res) => {
+  try{
+  console.log(req.user)
+  const user=await User.findOne({_id: mongoose.Types.ObjectId(req.user.id)});
+  if (user){
+    delete user.password
+    res.status(200).json({  user, success: true });
+
+  }else {
+    res.status(500).send();
+  }}
+  catch(err){
+    console.log(err)
+    return res.status(200).send(err)
+  }
+
+}
    
   
 
 exports.unbanUser = async (req, res) => {
-  const { userId } = req.body;
+  const { userID } = req.body;
 
   // check if user exists in the database
-  const user = await User.findOne({ _id: mongoose.Types.ObjectId(userId) });
+  const user = await User.findOne({ _id: mongoose.Types.ObjectId(userID) });
   if (!user) {
     return res.status(404).send({ success: false, error: "User not found" });
   }
@@ -191,10 +207,10 @@ exports.unbanUser = async (req, res) => {
 };
 
 exports. banUser = async (req, res) => {
-  const { userId, banDate } = req.body;
+  const { userID, banDate } = req.body;
 
   // check if user exists in the database
-  const user = await User.findOne({ _id: mongoose.Types.ObjectId(userId) });
+  const user = await User.findOne({ _id: mongoose.Types.ObjectId(userID) });
   if (!user) {
     return res.status(404).send({ success: false, error: "User not found" });
   }

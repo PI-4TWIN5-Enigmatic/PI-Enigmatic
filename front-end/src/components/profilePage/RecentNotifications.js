@@ -41,6 +41,7 @@ const RecentNotifications = () => {
                                     <ul className ="like-page-list-wrapper">
                                         <li className ="unorder-list">
                                             <div className ="profile-thumb">
+                                                
                                                 <a href="#">
                                                     <figure className ="profile-thumb-small">
                                                         <img src={assoo[0]} alt="profile picture" />
