@@ -21,6 +21,8 @@ const userRoutes = require('./route/user')
 const associationRoutes = require('./route/association')
 const googleAuth = require('./route/google');
 const morgan = require('morgan')
+const eventRoutes=require('./route/event')
+
 
 // MIDDELWARE
 app.use(morgan('dev'))
@@ -36,6 +38,7 @@ require("./controllers/google-auth")(passport);
 app.use("/api",userRoutes)
 app.use("/association" , associationRoutes)
 app.use("/", googleAuth);
+app.use("/event", eventRoutes);
 
 
 // connect  database 

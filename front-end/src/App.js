@@ -18,6 +18,7 @@ import Create from './components/association/create';
 import Verif from './components/signUp/verif';
 import UpdateAssociation from './components/association/update';
 import UpdateUser from './components/signUp/updateUser';
+import CreateEvent from './components/Events/CreateEvent'
 
 
 
@@ -47,6 +48,8 @@ function App() {
     <Route path="/association/:id" element={<ProfilePage />}></Route>
 
     <Route path="/profile/:id" element={<ProfilePagee />}></Route>
+    <Route path="/createEvent/:id" element={<CreateEvent />}></Route>
+
     <Route path="*" element={<NotFound />}></Route>
     </Routes>
    </BrowserRouter>
