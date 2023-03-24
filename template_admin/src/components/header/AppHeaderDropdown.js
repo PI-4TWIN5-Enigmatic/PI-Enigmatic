@@ -7,7 +7,8 @@ import {
   CDropdownHeader,
   CDropdownItem,
   CDropdownMenu,
-  CDropdownToggle,
+  CDropdownToggle,  CButton,
+
 } from '@coreui/react'
 import {
   cilBell,
@@ -21,12 +22,27 @@ import {
   cilUser,
 } from '@coreui/icons'
 import CIcon from '@coreui/icons-react'
-
 import avatar8 from './../../assets/images/avatars/8.jpg'
+import { Link, useNavigate } from "react-router-dom";
+import { useCookies } from "react-cookie";
 
 const AppHeaderDropdown = () => {
 
+  const [cookies, setCookies] = useCookies(["access_token"]);
+    const navigate = useNavigate();
+
+    const user = JSON.parse(localStorage.getItem('user'))
  
+    const logout = () => {
+        setCookies("access_token", "");
+        window.localStorage.clear();
+        window.location.href = "http://localhost:3000/";
+      };
+
+      const rediret = () => {
+       
+        window.location.href = "http://localhost:3000/";
+      };
 
 
   return (
@@ -88,9 +104,19 @@ const AppHeaderDropdown = () => {
           </CBadge>
         </CDropdownItem>
         <CDropdownDivider />
+         
+       
         <CDropdownItem href="#">
-          <CIcon icon={cilLockLocked} className="me-2" />
-          Lock Account
+        {!cookies.access_token ? (
+        <CButton color="dark"  onClick={rediret}>login/signup</CButton>
+        ) ||     window.localStorage.clear()
+      : (
+        <CIcon icon={cilLockLocked}  className="me-2" />,
+        <CButton color="dark"  style = {{ alignItems: 'center'}} className="submit-btn "  onClick={logout}>Lock Account</CButton>
+      )}
+         
+
+
         </CDropdownItem>
       </CDropdownMenu>
     </CDropdown>

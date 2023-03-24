@@ -1,7 +1,7 @@
 import React from 'react'
 import { useEffect, useState } from 'react';
 import {Link, useParams } from 'react-router-dom';
-
+import { useSelector } from 'react-redux';
 
 
 
@@ -23,11 +23,16 @@ const UserWidget = () => {
 
   const [user,setUser]= useState(null);
   const {id} = useParams();
+  const token = useSelector((state) => state.token);
+
 
 
   const getUser = async()=>{
-    const response = await fetch (`http://localhost:8000/api/${id}` , {
+    const response = await fetch (`http://localhost:8000/api/getuser/${id}` , {
     method:"GET",
+    headers: { Authorization: `Bearer ${token}` },
+
+
 
     });
 
@@ -35,6 +40,7 @@ const UserWidget = () => {
     setUser(data);
     console.log(data);
 };
+
 
 useEffect(()=>{
     getUser();

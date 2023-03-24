@@ -3,10 +3,15 @@ import axios from 'axios'
 import { Navigate, useNavigate,useParams } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import Navbar from '../Navbar/Navbar'
+import { Cookies, useCookies } from 'react-cookie';
+import { useGetUserID } from '../../hooks/useGetUserID'
 
 
 
 function UpdateUser() {
+    const idd = useGetUserID();
+
+    const [cookies, _]=useCookies(['access_token'])
      const [firstName, setFirstName] = useState('');
     const [lastName, setLastName] = useState('');
     const [phone, setPhone] = useState('');
@@ -94,10 +99,10 @@ function UpdateUser() {
           
 
     }
-
+    
 
     const getUser = async()=>{
-    const response = await fetch (`http://localhost:8000/api/${id}` , {
+    const response = await fetch (`http://localhost:8000/api/getuser/${id}` , {
     method:"GET",
     });
     
@@ -142,7 +147,8 @@ function UpdateUser() {
                     
                     sexe,
                     profilePicture:result.data.secure_url
-                })
+                },{headers:{Authorization:cookies.access_token}}
+                )
                     .then(response => {
                         console.log(response);
                         navigate(`/profile/${id}`)

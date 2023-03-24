@@ -9,7 +9,7 @@ const Share = () => {
 
     
     const getUser = async()=>{
-        const response = await fetch (`http://localhost:8000/api/${id}` , {
+        const response = await fetch (`http://localhost:8000/api/getuser/${id}` , {
         method:"GET",
     
         });

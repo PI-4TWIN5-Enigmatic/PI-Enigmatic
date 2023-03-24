@@ -2,9 +2,11 @@ import React from 'react'
 import { useState,useEffect } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import axios from 'axios'
+import { useCookies } from "react-cookie";
 
 
 const About =() => {
+    const [cookies, setCookies] = useCookies(["access_token"]);
 
     const [user,setUser]= useState(null);
     const {id} = useParams();
@@ -12,7 +14,7 @@ const About =() => {
   
   
     const getUser = async()=>{
-      const response = await fetch (`http://localhost:8000/api/${id}` , {
+      const response = await fetch (`http://localhost:8000/api/getuser/${id}` , {
       method:"GET",
   
       });
@@ -83,7 +85,10 @@ if(!user) return null ;
                 </div>
                 <div className="col-lg-2 col-md-3 d-none d-md-block">
                     <div className="profile-edit-panel">
-                            <button  ><Link className="edit-btn" to={'http://localhost:3000/association/cree'}>add association</Link></button>
+                          
+                    {cookies.access_token &&
+                            <button  ><Link className="edit-btn" to={'http://localhost:3000/association/cree'}>add association</Link></button>}
+                            
                     </div>
                 </div>
             </div>

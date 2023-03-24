@@ -21,13 +21,16 @@ import {
 } from '@coreui/react'
 import { MDBCol, MDBIcon } from "mdbreact";
 import axios from 'axios';
+import { Cookies, useCookies } from "react-cookie";
 
 
 const Users = () => {
+  const [cookies, _]=useCookies(['access_token'])
+
   const [banDate, setBanDate] = useState("");
   const  [User,setUsers]=useState([]);
   const[query,setQuery]=useState('')
-    
+
     const [data, setData] = useState(null);
   useEffect(() => {
     axios.get("http://127.0.0.1:8000/api/users/getAll").then((response) => {
@@ -46,10 +49,10 @@ const Users = () => {
 
 
 
-const handleBan = async (userId) => {
-  await axios.put("http://127.0.0.1:8000/api/banuser", { userId, banDate });
+const handleBan = async (userID) => {
+  await axios.put("http://127.0.0.1:8000/api/banuser", { userID, banDate },{headers:{Authorization:cookies.access_token}});
   const updatedUsers = User.map((user) => {
-    if (user._id === userId) {
+    if (user._id === userID) {
       user.isBanned = new Date(banDate);
     }
     return user;
@@ -57,10 +60,10 @@ const handleBan = async (userId) => {
   setUsers(updatedUsers);
 };
 
-const handleUnban = async (userId) => {
-  await axios.put("http://127.0.0.1:8000/api/unbanuser", { userId });
+const handleUnban = async (userID) => {
+  await axios.put("http://127.0.0.1:8000/api/unbanuser", { userID },{headers:{Authorization:cookies.access_token}});
   const updatedUsers = User.map((user) => {
-    if (user._id === userId) {
+    if (user._id === userID) {
       return { ...user, isBanned: null };
     }
     return user;
@@ -104,7 +107,8 @@ return (
         </CTableRow>
  </CTableHead>
  <CTableBody >
-      {User.filter((user)=>user.firstName.toLowerCase().includes(query)).map((user) => (
+      {cookies.access_token &&
+       User.filter((user)=>user.firstName.toLowerCase().includes(query)).map((user) => (
        <CTableRow key={user._id}>
            <CTableDataCell  >{user.firstName}</CTableDataCell>
            <CTableDataCell  >{user.lastName}</CTableDataCell>
@@ -117,13 +121,13 @@ return (
            <CTableDataCell  >{new Date(user.isBanned) > new Date() ? "Banned" : "Active"}</CTableDataCell>
            <CTableDataCell  >
             {new Date(user.isBanned) > new Date() ? (
-              <button onClick={() => handleUnban(user._id)}>Unban</button>
+              <CButton color="dark" onClick={() => handleUnban(user._id)}>Unban</CButton>
             ) : (
               <>
               <div key={user._id}>
               <input type="date" id={user._id}  value={new Date(user.isBanned) > new Date() ? new Date(user.isBanned) : null} onChange={(e) => setBanDate(e.target.value)} />
               </div>
-                <button onClick={() => handleBan(user._id)}>Ban</button>
+              <CButton color="dark" onClick={() => handleBan(user._id)}>Ban</CButton>
               </>
             )}
          </CTableDataCell>
