@@ -36,7 +36,7 @@ const eventSchema = new mongoose.Schema(
 
         organisateurEvent: {
             
-            type: mongoose.Schema.Types.ObjectId, ref: 'association' ,
+            type: String ,
          },
 
         eventPicture: { type: String },

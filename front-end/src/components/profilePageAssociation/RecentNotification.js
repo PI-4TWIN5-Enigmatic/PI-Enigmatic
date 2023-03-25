@@ -5,14 +5,36 @@ import { Navigate, useNavigate } from 'react-router-dom';
 
 const RecentNotifications = () => {
 
-    const {id} = useParams();
+
+    const [association,setAssociation]= useState(null);
+    const {idd} = useParams();
     const Navigate = useNavigate();
 
+    useEffect(() => {
+        fetch(`http://localhost:8000/association/get/${idd}`)
+          .then(response => response.json())
+          .then(data => {
+            console.log(data);
+            setAssociation(data);})
+          .catch(error => console.error(error));
+      }, [idd]);
+
+    
+
    const goEvent =()=>{
-        Navigate(`/createEvent/${id}`);
+        Navigate(`/createEvent/${idd}`);
     }
 
+    const{
+     founder
+      }=association;
 
+    const organisateur=()=>{
+      const idUser = window.localStorage.getItem("id");
+        // if (founder.id !=== idUser){
+        //     return true ;
+        // }
+    }
 
   return (
 <>
