@@ -25,17 +25,8 @@ const RecentNotifications = () => {
         Navigate(`/createEvent/${idd}`);
     }
 
-    const{
-     founder
-      }=association;
 
-    const organisateur=()=>{
-      const idUser = window.localStorage.getItem("id");
-        // if (founder.id !=== idUser){
-        //     return true ;
-        // }
-    }
-
+    
   return (
 <>
 
