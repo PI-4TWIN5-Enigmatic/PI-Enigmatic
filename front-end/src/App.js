@@ -21,6 +21,9 @@ import UpdateUser from './components/signUp/updateUser';
 import CreateEvent from './components/Events/CreateEvent'
 
 import { useCookies } from "react-cookie";
+import EventDisplay from './components/Events/EventDisplay';
+import EventDetails from './components/Events/EventDetails';
+import UpdateEvent from './components/Events/UpdateEvent';
 
 
 function App() {
@@ -56,6 +59,9 @@ function App() {
 
     <Route path="/profile/:id" element={<ProfilePagee />}></Route>
     <Route path="/createEvent/:id" element={<CreateEvent />}></Route>
+    <Route path="/EventDisplay/:id" element={<EventDisplay />}></Route>
+    <Route path="/EventDetails/:id" element={<EventDetails />}></Route>
+    <Route path="/updateEvent/:id" element={<UpdateEvent />}></Route>
 
     <Route path="*" element={<NotFound />}></Route>
     {/* <Route path="/" exact= {true}  name= 'Home'></Route>

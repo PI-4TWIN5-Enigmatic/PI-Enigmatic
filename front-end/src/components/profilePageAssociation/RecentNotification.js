@@ -1,29 +1,32 @@
 import React from 'react'
 import { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import { Navigate, useNavigate } from 'react-router-dom';
 
 const RecentNotifications = () => {
 
+    const idCurrentUser =window.localStorage.getItem("id");
+
 
     const [association,setAssociation]= useState(null);
-    const {idd} = useParams();
+    const {id} = useParams();
     const Navigate = useNavigate();
 
     useEffect(() => {
-        fetch(`http://localhost:8000/association/get/${idd}`)
+        fetch(`http://localhost:8000/association/get/${id}`)
           .then(response => response.json())
           .then(data => {
             console.log(data);
             setAssociation(data);})
           .catch(error => console.error(error));
-      }, [idd]);
+      }, []);
+
+      // const{
+      //   founder
+      // }=association
+
 
     
-
-   const goEvent =()=>{
-        Navigate(`/createEvent/${idd}`);
-    }
 
 
     
@@ -36,13 +39,15 @@ const RecentNotifications = () => {
                                     <li class="unorder-list">
                                    
                                             <div className="profile-thumb">
-                                                    <figure className="profile-thumb-small" onClick={goEvent}>
-                                                        <img src="../assets/images/profile/add.png" alt="profile" />
+                                                    <figure className="profile-thumb-small" >
+                                                    <a href={`/createEvent/${id}`}>
+                                                        <img src="../assets/images/profile/add.png" alt="profile"  />
+                                                        </a>
                                                     </figure>
                                             </div>
 
                                             <div className="unorder-list-info">
-                                                <h3 className="list-title"><a>Want to add an event ? Click right here </a></h3>
+                                                <h3 className="list-title"><Link to={`/createEvent/${id}`}>Want to add an event ? Click right here </Link></h3>
                                             </div>
                                         </li>
                                   

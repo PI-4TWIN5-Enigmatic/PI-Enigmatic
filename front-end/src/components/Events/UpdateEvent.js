@@ -1,4 +1,4 @@
-import React , { useState } from 'react'
+import React , { useState,useEffect } from 'react'
 import {MapContainer , TileLayer , Marker , Popup } from 'react-leaflet'
 import './CreateEvent.css'
 import L from "leaflet";
@@ -10,16 +10,9 @@ import { useParams } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
 
 
-const CreateEvent = () => {
-
-
-
-    function handleDataFromChild(data) {
-        setLocationEvent(data);
-        }
-
+const UpdateEvent = () => {
     const {id} = useParams();
-
+    const [currentEvent, setCurrentEvent] = useState('');
     const [nameEvent, setNameEvent] = useState('');
     const [dateEvent, setDateEvent] = useState('');
     const [locationEvent, setLocationEvent] = useState('');
@@ -30,7 +23,35 @@ const CreateEvent = () => {
 
 
 
+    useEffect(() => {
+      fetch(`http://localhost:8000/event/getEventById/${id}`)
+        .then(response => response.json())
+        .then(data => {
+          console.log(data);
+          setPriceEvent(data.priceEvent);
+        setNameEvent(data.nameEvent);
+        setDescriptionEvent(data.descriptionEvent);
+        setLocationEvent(data.locationEvent)
+        seteventPicture(data.eventPicture);
+     } )
+          .then(
+          )
+        .catch(error => console.error(error));
+    }, []);
+
+
+
+    function handleDataFromChild(data) {
+        setLocationEvent(data);
+        }
+
+   
+
+
+
     const handleSubmit = (e) => {
+
+        
 
 
         const dataimg = new FormData()
@@ -52,7 +73,7 @@ const CreateEvent = () => {
             console.log("data:", data)
 
             // Send a POST request to the backend API
-             axios.post(`http://localhost:8000/event/${id}/createEvent`, data)
+             axios.put(`http://localhost:8000/event/updateEvent/${id}`, data)
                 .then(response => {
                     console.log(response);
                     // Handle success response
@@ -84,8 +105,9 @@ const CreateEvent = () => {
 
 
       const goBack=()=>{
-        navigate(`/association/${id}`)
+        navigate(`/EventDetails/${id}`)
       }
+
 
 
   return (
@@ -113,11 +135,11 @@ const CreateEvent = () => {
 
                         <div className="col-xl-6">
                         <div className="card-body p-md-5 text-black">
-                            <h3 className="mb-5 text-uppercase">Create An Event </h3>
+                            <h3 className="mb-5 text-uppercase">Update An Event </h3>
 
                             <div className="row">
                             <div className="form-outline mb-4">
-                            <input type="text" id="form3Example8" className="form-control form-control-lg" value={nameEvent} onChange={(e) => setNameEvent(e.target.value)}  />
+                            <input type="text" id="form3Example8" className="form-control form-control-lg" value={nameEvent} onChange={(e) => setNameEvent(e.target.value)} />
                             <label className="form-label" >Name</label>
                             </div>
 
@@ -199,4 +221,4 @@ const CreateEvent = () => {
 </>  )
 }
 
-export default CreateEvent
+export default UpdateEvent
