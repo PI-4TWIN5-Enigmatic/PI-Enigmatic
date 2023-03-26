@@ -22,37 +22,35 @@ const RecentNotifications = () => {
         },[]);
 
 
-        const asso = association.map(function(element){
-            return [`${element.name}`];})
-
-            const assoo = association.map(function(element){
-                return [`${element.logoPicture}`];})
-
-                const associa = association.map(function(element){
-                    return [`${element._id}`];})
-
 
   return (
 <>
 
+
 <div className ="card widget-item">
-                                <h4 className ="widget-title">Non-profit organisation you may like</h4>
+                                <h4 className ="widget-title">List Of The Non-Profit Organisation </h4>
                                 <div className ="widget-body">
                                     <ul className ="like-page-list-wrapper">
-                                        <li className ="unorder-list">
+
+                                        {association.map((a)=>
+                                        
+                                        <li className ="unorder-list" key={a._id}>
                                             <div className ="profile-thumb">
-                                                
                                                 <a href="#">
                                                     <figure className ="profile-thumb-small">
-                                                        <img src={assoo[0]} alt="profile picture" />
+                                                        <img src={a.logoPicture} alt="profile picture" />
                                                     </figure>
                                                 </a>
                                             </div>
 
                                             <div className ="unorder-list-info">
-                                                <h3 className ="list-title"><a href={`http://localhost:3000/association/${associa[0]}`}>{asso[0]}</a></h3>
+                                                <h3 className ="list-title"><a href={`http://localhost:3000/association/${a._id}`}>{a.name}</a></h3>
                                             </div>
                                         </li>
+                                        
+                                        
+                                        )}
+                                        
 
                                  
                                     </ul>

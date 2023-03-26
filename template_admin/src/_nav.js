@@ -32,6 +32,14 @@ const _nav = [
     icon: <CIcon icon={cilBuilding} customClassName="nav-icon" />,
    
   },
+
+  {
+    component: CNavItem,
+    name: 'Events Management',
+    to: '/events',
+    icon: <CIcon icon={cilBuilding} customClassName="nav-icon" />,
+   
+  },
  
  
 ]
