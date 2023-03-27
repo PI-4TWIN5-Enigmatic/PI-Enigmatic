@@ -5,10 +5,15 @@ const user = require("../models/user");
 
 exports. verifyToken =async (req, res, next) => {
   try{
-  const authHeader = req.header("Authorization");
-  console.log(authHeader);
-  if (authHeader) {
-    const verified = jwt.verify(authHeader, process.env.JWT_SECRET)
+   
+  let token = req.header("Authorization");
+  console.log(token);
+ 
+  if (token) {
+    if (token.startsWith("Bearer ")) {
+      token = token.slice(7, token.length).trimLeft();
+          }
+    const verified = jwt.verify(token, process.env.JWT_SECRET)
     req.user = verified;
     if (req.user.isBanned < new Date() || req.user.isBanned == null)
     {
@@ -17,10 +22,10 @@ exports. verifyToken =async (req, res, next) => {
       res.status(401).send('user banned');
     }
   } else {
-    res.sendStatus(401);
+    res.send.status(407);
   }
 }catch(err){
-  res.send.status(401);
+  res.status(408).json({ error: err.message });
 }
 }
 

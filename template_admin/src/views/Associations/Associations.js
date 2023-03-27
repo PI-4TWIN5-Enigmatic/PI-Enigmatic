@@ -28,7 +28,7 @@ import { Cookies, useCookies } from "react-cookie";
 
 
 const Associations = () => {
-  const [cookies, _]=useCookies(['access_token'])
+  const [cookies, _]=useCookies(['token'])
 
     const[query,setQuery]=useState('')
     const  [association,setAssociation]=useState([]);
@@ -98,7 +98,7 @@ function organizeAsso(){
     </CTableRow>
   </CTableHead>
   <CTableBody>
-    {cookies.access_token &&
+    {cookies.token &&
 
         unverifiedAssociations.filter((association)=>association.name.toLowerCase().includes(query))
         .map((item, index)=>
@@ -143,7 +143,7 @@ function organizeAsso(){
     </CTableRow>
   </CTableHead>
   <CTableBody>
-    {    cookies.access_token &&
+    {    cookies.token &&
 
 
         verifiedAssociations.filter((association)=>association.name.toLowerCase().includes(query))

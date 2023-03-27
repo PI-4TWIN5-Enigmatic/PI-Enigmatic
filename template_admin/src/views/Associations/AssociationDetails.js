@@ -9,7 +9,7 @@ import { Cookies, useCookies } from "react-cookie";
 
 
 const AssociationDetails = ( ) => {
-  const [cookies, _]=useCookies(['access_token'])
+  const [cookies, _]=useCookies(['token'])
 
   const Navigate = useNavigate();
   const { id} = useParams();

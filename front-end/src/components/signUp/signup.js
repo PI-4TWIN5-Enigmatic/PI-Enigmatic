@@ -216,16 +216,23 @@ function Signup() {
             console.log(login)
 
             if (login.data.success == true) {
+
+
               //  setValues({ email: '', password: ''})
               
               setCookies("access_token", login.data.token);
-              setCookies('user', JSON.stringify(login.data.user));
+              window.localStorage.setItem('user', JSON.stringify(login.data.user));
                 console.log(login.data.user.isActive)
                 if (!login.data.user.isActive) {
                             await axios.post(`http://localhost:8000/api/activateAccount/${login.data.user._id}`)
                 }
+
                 
+                
+               
                 if (login.data.user.isAdmin) {
+                    alert('admin is logged in')
+
                     
 
                     window.location.href = "http://localhost:4000/#/redirection/"+login.data.token
@@ -233,7 +240,11 @@ function Signup() {
                 } else {
 
                     window.localStorage.setItem("id", login.data.id);
-                    window.localStorage.setItem("access_token", login.data.token);
+                    window.localStorage.setItem("token", login.data.token);
+                    
+  
+                    
+                    alert('user is logged in')
 
 
 

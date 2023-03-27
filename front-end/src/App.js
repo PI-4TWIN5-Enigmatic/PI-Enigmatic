@@ -43,7 +43,7 @@ function App() {
     {cookies.access_token &&
    
      
-      <Route path="/user/update/:id" element={<UpdateUser />}/>      }
+      <Route path="/user/update/:id" element={<UpdateUser />}/>  }
 
     
 
@@ -53,7 +53,7 @@ function App() {
     <Route path="/profile" element={<ProfilePage />}></Route>
 
     
-    
+
    
     <Route path="/association/:id" element={<ProfilePage />}></Route>
 

@@ -10,13 +10,13 @@ const Redirection = () => {
    const navigate=useNavigate();
     const params = useParams();
     console.log("helloooooooo bebsbess ")
-    const [_, setCookies] = useCookies(["access_token"]);
+    const [_, setCookies] = useCookies(["token"]);
 
 
     useEffect(() => {
         axios.get("http://127.0.0.1:8000/api/tokendata", { headers: { Authorization: params.token } }).then((response) => {
             if(response.data.success){
-                setCookies("access_token", params.token);
+                setCookies("token", params.token);
             localStorage.setItem("token",params.token)
             localStorage.setItem("user",JSON.stringify(response.data.user))
 
