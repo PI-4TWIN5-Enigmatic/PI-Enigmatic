@@ -8,7 +8,7 @@ exports.createEvent =async (req, res ) =>{
     const event = await Event.create({...req.body,organisateurEvent:id})
 
     res.status(201).json({
-        sucess: true,
+        sucess: true, 
         event
         
     })
@@ -82,5 +82,65 @@ exports.deleteEvent = (req, res) => {
       });
 
 }
+
+
+
+  
+  exports.participateEvent =async (req, res) => {
+    try{
+        const{id}=req.params;
+        const{userId }=req.body;
+        const event = await Event.findById(id);
+        const isParticipate = event.participants.get(userId);
+    
+        if (isParticipate){
+            event.participants.delete(userId);
+        }else{
+            event.participants.set(userId,true);
+        }
+
+        const updatedEvent = await Event.findByIdAndUpdate(
+            id,
+            {participants:event.participants},
+            {new:true}
+        )
+
+        res.status(200).json(updatedEvent);
+
+    }catch(err){
+            res.status(404).json({error:err.message});
+    }
+    }
+  
+
+
+  
+    exports.interestedInEvent =async (req, res) => {
+      try{
+          const{id}=req.params;
+          const{userId }=req.body;
+          const event = await Event.findById(id);
+          const isInterested = event.interested.get(userId);
+      
+          if (isInterested){
+              event.interested.delete(userId);
+          }else{
+              event.interested.set(userId,true);
+          }
+  
+          const updatedEvent = await Event.findByIdAndUpdate(
+              id,
+              {interested:event.interested},
+              {new:true}
+          )
+  
+          res.status(200).json(updatedEvent);
+  
+      }catch(err){
+              res.status(404).json({error:err.message});
+      }
+      }
+    
+  
 
   

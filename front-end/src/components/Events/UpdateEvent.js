@@ -8,6 +8,7 @@ import LeafletGeoCoder from './LeafletGeoCoder';
 import axios from 'axios';
 import { useParams } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
 
 
 const UpdateEvent = () => {
@@ -29,10 +30,13 @@ const UpdateEvent = () => {
         .then(data => {
           console.log(data);
           setPriceEvent(data.priceEvent);
-        setNameEvent(data.nameEvent);
-        setDescriptionEvent(data.descriptionEvent);
-        setLocationEvent(data.locationEvent)
-        seteventPicture(data.eventPicture);
+          setTypeEvent(data.typeEvent);
+            setNameEvent(data.nameEvent);
+            setDescriptionEvent(data.descriptionEvent);
+            setLocationEvent(data.locationEvent)
+            seteventPicture(data.eventPicture);
+            setDateEvent(data.dateEvent);
+
      } )
           .then(
           )
@@ -76,6 +80,8 @@ const UpdateEvent = () => {
              axios.put(`http://localhost:8000/event/updateEvent/${id}`, data)
                 .then(response => {
                     console.log(response);
+                    toast.info("Event have been updated")                    // Handle success response
+
                     // Handle success response
                 })
                 .catch(error => {
@@ -120,12 +126,14 @@ const UpdateEvent = () => {
                     <div className="card card-registration my-4">
                     <div className="row g-0">
                         <div className="col-xl-6 d-none d-xl-block">
-                        <img src="../assets/images/management.jpg"
+                            <br></br> <br></br>
+                        <img src="../assets/images/update.jpg"
                             alt="Sample" className="img-fluid"
                             />
                             <div>
+                                <br/> <br/>
 
-                        <img src="../assets/images/eventtt.jpg"
+                        <img src="../assets/images/updatee.jpg"
                                                     alt="Samplee" className="img-fluid"
                                                     />
 
@@ -171,13 +179,12 @@ const UpdateEvent = () => {
 
                             <div className="form-outline mb-4">
                             <select className="nice-select" name="sort" onChange={(e) => setTypeEvent(e.target.value)} value={typeEvent}>
-                                    <option value="">Type Event</option>
-                                    <option value="FreeEvent">Free Event</option>
-                                    <option value="PaidEvent">Paid Event</option>
+                                    <option >Type Event</option>
+                                    <option value="Free Event">Free Event</option>
+                                    <option value="Paid Event">Paid Event</option>
                                                                 
                                                             </select>
                             </div>
-                            
                                     
                             <div className="form-outline mb-4">
                             <input type="text" id="form3Example97" className="form-control form-control-lg" value={priceEvent} onChange={(e) => setPriceEvent(e.target.value)}  />

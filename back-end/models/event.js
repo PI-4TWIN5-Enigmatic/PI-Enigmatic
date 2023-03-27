@@ -42,19 +42,17 @@ const eventSchema = new mongoose.Schema(
         eventPicture: { type: String },
 
         participants :{
-          type:Array,
-          default:[],
+           type: Map, of: Boolean, default: new Map() ,
       },
       
-      interesse :{
-        type:Array,
-        default:[],
+      interested :{
+        type: Map, of: Boolean, default: new Map() ,
     },
 
     typeEvent: {
       type: String,
-      default: "FreeEvent",
-      enum: ["FreeEvent", "PaidEvent"]
+      default: "Free Event",
+      enum: ["Free Event", "Paid Event"]
     },    
 
          },

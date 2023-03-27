@@ -1,7 +1,6 @@
 import React from 'react'
 import { useEffect, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
-import { Navigate, useNavigate } from 'react-router-dom';
 
 const RecentNotifications = () => {
 
@@ -9,35 +8,45 @@ const RecentNotifications = () => {
 
 
     const [association,setAssociation]= useState(null);
+    const [alpha,setAlpha]= useState(null);
     const {id} = useParams();
-    const Navigate = useNavigate();
 
     useEffect(() => {
+
         fetch(`http://localhost:8000/association/get/${id}`)
           .then(response => response.json())
           .then(data => {
             console.log(data);
-            setAssociation(data);})
+            setAssociation(data);
+            if (data && data.hasOwnProperty('founder')) {
+                console.log("association.founder:", data.founder);
+                const alphaa = data.founder.toString() === idCurrentUser.toString();
+                setAlpha(alphaa);
+                console.log("🚀 ~ file: RecentNotification.js:28 ~ areIdsEqual ~ alpha:", alphaa);
+            } else {
+                console.log("association is null or does not have a founder property");
+            }
+        })
           .catch(error => console.error(error));
+
       }, []);
 
-      // const{
-      //   founder
-      // }=association
-
-
     
+
+      
 
 
     
   return (
 <>
 
-<div className ="card widget-item">
-                                <h4 className ="widget-title">Event Section</h4>
+
+            {alpha ? (
+
+                        <div className ="card widget-item">
+                                <h4 className ="widget-title">Create an Event </h4>
                                 <div className ="widget-body">
                                     <li class="unorder-list">
-                                   
                                             <div className="profile-thumb">
                                                     <figure className="profile-thumb-small" >
                                                     <a href={`/createEvent/${id}`}>
@@ -45,17 +54,38 @@ const RecentNotifications = () => {
                                                         </a>
                                                     </figure>
                                             </div>
-
+          
                                             <div className="unorder-list-info">
                                                 <h3 className="list-title"><Link to={`/createEvent/${id}`}>Want to add an event ? Click right here </Link></h3>
                                             </div>
-                                        </li>
-                                  
-                            
 
-                                 
+                                        </li>                                                                                      
                                 </div>
                             </div>
+
+
+            ) : ( 
+              <div className ="card widget-item">
+                       
+                                  <h4 className ="widget-title">Welcoming Section </h4>
+                                <div className ="widget-body">
+                                    <li class="unorder-list">
+                                   
+                                            <div className="profile-thumb">
+                                            
+                                                      <figure className="profile-thumb-small" >
+                                                          <img src="../assets/images/welcome.jpg" alt="profile" style={{width:"200px"}} />
+                                                      </figure> 
+                                            </div>
+                                          
+                                             <h3 className="list-title">Welcome to our Non-Profit organisation</h3>
+                                        </li>
+                                                                                         
+                                </div>
+                            </div>
+
+
+            )}
 
 
 

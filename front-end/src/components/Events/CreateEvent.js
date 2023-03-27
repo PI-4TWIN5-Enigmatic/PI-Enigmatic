@@ -8,7 +8,7 @@ import LeafletGeoCoder from './LeafletGeoCoder';
 import axios from 'axios';
 import { useParams } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
-
+import { toast } from 'react-toastify';
 
 const CreateEvent = () => {
 
@@ -29,10 +29,67 @@ const CreateEvent = () => {
     const [priceEvent, setPriceEvent] = useState('');
 
 
+    const [errors,setErrors] = useState(
+        {
+            nameEvent:'',
+            descriptionEvent:'',
+            dateEvent:'',
+            typeEvent:'',
+            eventPicture:'',
+            priceEvent:'',
+
+        }
+    )
+
+
+    const formValidation = () => {
+        
+        let etat = true ;
+        let localError = {
+            nameEvent:'',
+            descriptionEvent:'',
+            dateEvent:'',
+            typeEvent:'',
+            eventPicture:'',
+            priceEvent:'',
+        }
+        if(nameEvent === "" ){
+           localError.nameEvent = " name required" ;
+           etat = false;
+        }
+    
+         if(descriptionEvent === "" || descriptionEvent.length < 30  ){
+            localError.descriptionEvent = " description required and 30 caracters min" ;
+            etat = false;
+         }
+      
+         if(dateEvent === "" ){
+            localError.dateEvent = "  Date required" ;
+            etat = false;
+         }
+       
+         if(typeEvent === "" ){
+            localError.typeEvent = " Event Type required" ;
+            etat = false;
+         }
+         if(eventPicture === "" ){
+            localError.eventPicture = " Event Picture required" ;
+            etat = false;
+         }
+       
+         setErrors(localError)
+        //  console.log(localError)
+         return etat ; 
+          
+
+    }
+
+
 
     const handleSubmit = (e) => {
 
-
+        const isFormValid = formValidation();
+        if(isFormValid){
         const dataimg = new FormData()
         dataimg.append("file",eventPicture)
         dataimg.append("upload_preset","enigmatic")
@@ -55,15 +112,19 @@ const CreateEvent = () => {
              axios.post(`http://localhost:8000/event/${id}/createEvent`, data)
                 .then(response => {
                     console.log(response);
-                    // Handle success response
+                    toast.info("Event have been created")                    // Handle success response
                 })
                 .catch(error => {
                     console.error(error);
                     // Handle error response
                 });
                 }
-        
-        )}
+        )
+   
+        }else{
+            console.log("form invalid");
+        }
+    }
 
 
 
@@ -81,10 +142,8 @@ const CreateEvent = () => {
       L.Marker.prototype.options.icon = DefaultIcon;
       
       const navigate = useNavigate();
-
-
       const goBack=()=>{
-        navigate(`/association/${id}`)
+        navigate(`/EventDisplay/${id}`)
       }
 
 
@@ -118,6 +177,8 @@ const CreateEvent = () => {
                             <div className="row">
                             <div className="form-outline mb-4">
                             <input type="text" id="form3Example8" className="form-control form-control-lg" value={nameEvent} onChange={(e) => setNameEvent(e.target.value)}  />
+                            {errors.nameEvent !== " " ? <div style={{textAlign:'left' , paddingBottom:'10px', color: 'rgb(220,71,52)'}} >{errors.nameEvent} </div> : ''}
+
                             <label className="form-label" >Name</label>
                             </div>
 
@@ -125,11 +186,14 @@ const CreateEvent = () => {
                             
                             <div className="form-outline mb-4">
                             <input type="text" id="form3Example8" className="form-control form-control-lg" value={descriptionEvent} onChange={(e) => setDescriptionEvent(e.target.value)} />
+                            {errors.descriptionEvent !== " " ? <div style={{textAlign:'left' , paddingBottom:'10px', color: 'rgb(220,71,52)'}} >{errors.descriptionEvent} </div> : ''}
+
                             <label className="form-label" >Description</label>
                             </div>
 
                             <div className="form-outline mb-4">
                             <input type="date" id="form3Example8" className="form-control form-control-lg" value={dateEvent} onChange={(e) => setDateEvent(e.target.value)}/>
+                            {errors.dateEvent !== " " ? <div style={{textAlign:'left' , paddingBottom:'10px', color: 'rgb(220,71,52)'}} >{errors.dateEvent} </div> : ''}
                             <label className="form-label" >Date</label>
                             </div>
 
@@ -140,6 +204,7 @@ const CreateEvent = () => {
                             <div className="form-outline mb-4">
                             <div className="mb-3">
                             <input className="form-control" type="file" id="formFile" onChange={(event) => seteventPicture(event.target.files[0])} />
+                            {errors.eventPicture !== " " ? <div style={{textAlign:'left' , paddingBottom:'10px', color: 'rgb(220,71,52)'}} >{errors.eventPicture} </div> : ''}
                             <label className="form-label">Choose a Picture</label>
 
                                           </div>
@@ -150,15 +215,17 @@ const CreateEvent = () => {
                             <div className="form-outline mb-4">
                             <select className="nice-select" name="sort" onChange={(e) => setTypeEvent(e.target.value)} value={typeEvent}>
                                     <option value="">Type Event</option>
-                                    <option value="FreeEvent">Free Event</option>
-                                    <option value="PaidEvent">Paid Event</option>
-                                                                
+                                    <option value="Free Event">Free Event</option>
+                                    <option value="Paid Event">Paid Event</option>       
                                                             </select>
+                            {errors.typeEvent !== " " ? <div style={{textAlign:'left' , paddingBottom:'10px', color: 'rgb(220,71,52)'}} >{errors.typeEvent} </div> : ''}
+
                             </div>
                             
                                     
                             <div className="form-outline mb-4">
                             <input type="text" id="form3Example97" className="form-control form-control-lg" value={priceEvent} onChange={(e) => setPriceEvent(e.target.value)}  />
+                            {errors.priceEvent !== " " ? <div style={{textAlign:'left' , paddingBottom:'10px', color: 'rgb(220,71,52)'}} >{errors.priceEvent} </div> : ''}
                             <label className="form-label">If it's a paid event, please enter the price of the tickets here :  </label>
                             </div>
 
