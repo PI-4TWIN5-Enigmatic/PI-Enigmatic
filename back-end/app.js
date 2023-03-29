@@ -23,6 +23,8 @@ const googleAuth = require('./route/google');
 const morgan = require('morgan')
 const eventRoutes=require('./route/event')
 const postRoutes = require('./route/post.routes');
+const conversationRoutes = require('./route/conversation');
+const messageRoutes = require('./route/message')
 
 
 // MIDDELWARE
@@ -41,7 +43,8 @@ app.use("/association" , associationRoutes)
 app.use("/", googleAuth);
 app.use("/event", eventRoutes);
 app.use('/api/post', postRoutes);
-
+app.use('/conversation',conversationRoutes);
+app.use('/message',messageRoutes)
 
 // connect  database 
 mongoose.connect(process.env.DATABASE, { useNewUrlParser: true, useUnifiedTopology: true , useCreateIndex: true })
