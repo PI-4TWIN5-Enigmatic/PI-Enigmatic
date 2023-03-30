@@ -13,7 +13,7 @@ import { useParams } from 'react-router-dom';
 import { useGetUserID } from '../../hooks/useGetUserID'
 
 const ProfilePage = () => {
-const id =window.localStorage.getItem("id");
+const id =window.localStorage.getItem("id")
 
   const [user,setUser]= useState(null);
 

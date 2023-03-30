@@ -9,7 +9,7 @@ import { Cookies, useCookies } from "react-cookie";
 
 
 const AssociationDetails = ( ) => {
-  const [cookies, _]=useCookies(['access_token'])
+  const [cookies, _]=useCookies(['token'])
 
   const Navigate = useNavigate();
   const { id} = useParams();
@@ -73,7 +73,9 @@ const AssociationDetails = ( ) => {
 <br></br>
 {association.isVerified === false && <CButton onClick={() => verifierAssociation(association._id)} color="success" variant="ghost">Verifier</CButton>}
 
-<Link to={`/associations`}><CButton color="dark">Go Back</CButton></Link>
+<Link to={`/associations`}><CButton color="dark">Association Management </CButton></Link>
+
+<Link to={`/events`}><CButton color="dark">Event Management</CButton></Link>
 
 
     </CCardBody>

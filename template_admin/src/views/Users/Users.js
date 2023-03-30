@@ -25,7 +25,7 @@ import { Cookies, useCookies } from "react-cookie";
 
 
 const Users = () => {
-  const [cookies, _]=useCookies(['access_token'])
+  const [cookies, _]=useCookies(['token'])
 
   const [banDate, setBanDate] = useState("");
   const  [User,setUsers]=useState([]);
@@ -107,7 +107,7 @@ return (
         </CTableRow>
  </CTableHead>
  <CTableBody >
-      {cookies.access_token &&
+      {cookies.token &&
        User.filter((user)=>user.firstName.toLowerCase().includes(query)).map((user) => (
        <CTableRow key={user._id}>
            <CTableDataCell  >{user.firstName}</CTableDataCell>

@@ -28,13 +28,13 @@ import { useCookies } from "react-cookie";
 
 const AppHeaderDropdown = () => {
 
-  const [cookies, setCookies] = useCookies(["access_token"]);
+  const [cookies, setCookies] = useCookies(["token"]);
     const navigate = useNavigate();
 
     const user = JSON.parse(localStorage.getItem('user'))
  
     const logout = () => {
-        setCookies("access_token", "");
+        setCookies("token", "");
         window.localStorage.clear();
         window.location.href = "http://localhost:3000/";
       };
@@ -107,7 +107,7 @@ const AppHeaderDropdown = () => {
          
        
         <CDropdownItem href="#">
-        {!cookies.access_token ? (
+        {!cookies.token ? (
         <CButton color="dark"  onClick={rediret}>login/signup</CButton>
         ) ||     window.localStorage.clear()
       : (

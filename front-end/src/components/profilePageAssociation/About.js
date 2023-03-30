@@ -2,6 +2,7 @@ import React from 'react'
 import { useState,useEffect } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import axios from 'axios'
+import { Navigate, useNavigate } from 'react-router-dom';
 
 
 const About =() => {
@@ -32,7 +33,7 @@ if(!association) return null ;
                     logoPicture
                 }=association;
                 
-
+             
                
   return (
     <>
@@ -67,7 +68,7 @@ if(!association) return null ;
                                     <li className="active"><a href="#">timeline</a></li>
                                     <li><a href="about.html">about</a></li>
                                     <li><a href="photos.html">photos</a></li>
-                                    <li><a href="friends.html">Events</a></li>
+                                    <li> <a href={`/EventDisplay/${id}`} > Events</a> </li>
                                     <li><a href="about.html">more</a></li>
       
                                 </ul>
