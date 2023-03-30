@@ -19,6 +19,7 @@ app.use(
 // import routes
 const userRoutes = require('./route/user')
 const associationRoutes = require('./route/association')
+const donationRoutes = require('./route/donation')
 const googleAuth = require('./route/google');
 const morgan = require('morgan')
 const postRoutes = require('./route/post.routes');
@@ -35,8 +36,9 @@ require("./controllers/google-auth")(passport);
 
 
 // ROUTES MIDDELWARE
-app.use("/api",userRoutes)
-app.use("/association" , associationRoutes)
+app.use("/api", userRoutes);
+app.use("/association", associationRoutes);
+app.use("/donation", donationRoutes);
 app.use("/", googleAuth);
 app.use('/api/post', postRoutes);
 
