@@ -12,6 +12,7 @@ import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { useGetUserID } from '../../hooks/useGetUserID'
 
+
 const ProfilePage = () => {
 const id =window.localStorage.getItem("id")
 
