@@ -41,7 +41,7 @@ require("./controllers/google-auth")(passport);
 // ROUTES MIDDELWARE
 app.use("/api", userRoutes);
 app.use("/association", associationRoutes);
-app.use("/donation", donationRoutes);
+app.use("/donnation", donationRoutes);
 app.use("/", googleAuth);
 app.use("/event", eventRoutes);
 app.use('/api/post', postRoutes);

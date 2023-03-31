@@ -7,6 +7,9 @@ import About from "../profilePage/About";
 import UserWidget from "../profilePage/UserWidget";
 import axios from "axios";
 import RecentNotifications from "../profilePage/RecentNotifications";
+import ListDonnation from "./ListDonnation"
+import { toast } from "react-toastify";
+
 
 const RequestDonnation = () => {
     const [user, setUser] = useState(null);
@@ -22,25 +25,25 @@ const RequestDonnation = () => {
     const [picture, setPicture] = useState("");
 
     const [errors, setErrors] = useState({
-        location: "",
-        sector: "",
-        type: "",
-        goal: "",
-        description: "",
-        date: "",
-        picture: "",
+      location: "",
+      sector: "",
+      type: "",
+      goal: "",
+      description: "",
+      date: "",
+      picture: "",
     });
 
     const formValidation = () => {
         let etat = true;
         let localError = {
-            location: "",
-            sector: "",
-            type: "",
-            goal: "",
-            description: "",
-            date: "",
-            picture: "",
+          location: "",
+          sector: "",
+          type: "",
+          goal: "",
+          description: "",
+          date: "",
+          picture: "",
         };
         if (location === "") {
             localError.location = " Location required";
@@ -74,27 +77,39 @@ const RequestDonnation = () => {
         event.preventDefault();
         const isFormValid = formValidation();
         if (isFormValid) {
-                    const data = {
-                        location,
-                        sector,
-                        type,
-                        goal,
-                        description,
-                        date,
-                    };
+            const dataimg = new FormData();
+            dataimg.append("file", picture);
+            dataimg.append("upload_preset", "enigmatic");
+            dataimg.append("cloud_name", "dtisuumvj");
+            axios.post(
+                "https://api.cloudinary.com/v1_1/dtisuumvj/image/upload",
+                dataimg
+            ).then((result) => {
+                const data = {
+                    location,
+                    sector,
+                    type,
+                    goal,
+                    description,
+                    date,
+                    picture: result.data.secure_url,
+                };
 
-                    axios
-                        .post(`http://localhost:8000/donation/requestDonnation/${id}`, data)
-                        .then((response) => {
-                            console.log(response);
-                           navigate(`/profile/${id}`);
-                        })
-                        .catch((error) => {
-                            console.error(error);
-                            // Handle error response
-                        });
+                axios
+                    .post(`http://localhost:8000/donnation/requestDonnation/${id}`, data)
+                    .then((response) => {
+                        console.log(response);
+                       toast.info("Donnation have been created"); 
+                    })
+                    .catch((error) => {
+                        console.error(error);
+                    
+                        // Handle error response
+                    });
+            })
              
-        } else {
+            }
+        else {
             console.log("form invalid");
         }
     };
@@ -125,8 +140,9 @@ const RequestDonnation = () => {
           >
             <img
               className="profile-banner-large bg-img"
-              src="../assets/images/cover.jpg"
+              src="/../../assets/images/banner/profile-banner.jpg"
             />
+            
             <About />
             <div className="container">
               <div className="row">
@@ -143,18 +159,20 @@ const RequestDonnation = () => {
 
                 <div className="col-lg-6 order-1 order-lg-2">
                   <center>
-                    <h3>Request Donnation</h3>
+                    <h3
+                      style={{
+                        textAlign: "left",
+                        paddingBottom: "10px",
+                        paddingLeft: "200px",
+                        color: "rgb(220,71,52)",
+                        fontWeight: "bold",
+                      }}
+                    >
+                      Request Donnation
+                    </h3>
                   </center>
                   <div className="card card-small">
                     <div className="share-box-inner">
-                      <div className="profile-thumb">
-                        <a href="#">
-                          <figure className="profile-thumb-middle">
-                            <img src={profilePicture} alt="profile picture" />
-                          </figure>
-                        </a>
-                      </div>
-
                       <div className="share-content-box w-100">
                         <form className="share-text-box">
                           <div>
@@ -187,6 +205,7 @@ const RequestDonnation = () => {
                             )}
                             <br></br>
                           </div>
+
                           <div>
                             <select
                               className="share-text-field"
@@ -315,7 +334,20 @@ const RequestDonnation = () => {
                             )}
                             <br></br>
                           </div>
-                        
+                          <div>
+                            <input
+                              className="form-control"
+                              type="file"
+                              onChange={(event) =>
+                                setPicture(event.target.files[0])
+                              }
+                            />
+
+                            <label className="form-label">
+                              Choose a Picture
+                            </label>
+                          </div>
+
                           <button
                             onClick={handleSubmit}
                             className="edit-btn"
@@ -327,6 +359,8 @@ const RequestDonnation = () => {
                       </div>
                     </div>
                   </div>
+
+                  <ListDonnation />
                 </div>
               </div>
             </div>
