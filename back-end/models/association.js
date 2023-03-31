@@ -69,8 +69,7 @@ const associationSchema = new mongoose.Schema(
             type: String,
             trim: true,
         },
-        founder: {
-            
+        founder: { 
            type: mongoose.Schema.Types.ObjectId, ref: 'user' ,
         },
         logoPicture: { type: String },

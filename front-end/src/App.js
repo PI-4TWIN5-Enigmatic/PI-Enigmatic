@@ -18,6 +18,7 @@ import Create from './components/association/create';
 import Verif from './components/signUp/verif';
 import UpdateAssociation from './components/association/update';
 import UpdateUser from './components/signUp/updateUser';
+import RequestDonnation from './components/donnation/RequestDonnation';
 import CreateEvent from './components/Events/CreateEvent'
 
 import { useCookies } from "react-cookie";
@@ -41,22 +42,13 @@ function App() {
     <Route path="/association/update/:id" element={<UpdateAssociation />}></Route>
     
     {cookies.access_token &&
-   
-     
-      <Route path="/user/update/:id" element={<UpdateUser />}/>  }
-
-    
-
+            <Route path="/user/update/:id" element={<UpdateUser />} /> 
+          }
+    <Route path="/donnation/request/:id" element ={<RequestDonnation />}> </Route>
 
     <Route path="/changerPassword" element={<ChangerPassword />}></Route>
    
-    <Route path="/profile" element={<ProfilePage />}></Route>
-
-    
-
-   
     <Route path="/association/:id" element={<ProfilePage />}></Route>
-
     <Route path="/profile/:id" element={<ProfilePagee />}></Route>
     <Route path="/createEvent/:id" element={<CreateEvent />}></Route>
     <Route path="/EventDisplay/:id" element={<EventDisplay />}></Route>

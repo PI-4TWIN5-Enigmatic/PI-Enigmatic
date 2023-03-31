@@ -21,10 +21,6 @@ exports.signupAssociation = async (req,res,next) =>{
   const {validator} = req.body ;
   var id;
   const associationExists = await Association.findOne({email});
-
-
-  
-
   if(associationExists){
       return res.status(400).json({
           sucess: false,

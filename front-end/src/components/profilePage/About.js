@@ -5,9 +5,10 @@ import axios from 'axios'
 import { useCookies } from "react-cookie";
 
 
+
 const About =() => {
     const [cookies, setCookies] = useCookies(["access_token"]);
-
+    
     const [user,setUser]= useState(null);
     const {id} = useParams();
 //     const [userProfileImage, setUserProfileImage] = useState({});
@@ -29,81 +30,83 @@ const About =() => {
 },[]);
 
 if(!user) return null ;
-  
-
                 const{
                     profilePicture
                 }=user;
                 
 
 //   setUserProfileImage(`data:${user.userPhotoExtensionType};base64, ${Buffer.from(user.profilePicture.data).toString('base64')}`);
-               
+           
+    
+    
+
   return (
     <>
-
-    
-           
-
-
-    <div className="profile-menu-area bg-white">
-
-
+      <div className="profile-menu-area bg-white">
         <div className="container">
-            <div className="row align-items-center">
-                <div className="col-lg-3 col-md-3">
-                    <div className="profile-picture-box">
-                        <figure className="profile-picture">
-                            <a >
-                                <img  src={profilePicture} alt="profile picture" width="300px" height="300px"  />
-                            </a>
-                        </figure>
-                    </div>
-                </div>
-
-                
-
-
-                <div className="col-lg-6 col-md-6 offset-lg-1">
-                    <div className="profile-menu-wrapper">
-                        <div className="main-menu-inner header-top-navigation">
-                            <nav>
-                                <ul className="main-menu">
-                                    <li className="active"><a href="#">timeline</a></li>
-                                    <li><a href="about.html">about</a></li>
-                                    <li><a href="photos.html">photos</a></li>
-                                    <li><a href="friends.html">friends</a></li>
-                                <li><a href="about.html">more</a></li> 
-                                          
-                                </ul>
-                            </nav>
-                            
-                        </div>
-
-                        
-                    </div>
-                    
-                </div>
-                <div className="col-lg-2 col-md-3 d-none d-md-block">
-                    <div className="profile-edit-panel">
-                          
-                    {cookies.access_token &&
-                            <button  ><Link className="edit-btn" to={'http://localhost:3000/association/cree'}>add association</Link></button>}
-                            
-                    </div>
-                </div>
+          <div className="row align-items-center">
+            <div className="col-lg-3 col-md-3">
+              <div className="profile-picture-box">
+                <figure className="profile-picture">
+                  <a>
+                    <img
+                      src={profilePicture}
+                      alt="profile picture"
+                      width="300px"
+                      height="300px"
+                    />
+                  </a>
+                </figure>
+              </div>
             </div>
+            <div className="col-lg-6 col-md-6 offset-lg-1">
+              <div className="profile-menu-wrapper">
+                <div className="main-menu-inner header-top-navigation">
+                  <nav>
+                    <ul className="main-menu">
+                      <li className="active">
+                        <a href="#">timeline</a>
+                      </li>
+                      <li>
+                        <a href="about.html">about</a>
+                      </li>
+                      <li>
+                        <a href="photos.html">photos</a>
+                      </li>
+                      <li>
+                        <a href="friends.html">friends</a>
+                      </li>
+                      <li>
+                        <Link
+                          to={`http://localhost:3000/donnation/request/${id}`}
+                        >
+                          donnation
+                        </Link>
+                      </li>
+                    </ul>
+                  </nav>
+                </div>
+              </div>
+            </div>
+            <div className="col-lg-2 col-md-3 d-none d-md-block">
+              <div className="profile-edit-panel">
+                {cookies.access_token && (
+                  <button>
+                    <Link
+                      className="edit-btn"
+                      to={"http://localhost:3000/association/cree"}
+                    >
+                      add association
+                    </Link>
+                  </button>
+                )}
+              </div>
+            </div>
+          </div>
         </div>
-    </div>
-    
-
-    
-  
-
-
-    
-    
+      </div>
     </>
-  )
+  );
 }
 
 export default About
