@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 // import {setLogout} from "../state";
 // import { useDispatch } from 'react-redux';
 import { Link, useNavigate } from "react-router-dom";
@@ -7,6 +7,10 @@ import axios from 'axios';
 import Conversation from '../chat/conversation';
 import Messages from '../chat/messages';
 import { AiOutlineSend,AiOutlineClose } from "react-icons/ai";
+import {io} from "socket.io-client"
+import About from '../profilePage/About';
+
+
 
 
 
@@ -20,13 +24,32 @@ const Navbar = () => {
     const [currentChat, setCurrentChat] = useState(null);
     const [messages, setMessages] = useState([]);
     const [newMessage, setNewMessage] = useState("")
-
+    const [arrivalMessage, setArrivalMessage] = useState(null)
+    const socket = useRef()
+    const scrollRef = useRef();
 
     const handleDropDown = () => {
         setIsDropDown(!isDropDown);
       };
 
       const style = isDropDown ? { display: 'block'} : {display: 'none' };
+
+      useEffect(() => {
+        socket.current = io("ws://localhost:8900");
+        socket.current.on("getMessage", (data) => {
+          setArrivalMessage({
+            sender: data.senderId,
+            text: data.text,
+            createdAt: Date.now(),
+          });
+        });
+      }, []);
+
+      useEffect(() => {
+        arrivalMessage &&
+          currentChat?.members.includes(arrivalMessage.sender) &&
+          setMessages((prev) => [...prev, arrivalMessage]);
+      }, [arrivalMessage, currentChat]);
 
 
     useEffect(()=>{
@@ -57,24 +80,59 @@ const Navbar = () => {
     },[currentChat]
     );
 
+
+    useEffect(()=>{
+        scrollRef.current?.scrollIntoView({behavior : "smooth"})
+
+    },[messages])
+
+
+
+
+        useEffect(()=>{
+
+            socket.current.emit("addUser", user._id);
+            socket.current.on("getUsers", users=>{
+                console.log(users)
+            })
+          
+            
+           
+        },[user]
+        );
+    
   
 
 
-    const handleSubmitChat = async (e) => {
-        e.preventDefault();
-        const message = {
-            sender : user._id,
-            text : newMessage,
-            conversationId : currentChat._id
-        }
+     const handleSubmitChat = async (e) => {
+    e.preventDefault();
+    const message = {
+      sender: user._id,
+      text: newMessage,
+      conversationId: currentChat._id,
+    };
 
-        try{
-                const res = await axios.post("http://127.0.0.1:8000/message",message)
-                setMessages([...messages,res.data])
-        }catch(err){
-            console.log(err)
-        }
+    const receiverId = currentChat.members.find(
+      (member) => member !== user._id
+    );
+
+    socket.current.emit("sendMessage", {
+      senderId: user._id,
+      receiverId,
+      text: newMessage,
+    });
+
+    try {
+      const res = await axios.post("http://127.0.0.1:8000/message", message);
+      setMessages([...messages, res.data]);
+      setNewMessage("");
+    } catch (err) {
+      console.log(err);
     }
+  };
+
+
+
 
  
     const logout = () => {
@@ -207,16 +265,18 @@ const Navbar = () => {
                                         currentChat ?
                                     <>
                                      <ul className ="message-list custom-scroll" style={{overflow: "scroll" , marginBottom:"100px"}}>
-                                    {messages.map((m)=>(
-                                              <Messages message={m} own={m.sender == user._id}/>
+                                    {messages.map((m,index)=>(
+                                        <div ref={scrollRef}> 
+                                              <Messages key={index} message={m} own={m.sender == user._id}/>
+                                        </div>
                                     ))}
                                    
                                          
                                      </ul>
                                      </> : <span style={{height: 300}} >open a conversation</span>}
-                                     <div class="chat-text-field mob-text-box">
-                                    <textarea class="live-chat-field custom-scroll" placeholder="Text Message" onChange={(e)=> setNewMessage(e.target.value)} value={newMessage} ></textarea>
-                                    <button class="chat-message-send" type="submit"  onClick={handleSubmitChat}>
+                                     <div className="chat-text-field mob-text-box">
+                                    <textarea className="live-chat-field custom-scroll" placeholder="Text Message" onChange={(e)=> setNewMessage(e.target.value)} value={newMessage} ></textarea>
+                                    <button className="chat-message-send" type="submit"  onClick={handleSubmitChat}>
                                     <AiOutlineSend/>
                                     </button>
                                 </div>
