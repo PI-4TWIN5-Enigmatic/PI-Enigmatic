@@ -121,6 +121,16 @@ function ListDonnation(props) {
             >
               Type : {d.type}
             </h6>
+            <h6
+              style={{
+                textAlign: "left",
+                paddingBottom: "10px",
+                color: "rgb(220,71,52)",
+              }}
+            >
+              {" "}
+              Goal : {d.goal}
+            </h6>
             <p className="post-desc">
               Description : <br></br>
               {d.description}
