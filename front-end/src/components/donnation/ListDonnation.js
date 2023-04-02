@@ -1,38 +1,49 @@
 import React from "react";
 import { useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 
 function Case(props) {
-    const { entity } = props;
-    
-    const [userName, setUserName] = useState(null);
-      const getUser = async (id) => {
-        const response = await fetch(
-          `http://localhost:8000/api/getuser/${id}`,
-          {
-            method: "GET",
-          }
-        );
-        const data = await response.json();
-        return data;
-      };
+  const { entity } = props;
+
+  const [userName, setUserName] = useState(null);
+  const [userImage, setUserImage] = useState(null);
+  const [userEmail, setUserEmail] = useState(null);
+  const getUser = async (id) => {
+    const response = await fetch(`http://localhost:8000/api/getuser/${id}`, {
+      method: "GET",
+    });
+    const data = await response.json();
+    return data;
+  };
 
   useEffect(() => {
     const userId = entity.requester;
     getUser(userId)
       .then((userData) => {
         if (userData) {
+            setUserImage(userData.profilePicture);
           setUserName(`${userData.firstName} ${userData.lastName}`);
+          setUserEmail(userData.email);
         }
       })
       .catch((error) => console.error(error));
   }, [entity]);
-  return (
-    <div>
-      <p>{userName || "Loading..."}</p>
-      {/* Render other case details... */}
-    </div>
-  );
+    return (
+      <>
+        <div className="profile-thumb">
+          <a href="#">
+            <figure className="profile-thumb-middle">
+              <img src={userImage} alt="profile picture" />
+            </figure>
+          </a>
+        </div>
+
+        <div className="posted-author">
+          <h4 class="author"><a href="profile.html">{userName}</a>
+          </h4>
+        </div>
+      </>
+    );
 }
 
 function ListDonnation(props) {
@@ -53,56 +64,44 @@ function ListDonnation(props) {
     getAllDonnations();
   }, []);
 
-
-
   return (
     <>
       {entities.map((d) => (
         <div className="card" key={d._id}>
           <div className="post-title d-flex align-items-center">
-            <div className="profile-thumb">
-              <a href="#">
-                <figure className="profile-thumb-middle">
-                  <img
-                    src="assets/images/profile/profile-small-1.jpg"
-                    alt="profile picture"
-                  />
-                </figure>
-              </a>
-            </div>
-
-            <div className="posted-author">
-              <h6 className="author">
-               
-                  <div>
-                    
-                      <Case key={d._id} entity={d} />
-                   
-                  </div>
-               
-              </h6>
-              <span className="post-time">{d.createdAt}</span>
-            </div>
+            <Case key={d._id} entity={d} />
 
             <div className="post-settings-bar">
               <span></span>
               <span></span>
               <span></span>
+
               <div className="post-settings arrow-shape">
-                <ul>
-                  <li>
-                    <button>copy link to adda</button>
-                  </li>
-                  <li>
-                    <button>edit post</button>
-                  </li>
-                  <li>
-                    <button>embed adda</button>
-                  </li>
-                </ul>
+                {d.requester == window.localStorage.getItem("id") ? (
+                  <ul>
+                    <li>
+                      <button>
+                        <Link
+                          to={`http://localhost:3000/donnation/update/${d._id}`}
+                        >
+                          {" "}
+                          Edit donnation{" "}
+                        </Link>
+                      </button>
+                      <button>Delete donnation</button>
+                    </li>
+                  </ul>
+                ) : (
+                  <ul>
+                    <li>
+                      <button></button>
+                    </li>
+                  </ul>
+                )}
               </div>
             </div>
           </div>
+          <span className="post-time">{d.createdAt}</span>
           <div className="post-content">
             <h5
               style={{

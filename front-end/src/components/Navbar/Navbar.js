@@ -91,154 +91,200 @@ const Navbar = () => {
 
   return (
     <>
+      <div className="header-top sticky bg-white d-none d-lg-block">
+        <div className="container">
+          <div className="row align-items-center">
+            <div className="col-md-5">
+              <div className="header-top-navigation">
+                <nav>
+                  <ul>
+                    <li
+                      style={{
+                        textAlign: "left",
+                        paddingBottom: "10px",
+                        color: "rgb(220,71,52)",
+                        fontWeight: "bold",
+                      }}
+                      className="active"
+                    >
+                      HOME
+                    </li>
+                    <li className="msg-trigger">
+                      <a className="msg-trigger-btn" onClick={handleDropDown}>
+                        message
+                      </a>
 
-
-        <div className="header-top sticky bg-white d-none d-lg-block">
-            <div className="container">
-                <div className="row align-items-center">
-                    <div className="col-md-5">
-                                            <div className="header-top-navigation">
-                                                <nav>
-                                                    <ul>
-                                                        <li className="active">home</li>
-                                                        <li className="msg-trigger"><a className="msg-trigger-btn" onClick={handleDropDown}>message</a>
-
-                                         <div className="message-dropdown " style={style} id="a">
-                                            <div className="dropdown-title">
-                                                <p className="recent-msg">recent message</p>
-                                                <div className="message-btn-group">
-                                                    <button>New group</button>
-                                                    <button>New Message</button>
-                                                </div>
-                                            </div>
-                                            <ul className="dropdown-msg-list ">
-                                                {conversations.map((c,index)=>(
-                                                    <div onClick={()=> setCurrentChat(c)}>
-                                               <Conversation key={index} conversation={c} currentUser={user}/>
-
-                                               </div>
-                                                ))}
-                                                
-                                            </ul>
-                                            <div className="msg-dropdown-footer">
-                                                <button>See all in messenger</button>
-                                                <button>Mark All as Read</button>
-                                            </div>
-                                        </div>
-                                    </li>
-
-
-
-
-
-
-                                                        <li className="notification-trigger"><a className="msg-trigger-btn" href="">notification</a> </li>
-                                                    </ul>
-                                                </nav>
-                                            </div>
-                                        
-                                        </div>
-
-                                        <div className="col-md-2">
-                    
-                    <div className="brand-logo text-center">
-                        <a href="index.html">
-                            <img src="../../assets/images/logo/logo.png" alt="brand logo" />
-                        </a>
-                    </div>
-                   
-                </div>
-
-                <div className="col-md-5">
-                    <div className="header-top-right d-flex align-items-center justify-content-end">
-                      
-                        <div className="header-top-search">
-                            <form className="top-search-box">
-                                <input type="text" placeholder="Search" className="top-search-field" />
-                                <button className="top-search-btn"><i className="flaticon-search"></i></button>
-                            </form>
+                      <div className="message-dropdown " style={style} id="a">
+                        <div className="dropdown-title">
+                          <p className="recent-msg">recent message</p>
+                          <div className="message-btn-group">
+                            <button>New group</button>
+                            <button>New Message</button>
+                          </div>
                         </div>
-   <div className="col-md-5">
-                    <div className="header-top-right d-flex align-items-center justify-content-end">
-                      
-                       
-                        {!cookies.access_token ? (
-        <button style={{borderRadius: 30,marginBottom:15}} className="submit-btn "  onClick={rediret}>login/signup</button>
-        ) ||     window.localStorage.clear()
-      : (
-        <button style={{borderRadius: 30,marginBottom:15}} className="submit-btn "  onClick={logout}>Log Out</button>
-        )}
-
-
-                
-             </div></div>  </div>  </div></div>  </div>                                 
-                  </div>
-                  
-    <div className ="footer-area reveal-footer">
-        <div className ="container-fluid">
-            <div className ="row">
-                <div className ="col-12">
-                    <div className ="footer-wrapper " style={{ height: "1px" }}>
-                        <div className="footer-card position-relative ">
-                              
-                              <div className ="chat-output-box show">
-                                 <div className ="live-chat-title">
-                                
-                                     <div className ="profile-thumb active">
-                                         <a href="#">
-                                             <figure className ="profile-thumb-small">
-                                                 <img src="assets/images/profile/profile-small-15.jpg" alt="profile picture"/>
-                                             </figure>
-                                         </a>
-                                     </div>
-                                   
-                                     <div className ="posted-author">
-                                         <h6 className ="author"><a href="profile.html">Robart Marloyan</a></h6>
-                                         <span className ="active-pro">active now</span>
-                                     </div>
-                                     <div className ="live-chat-settings ml-auto">
-                                       
-                                         <button className ="close-btn" data-close="chat-output-box" onClick={()=> setCurrentChat(null)}><AiOutlineClose/></button>
-                                     </div>
-                                 </div>
-                                 <div className ="message-list-inner">
-
-                                    {
-                                        currentChat ?
-                                    <>
-                                     <ul className ="message-list custom-scroll" style={{overflow: "scroll" , marginBottom:"100px"}}>
-                                    {messages.map((m)=>(
-                                              <Messages message={m} own={m.sender == user._id}/>
-                                    ))}
-                                   
-                                         
-                                     </ul>
-                                     </> : <span style={{height: 300}} >open a conversation</span>}
-                                     <div class="chat-text-field mob-text-box">
-                                    <textarea class="live-chat-field custom-scroll" placeholder="Text Message" onChange={(e)=> setNewMessage(e.target.value)} value={newMessage} ></textarea>
-                                    <button class="chat-message-send" type="submit"  onClick={handleSubmitChat}>
-                                    <AiOutlineSend/>
-                                    </button>
-                                </div>
-                              </div>
-                             </div>
-                            
-                         
+                        <ul className="dropdown-msg-list ">
+                          {conversations.map((c, index) => (
+                            <div onClick={() => setCurrentChat(c)}>
+                              <Conversation
+                                key={index}
+                                conversation={c}
+                                currentUser={user}
+                              />
+                            </div>
+                          ))}
+                        </ul>
+                        <div className="msg-dropdown-footer">
+                          <button>See all in messenger</button>
+                          <button>Mark All as Read</button>
                         </div>
+                      </div>
+                    </li>
 
-                        
-
-
-                    </div>
-                </div>
+                    <li className="notification-trigger">
+                      <a className="msg-trigger-btn" href="">
+                        notification
+                      </a>{" "}
+                    </li>
+                  </ul>
+                </nav>
+              </div>
             </div>
-       </div>
-    </div>
-             </>     
-                  
-                  
-                  
-                  );};
+
+            <div className="col-md-2">
+              <div className="brand-logo text-center">
+                <a href="index.html">
+                  <img
+                    src="../../assets/images/logo/logo.png"
+                    alt="brand logo"
+                  />
+                </a>
+              </div>
+            </div>
+
+            <div className="col-md-5">
+              <div className="header-top-right d-flex align-items-center justify-content-end">
+                <div className="header-top-search">
+                  <form className="top-search-box">
+                    <input
+                      type="text"
+                      placeholder="Search"
+                      className="top-search-field"
+                    />
+                    <button className="top-search-btn">
+                      <i className="flaticon-search"></i>
+                    </button>
+                  </form>
+                </div>
+                <div className="col-md-5">
+                  <div className="header-top-right d-flex align-items-center justify-content-end">
+                    {!cookies.access_token ? (
+                      (
+                        <button
+                          style={{ borderRadius: 30, marginBottom: 15 }}
+                          className="submit-btn "
+                          onClick={rediret}
+                        >
+                          login/signup
+                        </button>
+                      ) || window.localStorage.clear()
+                    ) : (
+                      <button
+                        style={{ borderRadius: 30, marginBottom: 15 }}
+                        className="submit-btn "
+                        onClick={logout}
+                      >
+                        Log Out
+                      </button>
+                    )}
+                  </div>
+                </div>{" "}
+              </div>{" "}
+            </div>
+          </div>{" "}
+        </div>
+      </div>
+
+      <div className="footer-area reveal-footer">
+        <div className="container-fluid">
+          <div className="row">
+            <div className="col-12">
+              <div className="footer-wrapper " style={{ height: "1px" }}>
+                <div className="footer-card position-relative ">
+                  <div className="chat-output-box show">
+                    <div className="live-chat-title">
+                      <div className="profile-thumb active">
+                        <a href="#">
+                          <figure className="profile-thumb-small">
+                            <img
+                              src="assets/images/profile/profile-small-15.jpg"
+                              alt="profile picture"
+                            />
+                          </figure>
+                        </a>
+                      </div>
+
+                      <div className="posted-author">
+                        <h6 className="author">
+                          <a href="profile.html">Robart Marloyan</a>
+                        </h6>
+                        <span className="active-pro">active now</span>
+                      </div>
+                      <div className="live-chat-settings ml-auto">
+                        <button
+                          className="close-btn"
+                          data-close="chat-output-box"
+                          onClick={() => setCurrentChat(null)}
+                        >
+                          <AiOutlineClose />
+                        </button>
+                      </div>
+                    </div>
+                    <div className="message-list-inner">
+                      {currentChat ? (
+                        <>
+                          <ul
+                            className="message-list custom-scroll"
+                            style={{
+                              overflow: "scroll",
+                              marginBottom: "100px",
+                            }}
+                          >
+                            {messages.map((m) => (
+                              <Messages
+                                message={m}
+                                own={m.sender == user._id}
+                              />
+                            ))}
+                          </ul>
+                        </>
+                      ) : (
+                        <span style={{ height: 300 }}>open a conversation</span>
+                      )}
+                      <div className="chat-text-field mob-text-box">
+                        <textarea
+                          className="live-chat-field custom-scroll"
+                          placeholder="Text Message"
+                          onChange={(e) => setNewMessage(e.target.value)}
+                          value={newMessage}
+                        ></textarea>
+                        <button
+                          className="chat-message-send"
+                          type="submit"
+                          onClick={handleSubmitChat}
+                        >
+                          <AiOutlineSend />
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </>
+  );};
 
 
 

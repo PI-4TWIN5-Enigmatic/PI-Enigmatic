@@ -25,6 +25,7 @@ import { useCookies } from "react-cookie";
 import EventDisplay from './components/Events/EventDisplay';
 import EventDetails from './components/Events/EventDetails';
 import UpdateEvent from './components/Events/UpdateEvent';
+import UpdateDonnation from './components/donnation/UpdateDonnation';
 
 
 function App() {
@@ -44,7 +45,9 @@ function App() {
     {cookies.access_token &&
             <Route path="/user/update/:id" element={<UpdateUser />} /> 
           }
-    <Route path="/donnation/request/:id" element ={<RequestDonnation />}> </Route>
+          
+          <Route path="/donnation/request/:id" element={<RequestDonnation />}> </Route>
+          <Route path="/donnation/update/:id" element ={<UpdateDonnation />}> </Route>
 
     <Route path="/changerPassword" element={<ChangerPassword />}></Route>
    

@@ -1,7 +1,6 @@
 import React from "react";
 import { useState, useEffect } from "react";
 import { useNavigate, useParams, Link } from "react-router-dom";
-import { useCookies } from "react-cookie";
 import Navbar from "../Navbar/Navbar";
 import About from "../profilePage/About";
 import UserWidget from "../profilePage/UserWidget";
@@ -142,7 +141,7 @@ const RequestDonnation = () => {
               className="profile-banner-large bg-img"
               src="/../../assets/images/banner/profile-banner.jpg"
             />
-            
+
             <About />
             <div className="container">
               <div className="row">
@@ -335,6 +334,9 @@ const RequestDonnation = () => {
                             <br></br>
                           </div>
                           <div>
+                            <label className="form-label">
+                              Choose a Picture
+                            </label>
                             <input
                               className="form-control"
                               type="file"
@@ -342,11 +344,7 @@ const RequestDonnation = () => {
                                 setPicture(event.target.files[0])
                               }
                             />
-
-                            <label className="form-label">
-                              Choose a Picture
-                            </label>
-                          </div>
+                          </div><br></br>
 
                           <button
                             onClick={handleSubmit}

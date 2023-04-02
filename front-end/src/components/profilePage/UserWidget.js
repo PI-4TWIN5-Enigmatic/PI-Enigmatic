@@ -22,18 +22,16 @@ const UserWidget = () => {
 
 
   const [user,setUser]= useState(null);
-  const {id} = useParams();
+  const id = window.localStorage.getItem("id");  
   const token = useSelector((state) => state.token);
 
 
 
-  const getUser = async()=>{
-    const response = await fetch (`http://localhost:8000/api/getuser/${id}` , {
+  const getUser = async () => {
+
+    const response = await fetch (`http://localhost:8000/api/getuser/${window.localStorage.getItem("id")}` , {
     method:"GET",
     headers: { Authorization: `Bearer ${token}` },
-
-
-
     });
 
     const data = await response.json();
@@ -42,7 +40,7 @@ const UserWidget = () => {
 };
 
 
-useEffect(()=>{
+  useEffect(() => {
     getUser();
 },[]);
 
@@ -60,33 +58,58 @@ const{
 
   return (
     <>
-                            <div className ="card widget-item">
-                                <h4 className ="widget-title">{firstName} {lastName}</h4>
-                                <div className ="widget-body">
-                                    <div className ="about-author">
-                                    <h4 className ="widget-title">About Me</h4>
+      <div className="card widget-item">
+        <h4 className="widget-title">
+          {firstName} {lastName}
+        </h4>
+        <div className="widget-body">
+          <div className="about-author">
+            <h4 className="widget-title">About Me</h4>
 
-                                        <ul className ="author-into-list">
-                                            <li><a href="#"><i className ="bi bi-office-bag"></i>{occupation}</a></li>
-                                            <li><a href="#"><i className ="bi bi-home"></i>{email}</a></li>
-                                            <li><a href="#"><i className ="bi bi-phone"></i>{phone}</a></li>
-                                            <li><a href="#"><i className="bi bi-gender"></i>{sexe}</a></li>
-                                        </ul>
-                                       
-                                                
-                                                <div className="profile-edit-panel">
-                                                          <button  ><Link className="edit-btn" to={`http://localhost:3000/user/update/${id}`}>edit profile</Link></button>
-                                                </div>
-                                    </div>
-                                </div>
-                            </div>
-                        
+            <ul className="author-into-list">
+              <li>
+                <a href="#">
+                  <i className="bi bi-office-bag"></i>
+                  {occupation}
+                </a>
+              </li>
+              <li>
+                <a href="#">
+                  <i className="bi bi-home"></i>
+                  {email}
+                </a>
+              </li>
+              <li>
+                <a href="#">
+                  <i className="bi bi-phone"></i>
+                  {phone}
+                </a>
+              </li>
+              <li>
+                <a href="#">
+                  <i className="bi bi-gender"></i>
+                  {sexe}
+                </a>
+              </li>
+            </ul>
 
-    
-    
-    
+            <div className="profile-edit-panel">
+              <button>
+                <Link
+                  className="edit-btn"
+                  to={`http://localhost:3000/user/update/${window.localStorage.getItem(
+                    "id"
+                  )}`}
+                >
+                  edit profile
+                </Link>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
     </>
-  )
+  );
 }
 
 export default UserWidget
