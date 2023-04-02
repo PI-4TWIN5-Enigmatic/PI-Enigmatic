@@ -18,14 +18,15 @@ import Create from './components/association/create';
 import Verif from './components/signUp/verif';
 import UpdateAssociation from './components/association/update';
 import UpdateUser from './components/signUp/updateUser';
-import CreateEvent from './components/Events/CreateEvent'
+import CreateEvent from './components/Events/createEvent/CreateEvent'
 
 import { useCookies } from "react-cookie";
-import EventDisplay from './components/Events/EventDisplay';
-import EventDetails from './components/Events/EventDetails';
-import UpdateEvent from './components/Events/UpdateEvent';
-
-
+import EventDisplay from './components/Events/dislayEvent/EventDisplay';
+import EventDetails from './components/Events/detailsEvent/EventDetails';
+import UpdateEvent from './components/Events/updateEvent/UpdateEvent';
+import PresenceList from './components/Events/detailsEvent/PresenceList';
+import PartnershipConfirmed from './components/Events/detailsEvent/PartnershipConfirmed'
+import Partners from './components/Events/detailsEvent/Partner';
 function App() {
   const [cookies, setCookies] = useCookies(["access_token"]);
   return (
@@ -62,6 +63,9 @@ function App() {
     <Route path="/EventDisplay/:id" element={<EventDisplay />}></Route>
     <Route path="/EventDetails/:id" element={<EventDetails />}></Route>
     <Route path="/updateEvent/:id" element={<UpdateEvent />}></Route>
+    <Route path="/presenceList/:id" element={<PresenceList />}></Route>
+    <Route path="/partners/:id" element={<Partners/>}></Route>
+    <Route path="/partnershipConfirmed" element={<PartnershipConfirmed />}></Route>
 
     <Route path="*" element={<NotFound />}></Route>
     {/* <Route path="/" exact= {true}  name= 'Home'></Route>

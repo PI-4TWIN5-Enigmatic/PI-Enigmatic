@@ -4,14 +4,16 @@ import './CreateEvent.css'
 import L from "leaflet";
 import "leaflet-control-geocoder/dist/Control.Geocoder.css";
 import "leaflet-control-geocoder/dist/Control.Geocoder.js";
-import LeafletGeoCoder from './LeafletGeoCoder';
+import LeafletGeoCoder from '../LeafletGeoCoder';
 import axios from 'axios';
 import { useParams } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
+import { Cookies, useCookies } from "react-cookie";
 
 const CreateEvent = () => {
 
+    const [cookies, _]=useCookies(['token'])
 
 
     function handleDataFromChild(data) {
@@ -109,10 +111,9 @@ const CreateEvent = () => {
             console.log("data:", data)
 
             // Send a POST request to the backend API
-             axios.post(`http://localhost:8000/event/${id}/createEvent`, data)
+             axios.post(`http://localhost:8000/event/${id}/createEvent`, data, {headers:{Authorization:cookies.access_token}})
                 .then(response => {
                     console.log(response);
-                    toast.info("Event have been created")                    // Handle success response
                 })
                 .catch(error => {
                     console.error(error);
@@ -124,6 +125,12 @@ const CreateEvent = () => {
         }else{
             console.log("form invalid");
         }
+
+        if(window.confirm(`Event have been added successfully`)){
+            navigate(`/EventDisplay/${id}`)
+
+        }
+
     }
 
 
@@ -143,7 +150,7 @@ const CreateEvent = () => {
       
       const navigate = useNavigate();
       const goBack=()=>{
-        navigate(`/EventDisplay/${id}`)
+        navigate(`/association/${id}`)
       }
 
 
@@ -192,7 +199,7 @@ const CreateEvent = () => {
                             </div>
 
                             <div className="form-outline mb-4">
-                            <input type="date" id="form3Example8" className="form-control form-control-lg" value={dateEvent} onChange={(e) => setDateEvent(e.target.value)}/>
+                            <input type="datetime-local" id="form3Example8" className="form-control form-control-lg" value={dateEvent} onChange={(e) => setDateEvent(e.target.value)}/>
                             {errors.dateEvent !== " " ? <div style={{textAlign:'left' , paddingBottom:'10px', color: 'rgb(220,71,52)'}} >{errors.dateEvent} </div> : ''}
                             <label className="form-label" >Date</label>
                             </div>

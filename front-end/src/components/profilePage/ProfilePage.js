@@ -11,23 +11,45 @@ import Friends from './Friends'
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { useGetUserID } from '../../hooks/useGetUserID'
+import { useCookies } from "react-cookie";
+import Cookies from 'js-cookie';
 
 const ProfilePage = () => {
-const id =window.localStorage.getItem("id")
 
   const [user,setUser]= useState(null);
+  const {id} = useParams();
+  const [_, setCookies] = useCookies(["access_token"]);
 
 
-  useEffect(() => {
-      fetch(`http://localhost:8000/api/getuser/${id}`)
-        .then(response => response.json())
-        .then(data => {
-          console.log(data);
-          setUser(data);})
-        .catch(error => console.error(error));
-    }, [id]);
+
+  const getUser = async()=>{
+    const response = await fetch (`http://localhost:8000/api/getuser/${id}` , {
+    method:"GET",
 
 
+
+    });
+
+    const data = await response.json();
+    setUser(data);
+    console.log(data);
+
+    // if(data.secret){
+    //     setCookies("access_token", data.secret);
+    //     // Cookies.set("access_token", data.secret, { expires: 7 }); 
+    // window.localStorage.setItem('id',data._id)
+    // window.localStorage.setItem('token',data.secret)
+    // window.localStorage.setItem('user', JSON.stringify(data));
+    // }
+   
+};
+
+
+useEffect(()=>{
+    getUser();
+    
+
+},[]);
 
 
 
