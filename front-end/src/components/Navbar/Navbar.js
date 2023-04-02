@@ -212,8 +212,6 @@ const Navbar = () => {
                         </Link>
                       </a>
                     </li>
-                 
-                          <li className="notification-trigger"><a className="msg-trigger-btn" href="">notification</a> </li>
                       </ul>
                   </nav>
               </div>
