@@ -220,8 +220,6 @@ function Signup() {
             console.log("form invalid")
         }
 
-
-        
       };
 
 

@@ -14,6 +14,7 @@ import { useGetUserID } from '../../hooks/useGetUserID'
 import { useCookies } from "react-cookie";
 import Cookies from 'js-cookie';
 
+
 const ProfilePage = () => {
 
   const [user,setUser]= useState(null);
@@ -78,11 +79,11 @@ useEffect(()=>{
   return (
     <>
 
-        <Navbar />
+    <Navbar />
     <main >
         <div className ="main-wrapper" style={{backgroundColor:'#bcbcbc42'}}>
             <img className ="profile-banner-large bg-img" src="../assets/images/banner/profile-banner.jpg" />
-            
+          
         <About />
 
 

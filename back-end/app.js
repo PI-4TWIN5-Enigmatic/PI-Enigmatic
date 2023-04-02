@@ -19,10 +19,13 @@ app.use(
 // import routes
 const userRoutes = require('./route/user')
 const associationRoutes = require('./route/association')
+const donationRoutes = require('./route/donation')
 const googleAuth = require('./route/google');
 const morgan = require('morgan')
 const eventRoutes=require('./route/event')
 const postRoutes = require('./route/post.routes');
+const conversationRoutes = require('./route/conversation');
+const messageRoutes = require('./route/message')
 
 
 // MIDDELWARE
@@ -36,12 +39,14 @@ require("./controllers/google-auth")(passport);
 
 
 // ROUTES MIDDELWARE
-app.use("/api",userRoutes)
-app.use("/association" , associationRoutes)
+app.use("/api", userRoutes);
+app.use("/association", associationRoutes);
+app.use("/donnation", donationRoutes);
 app.use("/", googleAuth);
 app.use("/event", eventRoutes);
 app.use('/api/post', postRoutes);
-
+app.use('/conversation',conversationRoutes);
+app.use('/message',messageRoutes)
 
 // connect  database 
 mongoose.connect(process.env.DATABASE, { useNewUrlParser: true, useUnifiedTopology: true , useCreateIndex: true })
