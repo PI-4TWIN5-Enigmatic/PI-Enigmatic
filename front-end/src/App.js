@@ -19,14 +19,18 @@ import Verif from './components/signUp/verif';
 import UpdateAssociation from './components/association/update';
 import UpdateUser from './components/signUp/updateUser';
 import RequestDonnation from './components/donnation/RequestDonnation';
-import CreateEvent from './components/Events/CreateEvent'
-
+import CreateEvent from './components/Events/createEvent/CreateEvent';
 import { useCookies } from "react-cookie";
-import EventDisplay from './components/Events/EventDisplay';
-import EventDetails from './components/Events/EventDetails';
-import UpdateEvent from './components/Events/UpdateEvent';
+
+import UpdateDonnation from './components/donnation/UpdateDonnation';
 
 
+import EventDisplay from './components/Events/dislayEvent/EventDisplay';
+import EventDetails from './components/Events/detailsEvent/EventDetails';
+import UpdateEvent from './components/Events/updateEvent/UpdateEvent';
+import PresenceList from './components/Events/detailsEvent/PresenceList';
+import PartnershipConfirmed from './components/Events/detailsEvent/PartnershipConfirmed'
+import Partners from './components/Events/detailsEvent/Partner';
 function App() {
   const [cookies, setCookies] = useCookies(["access_token"]);
   return (
@@ -44,7 +48,9 @@ function App() {
     {cookies.access_token &&
             <Route path="/user/update/:id" element={<UpdateUser />} /> 
           }
-    <Route path="/donnation/request/:id" element ={<RequestDonnation />}> </Route>
+          
+          <Route path="/donnation/request/:id" element={<RequestDonnation />}> </Route>
+          <Route path="/donnation/update/:id" element ={<UpdateDonnation />}> </Route>
 
     <Route path="/changerPassword" element={<ChangerPassword />}></Route>
    
@@ -54,6 +60,9 @@ function App() {
     <Route path="/EventDisplay/:id" element={<EventDisplay />}></Route>
     <Route path="/EventDetails/:id" element={<EventDetails />}></Route>
     <Route path="/updateEvent/:id" element={<UpdateEvent />}></Route>
+    <Route path="/presenceList/:id" element={<PresenceList />}></Route>
+    <Route path="/partners/:id" element={<Partners/>}></Route>
+    <Route path="/partnershipConfirmed" element={<PartnershipConfirmed />}></Route>
 
     <Route path="*" element={<NotFound />}></Route>
     {/* <Route path="/" exact= {true}  name= 'Home'></Route>

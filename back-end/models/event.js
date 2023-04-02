@@ -48,12 +48,39 @@ const eventSchema = new mongoose.Schema(
       interested :{
         type: Map, of: Boolean, default: new Map() ,
     },
+    
+    reviews : {
+      type: [
+        {
+          reviewerId:String,
+          reviewerPseudo: String,
+          reviewerPhoto: String,
+          review: String,
+          emoji:String,
+          rating:Number,
+          timestamp: Number,
+        }
+      ],
+    },   
+    
+    attendeesList: {
+            
+      type: Map, of: Boolean, default: new Map() ,
+   },
+
+   partnersList:{
+    type: Map, of: Boolean, default: new Map() ,
+
+   },
+    
 
     typeEvent: {
       type: String,
       default: "Free Event",
       enum: ["Free Event", "Paid Event"]
     },    
+
+
 
          },
      { timestamps: true});

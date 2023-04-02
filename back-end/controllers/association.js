@@ -168,3 +168,26 @@ exports.activateAccount = async (req, res) => {
   // ban user
   
 };
+
+
+exports.getAssociationsByIds = async (req, res) => {
+  try {
+    const { ids } = req.body;
+    const associations = [];
+
+    for (const id of ids) {
+      const asso = await Association.findById(id);
+
+      if (asso === null) {
+        console.log(`association ${id} not found in database`);
+        continue;
+      }
+
+      associations.push(asso);
+    }
+
+    res.status(200).json(associations);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+}

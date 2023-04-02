@@ -149,8 +149,7 @@ const Navbar = () => {
 
   return (
     <>
-
-
+      
         <div className="header-top sticky bg-white d-none d-lg-block">
             <div className="container">
                 <div className="row align-items-center">
@@ -158,7 +157,17 @@ const Navbar = () => {
                                             <div className="header-top-navigation">
                                                 <nav>
                                                     <ul>
-                                                        <li className="active">home</li>
+                                                      <li
+                                                        style={{
+                                                          textAlign: "left",
+                                                          paddingBottom: "10px",
+                                                          color: "rgb(220,71,52)",
+                                                          fontWeight: "bold",
+                                                        }}
+                                                        className="active"
+                                                      >
+                                                        HOME
+                                                      </li>
                                                         <li className="msg-trigger"><a className="msg-trigger-btn" onClick={handleDropDown}>message</a>
 
                                          <div className="message-dropdown " style={style} id="a">
@@ -201,7 +210,7 @@ const Navbar = () => {
                     
                     <div className="brand-logo text-center">
                         <a href="index.html">
-                            <img src="../../assets/images/logo/logo.png" alt="brand logo" />
+                            <img src="../../assets/enigmatic.jpg" alt="brand logo" style={{width:"40%"}} />
                         </a>
                     </div>
                    
@@ -215,11 +224,8 @@ const Navbar = () => {
                                 <input type="text" placeholder="Search" className="top-search-field" />
                                 <button className="top-search-btn"><i className="flaticon-search"></i></button>
                             </form>
-                        </div>
-   <div className="col-md-5">
-                    <div className="header-top-right d-flex align-items-center justify-content-end">
-                      
                        
+
                         {!cookies.access_token ? (
         <button style={{borderRadius: 30,marginBottom:15}} className="submit-btn "  onClick={rediret}>login/signup</button>
         ) ||     window.localStorage.clear()
@@ -230,7 +236,7 @@ const Navbar = () => {
 
                 
              </div></div>  </div>  </div></div>  </div>                                 
-                  </div>
+                 
                   
     <div className ="footer-area reveal-footer">
         <div className ="container-fluid">
@@ -290,29 +296,17 @@ const Navbar = () => {
 
 
                     </div>
+
                 </div>
+                
+              </div>{" "}
             </div>
-       </div>
-    </div>
-             </>     
-                  
-                  
-                  
-                  );};
-
-
-
-                                                    
-
-
-            
+          </div>{" "}
         
+      
 
-
-
-    
-    
-    
-    
- 
+      
+    </>
+  );
+                      }
 export default Navbar

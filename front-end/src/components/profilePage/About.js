@@ -12,15 +12,19 @@ const About =() => {
     const [cookies, setCookies] = useCookies(["access_token"]);
     const currentUser = JSON.parse(localStorage.getItem('user'))
     const [user,setUser]= useState(null);
-    const {id} = useParams();
+    const { id } = window.localStorage.getItem("id")
 //     const [userProfileImage, setUserProfileImage] = useState({});
   
   
     const getUser = async()=>{
-      const response = await fetch (`http://localhost:8000/api/getuser/${id}` , {
-      method:"GET",
-  
-      });
+      const response = await fetch(
+        `http://localhost:8000/api/getuser/${window.localStorage.getItem(
+          "id"
+        )}`,
+        {
+          method: "GET",
+        }
+      );
   
       const data = await response.json();
       setUser(data);
@@ -91,7 +95,9 @@ const handleClick = async (user) => {
                       </li>
                       <li>
                         <Link
-                          to={`http://localhost:3000/donnation/request/${id}`}
+                          to={`http://localhost:3000/donnation/request/${window.localStorage.getItem(
+                            "id"
+                          )}`}
                         >
                           donnation
                         </Link>
