@@ -84,7 +84,7 @@ useEffect(()=>{
         <div className ="main-wrapper" style={{backgroundColor:'#bcbcbc42'}}>
             <img className ="profile-banner-large bg-img" src="../assets/images/banner/profile-banner.jpg" />
           
-        <About />
+        <About/>
 
 
         <div className ="container">
