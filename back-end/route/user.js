@@ -1,6 +1,6 @@
 const express = require('express')
 const router = express.Router()
-const {signup,UpdateUser,activateAccount,getListUser,forgetPassword,emailSend,changerPass ,tokendata, getUser, loginuser,banUser,unbanUser, uploads, deactivateAccount,confirmationemail} = require("../controllers/user")
+const {signup,UpdateUser,activateAccount,getListUser,forgetPassword,emailSend,changerPass ,tokendata, getUser, loginuser,banUser,unbanUser, uploads, deactivateAccount,confirmationemail, getUsersByIds} = require("../controllers/user")
 const{verifyToken}=require ("../middleware/auth")
 const {admin}=require ("../middleware/isadmin")
 
@@ -13,6 +13,7 @@ router.get('/users/getAll',getListUser)
 
   //GET_USER_BY_ID
 router.get('/getuser/:id' ,getUser);
+router.post('/getUsersById' ,getUsersByIds);
 
 
 //Envoyer mail avec OPT

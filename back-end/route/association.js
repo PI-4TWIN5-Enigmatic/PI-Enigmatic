@@ -1,6 +1,6 @@
 const express = require('express')
 const router = express.Router()
-const {signupAssociation ,activateAccount,deactivateAccount,UpdateAssociation,getListAssociation, verifiedAsso, loginassociation, getAssociation} = require("../controllers/association")
+const {signupAssociation ,activateAccount,deactivateAccount,UpdateAssociation,getListAssociation, verifiedAsso, loginassociation, getAssociation, getAssociationsByIds} = require("../controllers/association")
 const{verifyToken}=require ("../middleware/auth")
 
 
@@ -15,5 +15,6 @@ router.post('/activateAccount/:id', activateAccount)
   router.get('/get/:id',getAssociation)
 
   router.get('/verifier/:id',verifiedAsso)
+  router.post('/getAssociationsById' ,getAssociationsByIds);
 
 module.exports = router;

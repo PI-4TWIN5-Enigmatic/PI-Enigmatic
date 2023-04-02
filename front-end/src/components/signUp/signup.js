@@ -1,11 +1,12 @@
-import React, { useState } from 'react'
+import React, { useState,useEffect } from 'react'
 import axios from 'axios'
 import ReCAPTCHA from 'react-google-recaptcha';
 import GoogleButton from 'react-google-button'
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { Button, Form, Modal } from 'react-bootstrap';
 
+import { useLocation } from "react-router-dom";
 
 import { useCookies } from "react-cookie";
 
@@ -43,11 +44,40 @@ function Signup() {
             // Do something with the error, like show an error message
           });}
 
-    const signInGoogle=()=>{
+
+
+            //GOOGLE_SIGN_IN
+         const location = useLocation();
+            const [token, setToken] = useState("");
+            const [userId, setUserId] = useState("");
+            
+            useEffect(() => {
+                const params = new URLSearchParams(location.search);
+                const token = params.get("token");
+                const userId = params.get("userId");
+                setToken(token);
+                setUserId(userId);
+                if(token){
+                    setCookies("access_token", token);
+                    navigate(`/profile/${userId}`);
+                    window.localStorage.setItem("id", userId);
+                    window.localStorage.setItem("token", token);
+                }
+            }, [location.search]);
+
+            const signInGoogle=()=>{
         
-        window.location.replace("http://localhost:8000/auth/google");
-    
-  }
+                window.location.replace("http://localhost:8000/auth/google");
+            
+          }
+          //END_GOOGLE_SIGN_IN
+
+        
+        
+
+
+        
+
 
     const [firstName, setFirstName] = useState('');
     const [lastName, setLastName] = useState('');
@@ -194,7 +224,6 @@ function Signup() {
 
 
    
-
    
 
   

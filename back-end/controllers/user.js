@@ -396,3 +396,24 @@ exports.confirmationemail =async (req,res)=>{
   }
 }
 
+exports.getUsersByIds = async (req, res) => {
+  try {
+    const { ids } = req.body;
+    const users = [];
+
+    for (const id of ids) {
+      const user = await User.findById(id);
+
+      if (user === null) {
+        console.log(`User ${id} not found in database`);
+        continue;
+      }
+
+      users.push(user);
+    }
+
+    res.status(200).json(users);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+}
