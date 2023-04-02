@@ -91,84 +91,99 @@ const Navbar = () => {
 
   return (
     <>
-      
-        <div className="header-top sticky bg-white d-none d-lg-block">
-            <div className="container">
-                <div className="row align-items-center">
-                    <div className="col-md-5">
-                                            <div className="header-top-navigation">
-                                                <nav>
-                                                    <ul>
-                                                      <li
-                                                        style={{
-                                                          textAlign: "left",
-                                                          paddingBottom: "10px",
-                                                          color: "rgb(220,71,52)",
-                                                          fontWeight: "bold",
-                                                        }}
-                                                        className="active"
-                                                      >
-                                                        HOME
-                                                      </li>
-                                                        <li className="msg-trigger"><a className="msg-trigger-btn" onClick={handleDropDown}>message</a>
+      <div className="header-top sticky bg-white d-none d-lg-block">
+        <div className="container">
+          <div className="row align-items-center">
+            <div className="col-md-5">
+              <div className="header-top-navigation">
+                <nav>
+                  <ul>
+                    <li
+                      style={{
+                        textAlign: "left",
+                        paddingBottom: "10px",
+                        color: "rgb(220,71,52)",
+                        fontWeight: "bold",
+                      }}
+                      className="active"
+                    >
+                      HOME
+                    </li>
+                    <li className="msg-trigger">
+                      <a className="msg-trigger-btn" onClick={handleDropDown}>
+                        message
+                      </a>
 
-                                         <div className="message-dropdown " style={style} id="a">
-                                            <div className="dropdown-title">
-                                                <p className="recent-msg">recent message</p>
-                                                <div className="message-btn-group">
-                                                    <button>New group</button>
-                                                    <button>New Message</button>
-                                                </div>
-                                            </div>
-                                            <ul className="dropdown-msg-list ">
-                                                {conversations.map((c,index)=>(
-                                                    <div onClick={()=> setCurrentChat(c)}>
-                                               <Conversation key={index} conversation={c} currentUser={user}/>
+                      <div className="message-dropdown " style={style} id="a">
+                        <div className="dropdown-title">
+                          <p className="recent-msg">recent message</p>
+                          <div className="message-btn-group">
+                            <button>New group</button>
+                            <button>New Message</button>
+                          </div>
+                        </div>
+                        <ul className="dropdown-msg-list ">
+                          {conversations.map((c, index) => (
+                            <div onClick={() => setCurrentChat(c)}>
+                              <Conversation
+                                key={index}
+                                conversation={c}
+                                currentUser={user}
+                              />
+                            </div>
+                          ))}
+                        </ul>
+                        <div className="msg-dropdown-footer">
+                          <button>See all in messenger</button>
+                          <button>Mark All as Read</button>
+                        </div>
+                      </div>
+                    </li>
 
-                                               </div>
-                                                ))}
-                                                
-                                            </ul>
-                                            <div className="msg-dropdown-footer">
-                                                <button>See all in messenger</button>
-                                                <button>Mark All as Read</button>
-                                            </div>
-                                        </div>
-                                    </li>
+                    <li className="notification-trigger">
+                      <a className="msg-trigger-btn" href="">
+                        notification
+                      </a>{" "}
+                    </li>
+                    <li className="notification-trigger">
+                      <a className="msg-trigger-btn">
+                        <Link
+                          to={`/profile/${window.localStorage.getItem("id")}`}
+                        >
+                          Profile
+                        </Link>
+                      </a>
+                    </li>
+                  </ul>
+                </nav>
+              </div>
+            </div>
 
+            <div className="col-md-2">
+              <div className="brand-logo text-center">
+                <a href="index.html">
+                  <img
+                    src="../../assets/enigmatic.jpg"
+                    alt="brand logo"
+                    style={{ width: "40%" }}
+                  />
+                </a>
+              </div>
+            </div>
 
-
-
-
-
-                                                        <li className="notification-trigger"><a className="msg-trigger-btn" href="">notification</a> </li>
-                                                    </ul>
-                                                </nav>
-                                            </div>
-                                        
-                                        </div>
-
-                                        <div className="col-md-2">
-                    
-                    <div className="brand-logo text-center">
-                        <a href="index.html">
-                            <img src="../../assets/enigmatic.jpg" alt="brand logo" style={{width:"40%"}} />
-                        </a>
-                    </div>
-                   
-                </div>
-
-                <div className="col-md-5">
-                    <div className="header-top-right d-flex align-items-center justify-content-end">
-                      
-                        <div className="header-top-search">
-                            <form className="top-search-box">
-                                <input type="text" placeholder="Search" className="top-search-field" />
-                                <button className="top-search-btn"><i className="flaticon-search"></i></button>
-                            </form>
-                       
-             
-                             
+            <div className="col-md-5">
+              <div className="header-top-right d-flex align-items-center justify-content-end">
+                <div className="header-top-search">
+                  <form className="top-search-box">
+                    <input
+                      type="text"
+                      placeholder="Search"
+                      className="top-search-field"
+                    />
+                    <button className="top-search-btn">
+                      <i className="flaticon-search"></i>
+                    </button>
+                  </form>
                 </div>
                 <div className="col-md-5">
                   <div className="header-top-right d-flex align-items-center justify-content-end">
