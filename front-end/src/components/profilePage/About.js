@@ -3,22 +3,28 @@ import { useState,useEffect } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import axios from 'axios'
 import { useCookies } from "react-cookie";
+import {BiMessageAdd} from "react-icons/bi"
+
 
 
 
 const About =() => {
     const [cookies, setCookies] = useCookies(["access_token"]);
-    
+    const currentUser = JSON.parse(localStorage.getItem('user'))
     const [user,setUser]= useState(null);
-    const {id} = useParams();
+    const { id } = window.localStorage.getItem("id")
 //     const [userProfileImage, setUserProfileImage] = useState({});
   
   
     const getUser = async()=>{
-      const response = await fetch (`http://localhost:8000/api/getuser/${id}` , {
-      method:"GET",
-  
-      });
+      const response = await fetch(
+        `http://localhost:8000/api/getuser/${window.localStorage.getItem(
+          "id"
+        )}`,
+        {
+          method: "GET",
+        }
+      );
   
       const data = await response.json();
       setUser(data);
@@ -38,6 +44,21 @@ if(!user) return null ;
 //   setUserProfileImage(`data:${user.userPhotoExtensionType};base64, ${Buffer.from(user.profilePicture.data).toString('base64')}`);
            
     
+const handleClick = async (user) => {
+  const conversation = {
+    senderId: user._id,
+    receiverId: id,
+    
+  };
+  try {
+     await axios.post(
+      "http://127.0.0.1:8000/conversation",conversation
+    );
+    console.log(conversation)
+  } catch (err) {
+    console.log(err);
+  }
+};
     
 
   return (
@@ -64,24 +85,25 @@ if(!user) return null ;
                 <div className="main-menu-inner header-top-navigation">
                   <nav>
                     <ul className="main-menu">
-                      <li className="active">
-                        <a href="#">timeline</a>
-                      </li>
+                     
                       <li>
                         <a href="about.html">about</a>
                       </li>
-                      <li>
-                        <a href="photos.html">photos</a>
-                      </li>
+                     
                       <li>
                         <a href="friends.html">friends</a>
                       </li>
                       <li>
                         <Link
-                          to={`http://localhost:3000/donnation/request/${id}`}
+                          to={`http://localhost:3000/donnation/request/${window.localStorage.getItem(
+                            "id"
+                          )}`}
                         >
                           donnation
                         </Link>
+                      </li>
+                      <li>
+                     <button onClick={() => handleClick(currentUser)}> New conversation <BiMessageAdd/></button>
                       </li>
                     </ul>
                   </nav>
@@ -90,6 +112,7 @@ if(!user) return null ;
             </div>
             <div className="col-lg-2 col-md-3 d-none d-md-block">
               <div className="profile-edit-panel">
+               
                 {cookies.access_token && (
                   <button>
                     <Link
@@ -100,6 +123,7 @@ if(!user) return null ;
                     </Link>
                   </button>
                 )}
+
               </div>
             </div>
           </div>

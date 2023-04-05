@@ -5,6 +5,7 @@ import { toast } from 'react-toastify';
 import Navbar from '../Navbar/Navbar'
 import { Cookies, useCookies } from 'react-cookie';
 import { useGetUserID } from '../../hooks/useGetUserID'
+import About from '../profilePage/About';
 
 
 
@@ -186,7 +187,7 @@ function UpdateUser() {
     
     return (
         <>
-         <Navbar />
+            <Navbar />
         <main>
                 <div className="main-wrapper pb-0 mb-0">
                     <div className="timeline-wrapper">

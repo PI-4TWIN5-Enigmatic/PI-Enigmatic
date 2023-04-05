@@ -22,6 +22,10 @@ import RequestDonnation from './components/donnation/RequestDonnation';
 import CreateEvent from './components/Events/createEvent/CreateEvent'
 
 import { useCookies } from "react-cookie";
+
+import UpdateDonnation from './components/donnation/UpdateDonnation';
+
+
 import EventDisplay from './components/Events/dislayEvent/EventDisplay';
 import EventDetails from './components/Events/detailsEvent/EventDetails';
 import UpdateEvent from './components/Events/updateEvent/UpdateEvent';
@@ -45,7 +49,9 @@ function App() {
     {cookies.access_token &&
             <Route path="/user/update/:id" element={<UpdateUser />} /> 
           }
-    <Route path="/donnation/request/:id" element ={<RequestDonnation />}> </Route>
+          
+          <Route path="/donnation/request/:id" element={<RequestDonnation />}> </Route>
+          <Route path="/donnation/update/:id" element ={<UpdateDonnation />}> </Route>
 
     <Route path="/changerPassword" element={<ChangerPassword />}></Route>
    

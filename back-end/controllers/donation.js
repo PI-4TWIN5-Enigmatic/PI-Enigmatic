@@ -53,3 +53,13 @@ exports.getDonnation = async (req, res) => {
     res.status(400).json({error:err.message});
   }
 }
+
+exports.deleteDonnation = async (req, res) => {
+  try {
+    const data = await Donation.findByIdAndDelete(req.params.id);
+    res.status(200).json(data);
+  } catch (err) {
+    res.status(400).json({ error: err.message });
+  }
+  
+}

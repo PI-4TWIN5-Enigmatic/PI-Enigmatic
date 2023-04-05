@@ -1,42 +1,57 @@
 import React from "react";
 import { useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
+import { Link, useParams, useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
+import axios from "axios";
 
 function Case(props) {
-    const { entity } = props;
-    
-    const [userName, setUserName] = useState(null);
-      const getUser = async (id) => {
-        const response = await fetch(
-          `http://localhost:8000/api/getuser/${id}`,
-          {
-            method: "GET",
-          }
-        );
-        const data = await response.json();
-        return data;
-      };
+  const { entity } = props;
+  const [userName, setUserName] = useState(null);
+  const [userImage, setUserImage] = useState(null);
+  const [userEmail, setUserEmail] = useState(null);
+  const getUser = async (id) => {
+    const response = await fetch(`http://localhost:8000/api/getuser/${id}`, {
+      method: "GET",
+    });
+    const data = await response.json();
+    return data;
+  };
 
   useEffect(() => {
     const userId = entity.requester;
     getUser(userId)
       .then((userData) => {
         if (userData) {
+          setUserImage(userData.profilePicture);
           setUserName(`${userData.firstName} ${userData.lastName}`);
+          setUserEmail(userData.email);
         }
       })
       .catch((error) => console.error(error));
   }, [entity]);
   return (
-    <div>
-      <p>{userName || "Loading..."}</p>
-      {/* Render other case details... */}
-    </div>
+    <>
+      <div className="profile-thumb">
+        <a href="#">
+          <figure className="profile-thumb-middle">
+            <img src={userImage} alt="profile picture" />
+          </figure>
+        </a>
+      </div>
+
+      <div className="posted-author">
+        <h4 className="author">
+          <a href="">{userName}</a>
+        </h4>
+      </div>
+    </>
   );
 }
 
 function ListDonnation(props) {
-  const [entities, setEntities] = useState([]);
+    const [entities, setEntities] = useState([]);
+    const navigate = useNavigate();
+
 
   const getAllDonnations = async () => {
     const response = await fetch(
@@ -53,56 +68,70 @@ function ListDonnation(props) {
     getAllDonnations();
   }, []);
 
+    async function handleDelete(id) {
+        if (window.confirm('Are you sure you want to delete your request ?')) {
+            await axios
+                .delete(`http://localhost:8000/donnation/deleteDonnation/${id}`)
 
+                .then((response) => {
+                    toast.info("Request  has been deleted");
+                      navigate(
+                        `/donnation/request/${window.localStorage.getItem(
+                          "id"
+                        )}`
+                      );
+                })
+        };
+    
+  }
 
   return (
     <>
       {entities.map((d) => (
         <div className="card" key={d._id}>
           <div className="post-title d-flex align-items-center">
-            <div className="profile-thumb">
-              <a href="#">
-                <figure className="profile-thumb-middle">
-                  <img
-                    src="assets/images/profile/profile-small-1.jpg"
-                    alt="profile picture"
-                  />
-                </figure>
-              </a>
-            </div>
+            <Case key={d._id} entity={d} />
+            {d.requester == window.localStorage.getItem("id") ? (
+              <div className="post-settings-bar">
+                <span></span>
+                <span></span>
+                <span></span>
 
-            <div className="posted-author">
-              <h6 className="author">
-               
-                  <div>
-                    
-                      <Case key={d._id} entity={d} />
-                   
-                  </div>
-               
-              </h6>
-              <span className="post-time">{d.createdAt}</span>
-            </div>
+                <div className="post-settings arrow-shape">
+                  <ul>
+                    <li>
+                      <button>
+                        <Link
+                          className="author"
+                          to={`http://localhost:3000/donnation/update/${d._id}`}
+                        >
+                          {" "}
+                          Edit donnation{" "}
+                        </Link>
+                      </button>
+                      <button
+                        type="submit"
+                        onClick={() => {
+                          handleDelete(d._id);
+                        }}
+                      >
+                        Delete donnation
+                      </button>
+                    </li>
+                  </ul>
 
-            <div className="post-settings-bar">
-              <span></span>
-              <span></span>
-              <span></span>
-              <div className="post-settings arrow-shape">
-                <ul>
-                  <li>
-                    <button>copy link to adda</button>
-                  </li>
-                  <li>
-                    <button>edit post</button>
-                  </li>
-                  <li>
-                    <button>embed adda</button>
-                  </li>
-                </ul>
+                  <ul>
+                    <li>
+                      <button></button>
+                    </li>
+                  </ul>
+                </div>
               </div>
-            </div>
+            ) : (
+              <div></div>
+            )}
           </div>
+          <span className="post-time">{d.createdAt}</span>
           <div className="post-content">
             <h5
               style={{
@@ -122,6 +151,58 @@ function ListDonnation(props) {
             >
               Type : {d.type}
             </h6>
+            {d.type === "Money" ? (
+              <h6
+                style={{
+                  textAlign: "left",
+                  paddingBottom: "10px",
+                  color: "rgb(220,71,52)",
+                }}
+              >
+                Goal : {d.goal} DT
+              </h6>
+            ) : d.type === "Food" ? (
+              <h6
+                style={{
+                  textAlign: "left",
+                  paddingBottom: "10px",
+                  color: "rgb(220,71,52)",
+                }}
+              >
+                Goal : {d.goal} Meal
+              </h6>
+            ) : d.type === "Clothes" ? (
+              <h6
+                style={{
+                  textAlign: "left",
+                  paddingBottom: "10px",
+                  color: "rgb(220,71,52)",
+                }}
+              >
+                Goal : {d.goal} Clothes
+              </h6>
+            ) : d.type === "Blood" ? (
+              <h6
+                style={{
+                  textAlign: "left",
+                  paddingBottom: "10px",
+                  color: "rgb(220,71,52)",
+                }}
+              >
+                Goal : {d.goal} ml {" "}
+              </h6>
+            ) : (
+              <h6
+                style={{
+                  textAlign: "left",
+                  paddingBottom: "10px",
+                  color: "rgb(220,71,52)",
+                }}
+              >
+                Goal : {d.goal}{" "}
+              </h6>
+            )}
+
             <p className="post-desc">
               Description : <br></br>
               {d.description}
