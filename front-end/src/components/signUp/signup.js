@@ -47,9 +47,20 @@ function Signup() {
 
 
             //GOOGLE_SIGN_IN
-         const location = useLocation();
+             const location = useLocation();
             const [token, setToken] = useState("");
             const [userId, setUserId] = useState("");
+            const getUser = async () => {
+
+                const response = await fetch (`http://localhost:8000/api/getuser/${window.localStorage.getItem("id")}` , {
+                method:"GET",
+                headers: { Authorization: `Bearer ${token}` },
+                });
+            
+                const data = await response.json();
+                window.localStorage.setItem("user",JSON.stringify(data));
+                console.log(data);
+            };
             
             useEffect(() => {
                 const params = new URLSearchParams(location.search);
@@ -57,11 +68,14 @@ function Signup() {
                 const userId = params.get("userId");
                 setToken(token);
                 setUserId(userId);
+                
                 if(token){
                     setCookies("access_token", token);
-                    navigate(`/profile/${userId}`);
                     window.localStorage.setItem("id", userId);
                     window.localStorage.setItem("token", token);
+                    getUser();
+                    navigate(`/profile/${userId}`);
+
                 }
             }, [location.search]);
 
