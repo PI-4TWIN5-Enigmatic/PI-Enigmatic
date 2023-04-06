@@ -76,6 +76,7 @@ const RequestDonnation = () => {
         event.preventDefault();
         const isFormValid = formValidation();
         if (isFormValid) {
+            if (picture) {
             const dataimg = new FormData();
             dataimg.append("file", picture);
             dataimg.append("upload_preset", "enigmatic");
@@ -106,10 +107,32 @@ const RequestDonnation = () => {
                         // Handle error response
                     });
             })
-             
-            }
+                
+            } else {
+                const data = {
+                  location,
+                  sector,
+                  type,
+                  goal,
+                  description,
+                  date,
+                };
+
+                axios
+                  .post(
+                    `http://localhost:8000/donnation/requestDonnation/${id}`,
+                    data
+                  )
+                  .then((response) => {
+                    console.log(response);
+                    toast.info("Donnation have been created");
+                  })
+                  .catch((error) => {
+                    console.error(error);
+                  });
+            }}
         else {
-            console.log("form invalid");
+            console.log("Form invalid");
         }
     };
 

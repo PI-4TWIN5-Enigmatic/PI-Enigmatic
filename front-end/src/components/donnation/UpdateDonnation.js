@@ -95,7 +95,8 @@ const UpdateDonnation = () => {
     event.preventDefault();
     const isFormValid = formValidation();
     if (isFormValid) {
-      const dataimg = new FormData();
+      if (picture) {
+        const dataimg = new FormData();
       dataimg.append("file", picture);
       dataimg.append("upload_preset", "enigmatic");
       dataimg.append("cloud_name", "dtisuumvj");
@@ -127,6 +128,28 @@ const UpdateDonnation = () => {
               // Handle error response
             });
         });
+      } else {
+        const data = {
+          location,
+          sector,
+          type,
+          goal,
+          description,
+          date,
+        };
+
+        axios
+          .put(`http://localhost:8000/donnation/updateDonation/${id}`, data)
+          .then((response) => {
+            console.log(response);
+            navigate(`/donnation/request/${window.localStorage.getItem("id")}`);
+            toast.info("Your Donnation have been Updated");
+          })
+          .catch((error) => {
+            console.error(error);
+          });
+      }
+      
     } else {
       console.log("form invalid");
     }

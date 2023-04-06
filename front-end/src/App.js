@@ -19,7 +19,8 @@ import Verif from './components/signUp/verif';
 import UpdateAssociation from './components/association/update';
 import UpdateUser from './components/signUp/updateUser';
 import RequestDonnation from './components/donnation/RequestDonnation';
-import CreateEvent from './components/Events/createEvent/CreateEvent';
+import CreateEvent from './components/Events/createEvent/CreateEvent'
+
 import { useCookies } from "react-cookie";
 
 import UpdateDonnation from './components/donnation/UpdateDonnation';
