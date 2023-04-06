@@ -17,42 +17,42 @@ import Cookies from 'js-cookie';
 
 const ProfilePage = () => {
 
-  const [user,setUser]= useState(null);
-  const {id} = useParams();
-  const [_, setCookies] = useCookies(["access_token"]);
+    const [user,setUser]= useState(null);
+    const idCurentuser=window.localStorage.getItem('id')
+    const [_, setCookies] = useCookies(["access_token"]);
+  
 
 
 
-  const getUser = async()=>{
-    const response = await fetch (`http://localhost:8000/api/getuser/${id}` , {
-    method:"GET",
-
-
-
-    });
-
-    const data = await response.json();
-    setUser(data);
-    console.log(data);
-
-    // if(data.secret){
-    //     setCookies("access_token", data.secret);
-    //     // Cookies.set("access_token", data.secret, { expires: 7 }); 
-    // window.localStorage.setItem('id',data._id)
-    // window.localStorage.setItem('token',data.secret)
-    // window.localStorage.setItem('user', JSON.stringify(data));
-    // }
-   
-};
-
-
-useEffect(()=>{
-    getUser();
+ 
+    const getUser = async()=>{
+        const response = await fetch (`http://localhost:8000/api/getuser/${idCurentuser}` , {
+        method:"GET",
     
-
-},[]);
-
-
+    
+    
+        });
+    
+        const data = await response.json();
+        setUser(data);
+        console.log(data);
+    
+        // if(data.secret){
+        //     setCookies("access_token", data.secret);
+        //     // Cookies.set("access_token", data.secret, { expires: 7 }); 
+        // window.localStorage.setItem('id',data._id)
+        // window.localStorage.setItem('token',data.secret)
+        // window.localStorage.setItem('user', JSON.stringify(data));
+        // }
+       
+    };
+    
+    
+    useEffect(()=>{
+        getUser();
+        
+    
+    },[]);
 
 
 

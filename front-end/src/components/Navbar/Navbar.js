@@ -17,7 +17,6 @@ import About from '../profilePage/About';
 
 const Navbar = () => {
     const [isDropDown, setIsDropDown] = useState(false);
-    const [cookies, setCookies] = useCookies(["access_token"]);
     const navigate = useNavigate();
     const user = JSON.parse(localStorage.getItem('user'))
     const [conversations, setConversation] = useState([]);
@@ -27,6 +26,11 @@ const Navbar = () => {
     const [arrivalMessage, setArrivalMessage] = useState(null)
     const socket = useRef()
     const scrollRef = useRef();
+    const [cookies, setCookies] = useCookies(["access_token"]);
+   
+
+    const idCurrentUser=localStorage.getItem('id')
+
 
     const handleDropDown = () => {
         setIsDropDown(!isDropDown);
@@ -236,13 +240,12 @@ const Navbar = () => {
                             </form>
                        
 
-                        {!cookies.access_token ? (
+                            {!cookies.access_token ? (
         <button style={{borderRadius: 30,marginBottom:15}} className="submit-btn "  onClick={rediret}>login/signup</button>
         ) ||     window.localStorage.clear()
       : (
         <button style={{borderRadius: 30,marginBottom:15}} className="submit-btn "  onClick={logout}>Log Out</button>
         )}
-
 
                 
              </div></div>  </div>  </div></div>  </div>                                 
