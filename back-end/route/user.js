@@ -1,6 +1,6 @@
 const express = require('express')
 const router = express.Router()
-const {signup,UpdateUser,activateAccount,getListUser,forgetPassword,emailSend,changerPass ,tokendata, getUser, loginuser,banUser,unbanUser, uploads, deactivateAccount,confirmationemail, getUsersByIds} = require("../controllers/user")
+const {signup,UpdateUser,activateAccount,getListUser,forgetPassword,emailSend,changerPass ,tokendata, getUser, loginuser,banUser,unbanUser, uploads, deactivateAccount,confirmationemail, getUsersByIds, followUser, unfollowUser} = require("../controllers/user")
 const{verifyToken}=require ("../middleware/auth")
 const {admin}=require ("../middleware/isadmin")
 
@@ -49,6 +49,11 @@ router.post('/signup', signup)
 router.post('/uploads',uploads)
 router.post('/deactivateAccount/:id', deactivateAccount)
 router.post('/activateAccount/:id', activateAccount)
+// Follow a user
+router.post('/users/:userId/follow', followUser);
+
+// Unfollow a user
+router.post('/users/:userId/unfollow',unfollowUser);
 
 
 

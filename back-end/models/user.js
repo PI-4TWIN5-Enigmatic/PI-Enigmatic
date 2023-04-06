@@ -80,15 +80,15 @@ const userSchema = new mongoose.Schema(
     },
     friends: { type: Number, default: 0 },
     profilePicture: { type: String },
-    followedProfil: { type: Number, default: 0 },
-    followingProfil: { type: Number, default: 0 },
+    followedProfil: [{ type: mongoose.Types.ObjectId, ref:"User" }],
+    followingProfil: [{ type: mongoose.Types.ObjectId, ref:"User" }],
     password: { type: String },
     role: {
       type: String,
       default: "user",
       enum: ["user", "admin"]
     },
-    isAdmin: { Boolean, default: false }
+    isAdmin: { Boolean, default: false } 
   }, { timestamps: true });
 
 userSchema.pre('save', function (next) {

@@ -56,7 +56,7 @@ const Navbar = () => {
         
         const getConversations = async () =>{
             try{
-            const res = await axios.get("http://127.0.0.1:8000/conversation/"+user._id)
+            const res = await axios.get("http://127.0.0.1:8000/conversation/"+user?._id)
             setConversation(res.data)
             }catch(err){
                 console.log(err);
@@ -64,7 +64,7 @@ const Navbar = () => {
         }
         getConversations()
         
-    },[user._id]);
+    },[user?._id]);
 
     useEffect(()=>{
         const getMessages = async () =>{
@@ -91,7 +91,7 @@ const Navbar = () => {
 
         useEffect(()=>{
 
-            socket.current.emit("addUser", user._id);
+            socket.current.emit("addUser", user?._id);
             socket.current.on("getUsers", users=>{
                 console.log(users)
             })
@@ -107,17 +107,17 @@ const Navbar = () => {
      const handleSubmitChat = async (e) => {
     e.preventDefault();
     const message = {
-      sender: user._id,
+      sender: user?._id,
       text: newMessage,
       conversationId: currentChat._id,
     };
 
     const receiverId = currentChat.members.find(
-      (member) => member !== user._id
+      (member) => member !== user?._id
     );
 
     socket.current.emit("sendMessage", {
-      senderId: user._id,
+      senderId: user?._id,
       receiverId,
       text: newMessage,
     });
@@ -273,7 +273,7 @@ const Navbar = () => {
                                      <ul className ="message-list custom-scroll" style={{overflow: "scroll" , marginBottom:"100px"}}>
                                     {messages.map((m,index)=>(
                                         <div ref={scrollRef}> 
-                                              <Messages key={index} message={m} own={m.sender == user._id}/>
+                                              <Messages key={index} message={m} own={m.sender == user?._id}/>
                                         </div>
                                     ))}
                                    
