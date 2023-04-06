@@ -59,7 +59,7 @@ const Navbar = () => {
           }
           getUser()
   
-      },[user,currentChat]
+      },[currentChat]
       )
 
       useEffect(() => {
