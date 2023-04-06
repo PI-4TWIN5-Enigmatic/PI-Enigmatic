@@ -27,6 +27,7 @@ const Navbar = () => {
     const [arrivalMessage, setArrivalMessage] = useState(null)
     const socket = useRef()
     const scrollRef = useRef();
+    const [friendUser , setFriendUser] = useState(null);
 
     const handleDropDown = () => {
         setIsDropDown(!isDropDown);
@@ -44,6 +45,22 @@ const Navbar = () => {
           });
         });
       }, []);
+
+      useEffect(()=>
+      {
+          const friendId = currentChat?.members.find((m)=> m !== user._id);
+          const getUser = async ()=>{
+              try{
+              const res = await axios.get("http://127.0.0.1:8000/api/getuser/"+friendId)
+              setFriendUser(res.data)
+              }catch(err){
+                  console.log(err)
+              }
+          }
+          getUser()
+  
+      },[user,currentChat]
+      )
 
       useEffect(() => {
         arrivalMessage &&
@@ -261,13 +278,13 @@ const Navbar = () => {
                                      <div className ="profile-thumb active">
                                          <a href="#">
                                              <figure className ="profile-thumb-small">
-                                                 <img src="assets/images/profile/profile-small-15.jpg" alt="profile picture"/>
+                                                 <img src={friendUser?.profilePicture} alt="profile picture"/>
                                              </figure>
                                          </a>
                                      </div>
                                    
                                      <div className ="posted-author">
-                                         <h6 className ="author"><a href="profile.html">Robart Marloyan</a></h6>
+                                         <h6 className ="author" style={{color:'white'}}>{friendUser?.firstName} {friendUser?.lastName}</h6>
                                          <span className ="active-pro">active now</span>
                                      </div>
                                      <div className ="live-chat-settings ml-auto">

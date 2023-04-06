@@ -29,8 +29,14 @@ const About =() => {
       const data = await response.json();
       setUser(data);
       console.log(data);
+      setFollowing(data.followedProfil.includes(currentUser._id));
   };
 
+
+ 
+       
+        
+     
   useEffect(()=>{
     getUser();
 },[]);
