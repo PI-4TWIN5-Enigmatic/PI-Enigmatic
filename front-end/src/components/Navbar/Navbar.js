@@ -26,11 +26,15 @@ const Navbar = () => {
     const [arrivalMessage, setArrivalMessage] = useState(null)
     const socket = useRef()
     const scrollRef = useRef();
+<<<<<<< HEAD
     const [cookies, setCookies] = useCookies(["access_token"]);
    
 
     const idCurrentUser=localStorage.getItem('id')
 
+=======
+    const [friendUser , setFriendUser] = useState(null);
+>>>>>>> 50078ea7a1fa7b6ae6b5aa806901e32af5635657
 
     const handleDropDown = () => {
         setIsDropDown(!isDropDown);
@@ -49,6 +53,22 @@ const Navbar = () => {
         });
       }, []);
 
+      useEffect(()=>
+      {
+          const friendId = currentChat?.members.find((m)=> m !== user._id);
+          const getUser = async ()=>{
+              try{
+              const res = await axios.get("http://127.0.0.1:8000/api/getuser/"+friendId)
+              setFriendUser(res.data)
+              }catch(err){
+                  console.log(err)
+              }
+          }
+          getUser()
+  
+      },[currentChat]
+      )
+
       useEffect(() => {
         arrivalMessage &&
           currentChat?.members.includes(arrivalMessage.sender) &&
@@ -60,7 +80,7 @@ const Navbar = () => {
         
         const getConversations = async () =>{
             try{
-            const res = await axios.get("http://127.0.0.1:8000/conversation/"+user._id)
+            const res = await axios.get("http://127.0.0.1:8000/conversation/"+user?._id)
             setConversation(res.data)
             }catch(err){
                 console.log(err);
@@ -68,7 +88,7 @@ const Navbar = () => {
         }
         getConversations()
         
-    },[user._id]);
+    },[user?._id]);
 
     useEffect(()=>{
         const getMessages = async () =>{
@@ -95,7 +115,7 @@ const Navbar = () => {
 
         useEffect(()=>{
 
-            socket.current.emit("addUser", user._id);
+            socket.current.emit("addUser", user?._id);
             socket.current.on("getUsers", users=>{
                 console.log(users)
             })
@@ -111,17 +131,17 @@ const Navbar = () => {
      const handleSubmitChat = async (e) => {
     e.preventDefault();
     const message = {
-      sender: user._id,
+      sender: user?._id,
       text: newMessage,
       conversationId: currentChat._id,
     };
 
     const receiverId = currentChat.members.find(
-      (member) => member !== user._id
+      (member) => member !== user?._id
     );
 
     socket.current.emit("sendMessage", {
-      senderId: user._id,
+      senderId: user?._id,
       receiverId,
       text: newMessage,
     });
@@ -264,13 +284,13 @@ const Navbar = () => {
                                      <div className ="profile-thumb active">
                                          <a href="#">
                                              <figure className ="profile-thumb-small">
-                                                 <img src="assets/images/profile/profile-small-15.jpg" alt="profile picture"/>
+                                                 <img src={friendUser?.profilePicture} alt="profile picture"/>
                                              </figure>
                                          </a>
                                      </div>
                                    
                                      <div className ="posted-author">
-                                         <h6 className ="author"><a href="profile.html">Robart Marloyan</a></h6>
+                                         <h6 className ="author" style={{color:'white'}}>{friendUser?.firstName} {friendUser?.lastName}</h6>
                                          <span className ="active-pro">active now</span>
                                      </div>
                                      <div className ="live-chat-settings ml-auto">
@@ -286,7 +306,7 @@ const Navbar = () => {
                                      <ul className ="message-list custom-scroll" style={{overflow: "scroll" , marginBottom:"100px"}}>
                                     {messages.map((m,index)=>(
                                         <div ref={scrollRef}> 
-                                              <Messages key={index} message={m} own={m.sender == user._id}/>
+                                              <Messages key={index} message={m} own={m.sender == user?._id}/>
                                         </div>
                                     ))}
                                    

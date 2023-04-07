@@ -22,14 +22,14 @@ const UserWidget = () => {
 
 
   const [user,setUser]= useState(null);
-  const id = window.localStorage.getItem("id");  
+  const{ id} = useParams() 
   const token = useSelector((state) => state.token);
 
 
 
   const getUser = async () => {
 
-    const response = await fetch (`http://localhost:8000/api/getuser/${window.localStorage.getItem("id")}` , {
+    const response = await fetch (`http://localhost:8000/api/getuser/${id}` , {
     method:"GET",
     headers: { Authorization: `Bearer ${token}` },
     });
