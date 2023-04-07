@@ -8,7 +8,7 @@ const{verifyToken}=require ("../middleware/auth")
 
 router.post('/:id/createEvent',verifyToken, createEvent)
 router.get("/:organisateurEvent/events" ,verifyToken, getAssociationEvents);
-router.get("/getEventById/:id" ,verifyToken, getEventById);
+router.get("/getEventById/:id" , getEventById);
 router.get("/getAllEvent" ,verifyToken, getAllEvent);
 router.put("/updateEvent/:id" ,verifyToken, updateEvent);
 router.delete('/deleteEvent/:id',verifyToken,deleteEvent);

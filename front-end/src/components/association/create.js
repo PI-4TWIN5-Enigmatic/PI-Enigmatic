@@ -144,7 +144,9 @@ function Create() {
          axios.post('http://localhost:8000/association/signupAssociation', data,{headers:{Authorization:"Bearer "+localStorage.getItem("token")}})
             .then(response => {
                 console.log(response);
+
                 Navigate(`/profile/${user._id}`)
+
                 // Handle success response
             })
             .catch(error => {

@@ -19,7 +19,7 @@ const EventDetails = () => {
 
 
 
-  const [cookies, _]=useCookies(['token'])
+  const [cookies, _]=useCookies(['access_token'])
 
 
   const token = useSelector((state) => state.token);

@@ -29,7 +29,7 @@ const About =() => {
       const data = await response.json();
       setUser(data);
       console.log(data);
-      setFollowing(data.followedProfil.includes(currentUser._id));
+      setFollowing(data.followedProfil.includes(currentUser?._id));
   };
 
 
@@ -52,7 +52,7 @@ if(!user) return null ;
     
 const handleClick = async (user) => {
   const conversation = {
-    senderId: user._id,
+    senderId: user?._id,
     receiverId: id,
     
   };
@@ -69,7 +69,7 @@ const handleClick = async (user) => {
 const handleFollow = async () => {
   try {
     const res = await axios.post(`http://127.0.0.1:8000/api/users/${currentUser._id}/follow`, {
-      targetUserId: user._id
+      targetUserId: user?._id
     });
     setFollowing(true);
     console.log(res.data.message);
@@ -82,7 +82,7 @@ const handleFollow = async () => {
 const handleUnfollow = async () => {
   try {
     const res = await axios.post(`http://127.0.0.1:8000/api/users/${currentUser._id}/unfollow`, {
-      targetUserId: user._id
+      targetUserId: user?._id
     });
     setFollowing(false);
     console.log(res.data.message);
@@ -134,7 +134,7 @@ const handleUnfollow = async () => {
                         </Link>
                       </li>
                       <li>
-                      {currentUser._id === id ? null : (
+                      {currentUser?._id === id ? null : (
        <div>
                       {following  ? (
         <button onClick={handleUnfollow}>Unfollow</button>
@@ -143,7 +143,7 @@ const handleUnfollow = async () => {
       )}
       </div>)}
                       </li>
-                      {currentUser._id === id ? null : (
+                      {currentUser?._id === id ? null : (
                       <li>
                      <button onClick={() => handleClick(currentUser)}> New conversation <BiMessageAdd/></button>
                       </li>)}
