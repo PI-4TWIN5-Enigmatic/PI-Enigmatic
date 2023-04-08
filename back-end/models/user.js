@@ -88,6 +88,10 @@ const userSchema = new mongoose.Schema(
       default: "user",
       enum: ["user", "admin"]
     },
+    favEvents :{
+      type: Map, of: Boolean, default: new Map() ,
+ },
+ 
     isAdmin: { Boolean, default: false }
   }, { timestamps: true });
 

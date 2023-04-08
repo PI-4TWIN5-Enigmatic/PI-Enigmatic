@@ -1,7 +1,12 @@
 import React from 'react'
 import { useEffect, useState } from 'react';
+import { Cookies, useCookies } from "react-cookie";
+import { Link, useParams } from 'react-router-dom';
 
 const RecentNotifications = () => {
+    // const [cookies,setCookies] = useCookies(["access_token"]);
+    const token =window.localStorage.getItem("token");
+    const [cookies,setCookies] = useCookies(["access_token"]);
 
     const  [association,setAssociation]=useState([]);
 
@@ -18,6 +23,8 @@ const RecentNotifications = () => {
 
 
         useEffect(()=>{
+            // setCookies("access_token", token);
+
             getAssociations();
         },[]);
 
@@ -36,18 +43,16 @@ const RecentNotifications = () => {
                                         
                                         <li className ="unorder-list" key={a._id}>
                                             <div className ="profile-thumb">
-                                                <a href="#">
+                                                
                                                     <figure className ="profile-thumb-small">
                                                         <img src={a.logoPicture} alt="profile picture" />
                                                     </figure>
-                                                </a>
                                             </div>
 
                                             <div className ="unorder-list-info">
-                                                <h3 className ="list-title"><a href={`http://localhost:3000/association/${a._id}`}>{a.name}</a></h3>
+                                                <h3 className ="list-title"><Link to={`/association/${a._id}`}>{a.name}</Link></h3>
                                             </div>
                                         </li>
-                                        
                                         
                                         )}
                                         

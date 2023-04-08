@@ -6,13 +6,15 @@ require('dotenv').config()
 const cors = require('cors')
 const passport = require("passport");
 const session = require("express-session");
-
+const oneDay = 86400000;
 //express session
 app.use(
   session({
     secret: "secret",
     resave: false,
     saveUninitialized: false,
+    cookie: {      maxAge: oneDay,
+      path: ['/'] }
   })
 );
 

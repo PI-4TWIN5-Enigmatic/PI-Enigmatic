@@ -54,7 +54,6 @@ function Signup() {
 
                 const response = await fetch (`http://localhost:8000/api/getuser/${window.localStorage.getItem("id")}` , {
                 method:"GET",
-                headers: { Authorization: `Bearer ${token}` },
                 });
             
                 const data = await response.json();
@@ -64,20 +63,20 @@ function Signup() {
             
             useEffect(() => {
                 const params = new URLSearchParams(location.search);
-                const token = params.get("token");
-                const userId = params.get("userId");
-                setToken(token);
-                setUserId(userId);
+                const tokenn = params.get("token");
+                const userIdd = params.get("userId");
+                setToken(tokenn);
+                setUserId(userIdd);
                 
-                if(token){
-                    setCookies("access_token", token);
-                    window.localStorage.setItem("id", userId);
-                    window.localStorage.setItem("token", token);
+                if(tokenn){
+                    setCookies("access_token", tokenn);
+                    window.localStorage.setItem("id", userIdd);
+                    window.localStorage.setItem("token", tokenn);
                     getUser();
-                    navigate(`/profile/${userId}`);
+                    navigate(`/profile/${userIdd}`);
 
                 }
-            }, [location.search]);
+            }, []);
 
             const signInGoogle=()=>{
         

@@ -14,6 +14,7 @@ import { Cookies, useCookies } from "react-cookie";
 import Partner from './Partner';
 import Rating from '@mui/material/Rating';
 import Picker from '@emoji-mart/react'
+import moment from 'moment';
 
 const EventDetails = () => {
 
@@ -29,14 +30,8 @@ const EventDetails = () => {
     const useer = JSON.parse(localStorage.getItem('user'));
         
 
-    const [buttonName, setButtonName] = useState("Want to participate ?");
-    const [buttonNamee, setButtonNamee] = useState("Are you interested ?");
-
-    const [color, setColor] = useState("btn btn-light btn-lg" );
-    const [coloor, setColoor] = useState("btn btn-danger btn-lg ms-2" );
-
-    const [statusParticipant, setStatusParticipant] = useState("");
-    const [statusInterested, setStatusInterested] = useState(false);
+    const [showMoreReviews, setShowMoreReviews] = useState(false);
+    const [numReviews, setNumReviews] = useState(4);
 
     const [revieew, setRevieew] = useState("");
     const [interestedCount, setInterestedCount] = useState("");
@@ -46,7 +41,11 @@ const EventDetails = () => {
     const [alpha,setAlpha]= useState(null);
     const [association,setAssociation]= useState(null);
     const [globalRating,setGlobalRating]= useState(0);
+    const [value, setValue] = React.useState(0);
+    const[event,setEvent]=useState("");
+    const [timePeriod, setTimePeriod] = useState('');
 
+    const {id} = useParams();
     
     const position = [36.8065, 10.1815]
 
@@ -61,8 +60,55 @@ const EventDetails = () => {
 
 
 
-    const[event,setEvent]=useState("");
-    const {id} = useParams();
+    
+
+    const handleShowMoreClick = () => {
+      setShowMoreReviews(true);
+      setNumReviews(numReviews + 4);
+    };
+
+  
+    
+  const showLessReviews = () => {
+    setNumReviews(4);
+  };
+
+
+    const handleSubmit = (e) => {
+      const response =  fetch(`http://localhost:8000/event/reviewEvent/${id}`, {
+          method: "PATCH",
+          headers: {
+              "Content-Type": "application/json",
+              Authorization:cookies.access_token
+
+            },
+            body: JSON.stringify({ reviewerId: user , reviewerPseudo: useer.firstName , reviewerPhoto: useer.profilePicture, review:revieew , rating:value}),
+      });
+
+      toast.info("Review has been added");                
+      setRevieew("");
+      setValue("");
+      
+    }
+    const eventReviews = event.reviews
+
+
+    const deleteReview = async (reviewIdd) => {
+      if (window.confirm(`Are you sure you want to delete this review?`)){
+      const response = await fetch(`http://localhost:8000/event/deleteReview/${id}`, {
+          method: "PATCH",
+          headers: {
+              "Content-Type": "application/json",
+              Authorization:cookies.access_token
+
+            },
+            body: JSON.stringify({ reviewerId: reviewIdd }),
+      });}
+    };
+
+    const handleRatingChange = (event, newValue) => {
+      setValue(newValue);
+  };
 
     useEffect(() => {
       fetch(`http://localhost:8000/event/getRating/${id}`)
@@ -70,7 +116,41 @@ const EventDetails = () => {
         .then(data => {
           setGlobalRating(data);})
         .catch(error => console.error(error));
-    }, []);
+    }, [id,globalRating,eventReviews,value]);
+    
+
+    const patchParticipate = async () => {
+      const response = await fetch(`http://localhost:8000/event/participateEvent/${id}`, {
+          method: "PATCH",
+          headers: {
+              "Content-Type": "application/json",
+              Authorization:cookies.access_token
+            },
+            body: JSON.stringify({ userId: user }),
+      });
+
+    };
+
+    const handleRefreshClick = () => {
+      window.location.reload();
+    };
+
+    const patchInterested = async () => {
+      
+      const response = await fetch(`http://localhost:8000/event/interestedInEvent/${id}`, {
+          method: "PATCH",
+          headers: {
+              "Content-Type": "application/json",
+              Authorization:cookies.access_token
+
+            },
+            body: JSON.stringify({ userId: user }),
+      });
+
+    };
+
+
+
 
       useEffect(() => {
         
@@ -107,76 +187,13 @@ const EventDetails = () => {
 
        
           
-      }, []);
+      }, [id,patchParticipate,patchInterested,isInterested,isparticipated,participatedCount,interestedCount]);
 
   
 
    
 
 
-      const patchParticipate = async () => {
-        const response = await fetch(`http://localhost:8000/event/participateEvent/${id}`, {
-            method: "PATCH",
-            headers: {
-                "Content-Type": "application/json",
-                Authorization:cookies.access_token
-              },
-              body: JSON.stringify({ userId: user }),
-        });
-
-      };
-  
-      const handleRefreshClick = () => {
-        window.location.reload();
-      };
-
-      const patchInterested = async () => {
-        
-        const response = await fetch(`http://localhost:8000/event/interestedInEvent/${id}`, {
-            method: "PATCH",
-            headers: {
-                "Content-Type": "application/json",
-                Authorization:cookies.access_token
-
-              },
-              body: JSON.stringify({ userId: user }),
-        });
-
-      };
-
-
-
-      const handleSubmit = (e) => {
-        const response =  fetch(`http://localhost:8000/event/reviewEvent/${id}`, {
-            method: "PATCH",
-            headers: {
-                "Content-Type": "application/json",
-                Authorization:cookies.access_token
-
-              },
-              body: JSON.stringify({ reviewerId: user , reviewerPseudo: useer.firstName , reviewerPhoto: useer.profilePicture, review:revieew , rating:value}),
-        });
-
-        toast.info("Review has been added");                
-        setRevieew("");
-        setValue("");
-        
-      }
-      const eventReviews = event.reviews
-
-
-      const deleteReview = async (reviewIdd) => {
-        if (window.confirm(`Are you sure you want to delete this review?`)){
-        const response = await fetch(`http://localhost:8000/event/deleteReview/${id}`, {
-            method: "PATCH",
-            headers: {
-                "Content-Type": "application/json",
-                Authorization:cookies.access_token
-
-              },
-              body: JSON.stringify({ reviewerId: reviewIdd }),
-        });}
-      };
 
     const goUpdate=()=>{
       window.location.replace(`http://localhost:3000/updateEvent/${id}`)
@@ -189,11 +206,8 @@ const EventDetails = () => {
       window.location.replace(`http://localhost:3000/partners/${id}`)
     }
 
-    const [value, setValue] = React.useState(0);
 
-      const handleRatingChange = (event, newValue) => {
-        setValue(newValue);
-    };
+    
 
     const goBack=()=>{
       window.location.replace(`http://localhost:3000/EventDisplay/${association._id}`)
@@ -286,7 +300,7 @@ const EventDetails = () => {
                       <hr />
 
                       {/* <!-- post status start --> */}
-                      {eventReviews && eventReviews.map((a)=>
+                      {eventReviews && eventReviews.slice(0, numReviews).map((a)=>
                         <li className="card" key={a.reviewerId}>
                             {/* <!-- post title start --> */}
                             <div className="post-title d-flex align-items-center">
@@ -300,7 +314,7 @@ const EventDetails = () => {
 
                                 <div className="posted-author">
                                     <h6 className="author"><a href="profile.html">{a.reviewerPseudo}</a></h6>
-                                    <span class="post-time">{Date(a.timestamp).toString().substring(0, 24)}</span>
+                                    <span class="post-time">{new Date(a.timestamp).toString().substring(0, 24)}</span>
 
                                 </div >
                                 { alpha ? (
@@ -335,7 +349,10 @@ const EventDetails = () => {
                             </div>
                         </li>
                       )}
-                         
+                                 <button className="d-flex justify-content-center" onClick={handleShowMoreClick}>Show More</button>
+                                 <button className="d-flex justify-content-center" onClick={showLessReviews}>Show Less</button>
+
+
                         {/* <!-- post status end --> */}
        
                   </div>
@@ -385,14 +402,12 @@ const EventDetails = () => {
                              {isInterested ? (
                          <button type="button" className="btn btn-secondary btn-lg"  onClick={() => {
                                                                            patchInterested();
-                                                                           handleRefreshClick();
                                                                          }}>Interested In</button>
 
                                                                          ) : (
 
                          <button type="button" className="btn btn-light btn-lg"  onClick={() => {
                                                                            patchInterested();
-                                                                           handleRefreshClick();
                                                                          }}>are you interested ?</button>
                                                                          )}
 
@@ -400,14 +415,12 @@ const EventDetails = () => {
                        {isparticipated ? (
                          <button type="button" className="btn btn-info btn-lg"  onClick={() => {
                                                                            patchParticipate();
-                                                                           handleRefreshClick();
                                                                          }}>Participated In</button>
 
                                                                          ) : (
 
                          <button type="button" className="btn btn-danger btn-lg"  onClick={() => {
                                                                            patchParticipate();
-                                                                           handleRefreshClick();
                                                                          }}>Want to participate ?</button>
                                                                          )}
 
