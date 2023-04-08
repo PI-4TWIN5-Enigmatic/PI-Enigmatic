@@ -68,7 +68,7 @@ if(!association) return null ;
                                     <li className="active"><a href="#">timeline</a></li>
                                     <li><a href="about.html">about</a></li>
                                     <li><a href="photos.html">photos</a></li>
-                                    <li> <a href={`/EventDisplay/${id}`} > Events</a> </li>
+                                    <li> <Link to={`/EventDisplay/${id}`}>Events</Link>  </li>
                                     <li><a href="about.html">more</a></li>
       
                                 </ul>

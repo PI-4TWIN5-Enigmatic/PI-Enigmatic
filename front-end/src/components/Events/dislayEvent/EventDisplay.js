@@ -16,7 +16,8 @@ const EventDisplay = () => {
     const {id} = useParams();
     const [alpha,setAlpha]= useState(null);
     const idCurrentUser =window.localStorage.getItem("id");
-    const [cookies, setCookies] = useCookies(["access_token"]);
+    const token =window.localStorage.getItem("token");
+    const [cookies,setCookies] = useCookies(["access_token"]);
     const[query,setQuery]=useState('')
 
 
@@ -25,6 +26,8 @@ const EventDisplay = () => {
     const[width,setWidth]=useState(0);
 
     useEffect(()=>{
+      // setCookies("access_token", token);
+
           setWidth(carouselRef.current.scrollWidth - carouselRef.current.offsetWidth);
     })
 
@@ -60,7 +63,7 @@ const EventDisplay = () => {
             console.log(data);
             setEvent(data);})
           .catch(error => console.error(error));
-      }, []);
+      }, [id]);
       
 
       const navigate = useNavigate();

@@ -1,5 +1,3 @@
-const event = require("../models/event")
-const Association = require("../models/association")
 const Event = require("../models/event")
 const User = require("../models/user")
 const nodemailer =require("nodemailer")
@@ -363,4 +361,32 @@ exports.deleteEvent = (req, res) => {
           res.status(500).json({ error: err.message });
         }
       };
+
+
+      
+    exports.favoriteEvents =async (req, res) => {
+      try{
+          const{eventId,userId }=req.body;
+          const user = await User.findById(userId);
+          const isFavorite = user.favEvents.get(eventId);
+      
+          if (isFavorite){
+              user.favEvents.delete(eventId);
+          }else{
+            user.favEvents.set(eventId,true);
+          }
+  
+          const updatedUser = await User.findByIdAndUpdate(
+            userId,
+              {favEvents:user.favEvents},
+              {new:true}
+          )
+  
+          res.status(200).json(updatedUser);
+  
+      }catch(err){
+              res.status(404).json({error:err.message});
+      }
+      }
+    
       

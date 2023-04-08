@@ -128,6 +128,11 @@ const PresenceList = () => {
         const handlePageClick = ({ selected }) => {
           setCurrentPage(selected);
         };
+
+        
+        const handlePageClickk = ({ selected }) => {
+          setCurrentPagee(selected);
+        };
         
         const usersArray = Object.values(usersData);
 
@@ -324,7 +329,7 @@ const PresenceList = () => {
                                 previousLabel={'previous'}
                                 nextLabel={'next'}
                                 pageCount={pageCountt}
-                                onPageChange={handlePageClick}
+                                onPageChange={handlePageClickk}
                                 containerClassName={'pagination'}
                                 previousLinkClassName={'page-link'}
                                 nextLinkClassName={'page-link'}
