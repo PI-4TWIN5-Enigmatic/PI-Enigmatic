@@ -73,6 +73,7 @@ const Share = () => {
 
     const [posterId, setposterid] = useState('');
     const [iddd, setid] = useState(null);
+    const [tet,settext]=useState('');
 
 
 
@@ -189,6 +190,7 @@ const Share = () => {
             .then((result) => {
                 const data = {
                     posterId: user._id,
+                    
                     message: messagee.current.value,
                     img: result.data.secure_url,
                     likers: [],
@@ -230,12 +232,24 @@ const Share = () => {
                 text: text,
                 commenterpseudo: user.firstName,
                 commenterid: idCurrentUser,
+                commenterphoto: user.profilePicture,
+
             })
 
         }).then(response => response.json())
 
-            .then((result) => console.log(result));
-
+        .then(result => {
+            const newData = posts.map(e=>{
+                if (e._id==result._id){
+                    return result
+                }return e
+                
+            }) ;
+    setData(newData)  
+    settext(text)
+    }) ;
+   
+  
     }
 
 
@@ -278,9 +292,20 @@ const Share = () => {
             .then(response => {
                 console.log('Post deleted successfully');
                 toast.info("Post have been deleted")
-                window.location.reload();
 
-            })
+            }) .then(result => {
+                const newData = posts.map(e=>{
+                    
+                        return e._id !==result._id
+
+                    
+                    
+                })
+            setData(newData)
+            window.location.reload();
+
+        }
+            )
             .catch(error => {
                 console.error('Error deleting item', error);
             });
@@ -315,6 +340,9 @@ const Share = () => {
                     posterId: user._id,
                     message: messagee.current.value,
                     img: result.data.secure_url,
+                    posterphoto: user.profilePicture,
+                    posterpseudo:user.firstName,
+                    posterlastname:user.lastName,
                     likers: [],
                     comments: [],
 
@@ -361,11 +389,18 @@ const Share = () => {
 
         }).then(response => response.json())
 
-            .then((result) => console.log(result));
-        window.location.reload()
-
-
-    }
+            .then(result => {
+            const newData = posts.map(e=>{
+                if (e._id==result._id){
+                    return result
+                }else{return e
+                }
+            })
+            ;
+            setData(newData)
+        })}
+    
+    
 
 
 
@@ -382,11 +417,18 @@ const Share = () => {
 
         }).then(response => response.json())
 
-            .then((result) => console.log(result));
-        window.location.reload()
+            .then(result => {
+                const newData = posts.map(e=>{
+                    if (e._id==result._id){
+                        return result
+                    }return e
+                    
+                }) ;
+        setData(newData)
 
+                
 
-    }
+    })}
 
 
 
@@ -630,14 +672,14 @@ const Share = () => {
                             <div className="profile-thumb">
                                 <a href="#">
                                     <figure className="profile-thumb-middle">
-                                        <img src={profilePicture} alt="profile picture" />
+                                        <img src={e.posterphoto} alt="profile picture" />
                                     </figure>
                                 </a>
                             </div>
 
 
                             <div className="posted-author">
-                                <h6 className="author"><a href="profile.html">{firstName} {lastName}</a></h6>
+                                <h6 className="author"><a href="profile.html">{e.posterpseudo}  {e.posterlastname} </a></h6>
                                 <span className="date">{moment(e.createdAt).fromNow()}</span>
 
                             </div>
@@ -770,10 +812,14 @@ const Share = () => {
 
                             <div className="comment-containerrrrr">
                                 <form onSubmit={(event) => {
-                                    handlecomment(event.target[0].value, e._id)
+                                    event.preventDefault()
+
+                                    handlecomment(event.target[0].value, e._id)        
+                                                                event.target.reset();
+
                                 }}>
 
-                                    <input type="text" placeholder="add a comment" className='form' />
+                                    <input type="text" placeholder="add a comment" className='form'  aria-multiline="true" style={{width:'500px'}}  />
                                 </form>
                                 {/* <InputEmoji     ></InputEmoji> */}
 
@@ -798,7 +844,7 @@ const Share = () => {
                                             <div class="profile-thumb">
                                                 <a href="#">
                                                     <figure class="profile-thumb-middle">
-                                                        <img src={profilePicture} alt="profile picture" />
+                                                        <img src={record.commenterphoto} alt="profile picture" />
                                                     </figure>
                                                 </a>
                                             </div>

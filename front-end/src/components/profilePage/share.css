@@ -179,29 +179,9 @@ position: right;
 
 }
 
-.btn {
-  
-  transform: translateY(-3px);
- border: none;
-  color: #ffffff;
-  padding: 10px 10px;
-  text-align: center;
-  font-size: 16px;
-  margin: 4px 2px;
-  opacity: 0.6;
-  transition: 0.3s;
-  display: inline-block;
-  text-decoration: none;
-  cursor: pointer;
-  border-radius: 12px;
-  padding-left: 1.6rem !important;
-  padding-right: 1.6rem !important;
-  background-color: #dc4734; }
 
-  .btn:hover {
-    
-    width: 250px;
-    letter-spacing: 1px;}
+
+
   
 
 

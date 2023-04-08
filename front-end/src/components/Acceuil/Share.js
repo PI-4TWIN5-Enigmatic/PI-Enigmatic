@@ -146,6 +146,7 @@ const Share = () => {
                 const data = {
                     posterId: user._id,
                     message: messagee.current.value,
+                   
                     img: result.data.secure_url,
                     likers: [],
                     comments: [],
@@ -186,6 +187,8 @@ const Share = () => {
                 text: text,
                 commenterpseudo: user.firstName,
                 commenterid: idCurrentUser,
+                commenterphoto: user.profilePicture,
+
             })
 
         }).then(response => response.json())
@@ -271,6 +274,9 @@ const Share = () => {
                     posterId: user._id,
                     message: messagee.current.value,
                     img: result.data.secure_url,
+                    posterphoto: user.profilePicture,
+                    posterpseudo:user.firstName,
+                    posterlastname:user.lastName,
                     likers: [],
                     comments: [],
 
@@ -542,14 +548,14 @@ const Share = () => {
                             <div className="profile-thumb">
                                 <a href="#">
                                     <figure className="profile-thumb-middle">
-                                        <img src={profilePicture} alt="profile picture" />
+                                        <img src={e.posterphoto} alt="profile picture" />
                                     </figure>
                                 </a>
                             </div>
 
 
                             <div className="posted-author">
-                                <h6 className="author"><a href="profile.html">{firstName} {lastName}</a></h6>
+                                <h6 className="author"><a href="profile.html">{e.posterpseudo} {e.posterlastname}</a></h6>
                                 <span className="date">{moment(e.createdAt).fromNow()}</span>
 
                             </div>
@@ -699,7 +705,7 @@ const Share = () => {
                                             <div class="profile-thumb">
                                                 <a href="#">
                                                     <figure class="profile-thumb-middle">
-                                                        <img src={profilePicture} alt="profile picture" />
+                                                        <img src={record.commenterphoto} alt="profile picture" />
                                                     </figure>
                                                 </a>
                                             </div>
