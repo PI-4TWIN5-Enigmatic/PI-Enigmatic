@@ -72,6 +72,10 @@ const associationSchema = new mongoose.Schema(
         founder: { 
            type: mongoose.Schema.Types.ObjectId, ref: 'user' ,
         },
+        coverPicture: {
+          type: String,
+          default: "",
+        },
         logoPicture: { type: String },
         phone: { type: String , required: true , unique: true },
     }, { timestamps: true});
