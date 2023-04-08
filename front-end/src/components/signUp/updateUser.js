@@ -23,10 +23,7 @@ function UpdateUser() {
     const [sexe, setSexe] = useState('');
     const navigate = useNavigate()
     const { id } = useParams();
-    //Modal
-    const [show, setShow] = useState(false);
-    const handleClose = () => setShow(false);
-    const handleShow = () => setShow(true);
+    
 
     const [errors,setErrors] = useState(
         {

@@ -1,10 +1,11 @@
 const mongoose = require('mongoose');
+const { ObjectId } = mongoose.Schema.Types
 
 const PostSchema = new mongoose.Schema(
   {
     posterId: {
-      type: String,
-      required: true
+      type: ObjectId,
+      ref:"USER"
     },
     message: {
       type: String,
@@ -24,10 +25,9 @@ const PostSchema = new mongoose.Schema(
     comments: {
       type: [
         {
-          commenterId:String,
-          commenterPseudo: String,
-          text: String,
-          timestamp: Number,
+          text:{type: String},
+          commenterid:{type:ObjectId},
+          commenterpseudo:{type :String},
         }
       ],
       required: true,

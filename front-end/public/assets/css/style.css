@@ -424,6 +424,7 @@ textarea:focus {
 @media only screen and (min-width: 768px) and (max-width: 991.98px) {
   .container {
     max-width: 600px;
+   
   }
 }
 
@@ -1277,6 +1278,7 @@ textarea:focus {
   border-radius: 0;
 }
 
+
 .mobile-menu ul {
   display: -webkit-box;
   display: -webkit-flex;
@@ -1528,6 +1530,7 @@ textarea:focus {
   color: #fff;
   font-size: 12px;
   font-weight: 500;
+  
   line-height: 1;
   padding: 14px 30px 12px;
   border-radius: 40px;
@@ -1559,19 +1562,18 @@ textarea:focus {
 }
 
 .author {
-  font-size: 14px;
-  font-weight: 800;
-  line-height: 1;
-  text-transform: capitalize;
+  font-size: 12px;
+  display: flex;
+  flex-direction: column;
+  
 }
 
 .author a {
-  color: #333333;
+  color: #dc4734;
 }
 
 .author a:hover {
   color: #dc4734;
-  text-decoration: underline;
 }
 
 .post-settings-bar {
@@ -1877,6 +1879,7 @@ textarea:focus {
 .profile-thumb {
   display: inline-block;
   position: relative;
+
 }
 
 .profile-thumb-middle {
@@ -1886,6 +1889,7 @@ textarea:focus {
   border-radius: 50%;
   overflow: hidden;
 }
+
 
 .profile-thumb.active {
   overflow: visible;
@@ -1903,7 +1907,7 @@ textarea:focus {
   content: "";
   border-radius: 50%;
   position: absolute;
-  background-color: #09ae82;
+  background-color: #275347;
 }
 
 .profile-banner-small {
@@ -1918,7 +1922,7 @@ textarea:focus {
   content: '';
   position: absolute;
   pointer-events: none;
-  border: 10px solid rgba(198, 165, 107, 0.3);
+  border: 10px solid rgba(219, 219, 219, 0.3);
 }
 
 .profile-thumb-2 {
@@ -2458,14 +2462,15 @@ textarea:focus {
 
 .submit-btn {
   font-size: 16px;
-  font-weight: 500;
+  font-weight: 100%;
   color: #fff;
   line-height: 1;
   padding: 15px 20px;
   display: block;
   border: 1px solid transparent;
   background-color: #dc4734;
-  width: 100%;
+  width: 50%;
+  height: 100%;
   margin-top: 23px;
 }
 
@@ -2878,6 +2883,7 @@ textarea:focus {
   color: #333333;
   text-transform: capitalize;
 }
+
 
 .load-more-btn:hover {
   color: #dc4734;

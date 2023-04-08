@@ -18,7 +18,7 @@ import Cookies from 'js-cookie';
 const ProfilePage = () => {
 
   const [user,setUser]= useState(null);
-  const {id} = useParams();
+const id=useParams();
   const [_, setCookies] = useCookies(["access_token"]);
 
 
@@ -81,10 +81,12 @@ useEffect(()=>{
 
     <Navbar />
     <main >
-        <div className ="main-wrapper" style={{backgroundColor:'#bcbcbc42'}}>
-            <img className ="profile-banner-large bg-img" src="../assets/images/banner/profile-banner.jpg" />
-          
-        <About/>
+        <div className ="main-wrapper" style={{backgroundColor:'#bcbcbc42', borderradius: '200%'}}>
+        <div className ="container">
+            <img className ="profile-banner-large bg-img" src="../../assets/unnamed.png" width="3000px"  />
+                  <About />
+
+          </div>
 
 
         <div className ="container">
@@ -125,7 +127,6 @@ useEffect(()=>{
     </main>
     
 
-    
     
     
     </>

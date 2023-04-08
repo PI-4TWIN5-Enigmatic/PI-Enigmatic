@@ -251,6 +251,7 @@ function Signup() {
                 emaill,
                 passwordd,
             })
+
            
            
             console.log(login)
@@ -261,6 +262,8 @@ function Signup() {
               //  setValues({ email: '', password: ''})
               
               setCookies("access_token", login.data.token);
+
+              
               window.localStorage.setItem('user', JSON.stringify(login.data.user));
                 console.log(login.data.user.isActive)
                 if (!login.data.user.isActive) {
@@ -271,7 +274,7 @@ function Signup() {
                 
                
                 if (login.data.user.isAdmin) {
-                    alert('admin is logged in')
+                    toast.info("Admin logged in ")
 
                     
 
@@ -280,11 +283,15 @@ function Signup() {
                 } else {
 
                     window.localStorage.setItem("id", login.data.id);
+
+
                     window.localStorage.setItem("token", login.data.token);
+
+
                     
   
                     
-                    alert('user is logged in')
+                    toast.info("User logged in ")
 
 
 

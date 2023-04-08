@@ -12,15 +12,15 @@ const About =() => {
     const [cookies, setCookies] = useCookies(["access_token"]);
     const currentUser = JSON.parse(localStorage.getItem('user'))
     const [user,setUser]= useState(null);
-    const { id } = window.localStorage.getItem("id")
+    const { id } =useParams()
+    const [following, setFollowing] = useState(false);
+
 //     const [userProfileImage, setUserProfileImage] = useState({});
   
   
     const getUser = async()=>{
       const response = await fetch(
-        `http://localhost:8000/api/getuser/${window.localStorage.getItem(
-          "id"
-        )}`,
+        `http://localhost:8000/api/getuser/${id}`,
         {
           method: "GET",
         }
@@ -29,8 +29,14 @@ const About =() => {
       const data = await response.json();
       setUser(data);
       console.log(data);
+      setFollowing(data.followedProfil.includes(currentUser?._id));
   };
 
+
+ 
+       
+        
+     
   useEffect(()=>{
     getUser();
 },[]);
@@ -46,7 +52,7 @@ if(!user) return null ;
     
 const handleClick = async (user) => {
   const conversation = {
-    senderId: user._id,
+    senderId: user?._id,
     receiverId: id,
     
   };
@@ -57,6 +63,31 @@ const handleClick = async (user) => {
     console.log(conversation)
   } catch (err) {
     console.log(err);
+  }
+};
+
+const handleFollow = async () => {
+  try {
+    const res = await axios.post(`http://127.0.0.1:8000/api/users/${currentUser._id}/follow`, {
+      targetUserId: user?._id
+    });
+    setFollowing(true);
+    console.log(res.data.message);
+  } catch (err) {
+    console.error(err);
+  }
+};
+
+
+const handleUnfollow = async () => {
+  try {
+    const res = await axios.post(`http://127.0.0.1:8000/api/users/${currentUser._id}/unfollow`, {
+      targetUserId: user?._id
+    });
+    setFollowing(false);
+    console.log(res.data.message);
+  } catch (err) {
+    console.error(err);
   }
 };
     
@@ -103,8 +134,19 @@ const handleClick = async (user) => {
                         </Link>
                       </li>
                       <li>
-                     <button onClick={() => handleClick(currentUser)}> New conversation <BiMessageAdd/></button>
+                      {currentUser?._id === id ? null : (
+       <div>
+                      {following  ? (
+        <button onClick={handleUnfollow}>Unfollow</button>
+      ) : (
+        <button onClick={handleFollow}>Follow</button>
+      )}
+      </div>)}
                       </li>
+                      {currentUser?._id === id ? null : (
+                      <li>
+                     <button onClick={() => handleClick(currentUser)}> New conversation <BiMessageAdd/></button>
+                      </li>)}
                     </ul>
                   </nav>
                 </div>

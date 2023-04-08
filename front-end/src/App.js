@@ -1,17 +1,18 @@
 import './App.css';
 
-import Test from './components/test'
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'react-toastify/dist/ReactToastify.css';
 import NotFound from './components/NotFound';
 import {BrowserRouter,Route, Routes} from 'react-router-dom'
 import ProfilePage from './components/profilePageAssociation/ProfilePage'
+
 import ProfilePagee from './components/profilePage/ProfilePage'
 import { ToastContainer } from 'react-toastify';
 import ChangerPassword from './components/changerPassword/changerPassword';
 
 import Signup from './components/signUp/signup'
 
+import ProfilePageUser from './components/Acceuil/ProfilePageUser'
 
 
 import Create from './components/association/create';
@@ -64,6 +65,8 @@ function App() {
     <Route path="/presenceList/:id" element={<PresenceList />}></Route>
     <Route path="/partners/:id" element={<Partners/>}></Route>
     <Route path="/partnershipConfirmed" element={<PartnershipConfirmed />}></Route>
+    <Route path="/HomePage/:id" element={<ProfilePageUser />}></Route>
+
 
     <Route path="*" element={<NotFound />}></Route>
     {/* <Route path="/" exact= {true}  name= 'Home'></Route>

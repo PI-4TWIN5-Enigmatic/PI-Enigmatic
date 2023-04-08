@@ -1,6 +1,7 @@
 const mongoose = require('mongoose')
 const bcrypt = require('bcrypt');
 const saltRounds = 10;
+const { ObjectId } = mongoose.Schema.Types
 
 const userSchema = new mongoose.Schema(
   {
@@ -67,7 +68,8 @@ const userSchema = new mongoose.Schema(
 
     },
     likes: {
-      type: [String]
+      type: [String],
+      required: true,
     },
     sexe: { type: String, enum: ['Male', 'Female'] },
     phone: { type: String },
@@ -77,11 +79,20 @@ const userSchema = new mongoose.Schema(
       default: false
 
 
+
+    },
+    coverPicture: {
+      type: String,
+      default: "",
     },
     friends: { type: Number, default: 0 },
     profilePicture: { type: String },
-    followedProfil: { type: Number, default: 0 },
-    followingProfil: { type: Number, default: 0 },
+    picturePath:{type: String},
+    userPicturePath: {type:String},
+
+
+    followedProfil: [{ type: mongoose.Types.ObjectId, ref:"User" }],
+    followingProfil: [{ type: mongoose.Types.ObjectId, ref:"User" }],
     password: { type: String },
     role: {
       type: String,

@@ -1,0 +1,24 @@
+.homeicon{
+    color: rgb(79, 79, 79);
+    width: 400px;
+
+}
+    
+    .homeicon:hover{
+      color: #333333;
+    }
+
+    .icon-e {
+        color: gray;
+        font-size: 30px;
+        margin-right: 25px;
+
+      }
+      .icon-e:hover{
+        color: #222121;
+      }
+    
+
+    .submit-btn{
+      size: 20px;
+    }

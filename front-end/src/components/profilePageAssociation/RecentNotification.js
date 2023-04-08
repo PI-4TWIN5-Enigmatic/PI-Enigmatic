@@ -2,6 +2,8 @@ import React from 'react'
 import { useEffect, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
 
+import { useCookies } from 'react-cookie';
+
 const RecentNotifications = () => {
 
     const idCurrentUser =window.localStorage.getItem("id");
@@ -10,6 +12,8 @@ const RecentNotifications = () => {
     const [association,setAssociation]= useState(null);
     const [alpha,setAlpha]= useState(null);
     const {id} = useParams();
+    const [cookies, _] = useCookies(['access_token'])
+
 
     useEffect(() => {
 
@@ -55,9 +59,9 @@ const RecentNotifications = () => {
                                                     </figure>
                                             </div>
           
-                                            <div className="unorder-list-info">
+                                           (   <div className="unorder-list-info">
                                                 <h3 className="list-title"><Link to={`/createEvent/${id}`}>Want to add an event ? Click right here </Link></h3>
-                                            </div>
+                                            </div>)
 
                                         </li>                                                                                      
                                 </div>
