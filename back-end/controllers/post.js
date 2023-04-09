@@ -6,20 +6,19 @@ const Association = require('../models/association')
 
 
 
-// module.exports.readPost = async (req, res) => {
-//   try{
-//   const { id } = req.params;
-//   const user = await UserModel.findById(id);
-//     const userr = await UserModel.findOne(followingProfil);
+module.exports.all = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const user = await UserModel.findById(id);
+    const following = [...user.followingProfil, id]; // add user ID to following array
+    const posts = await PostModel.find({ posterId: { $in: following } }).sort({ createdAt: -1 });
+    res.status(200).json(posts);
+  } catch (err) {
+    res.status(500).json(err);
+  }
+}
 
-//     const posts= await  postModel.find({posterId:userr.followingProfil})
-//     res.status(200).json(posts);
 
-//   } catch (err) {
-//     res.status(500).json(err);
-//   }
-
-// }
 
 
 
@@ -31,22 +30,22 @@ module.exports.readPost = (req, res) => {
 };
 
 
-  //get timeline posts
+//   //get timeline posts
 
-  module.exports.gettimeline = async (req, res) => {
-    try {
-    const currentUser = await UserModel.findById(req.body.posterId);
-    const userPosts = await postModel.find({ posterId: currentUser._id });
-    const friendPosts = await Promise.all(
-      currentUser.followings.map((friendId) => {
-        return Post.find({ userId: friendId });
-      })
-    );
-    res.json(userPosts.concat(...friendPosts))
-  } catch (err) {
-    res.status(500).json(err);
-  }
-};
+//   module.exports.gettimeline = async (req, res) => {
+//     try {
+//     const currentUser = await UserModel.findById(req.body.posterId);
+//     const userPosts = await postModel.find({ posterId: currentUser._id });
+//     const friendPosts = await Promise.all(
+//       currentUser.followingProfil.map((followingProfil) => {
+//         return Post.find({ userId: followingProfil });
+//       })
+//     );
+//     res.json(userPosts.concat(...friendPosts))
+//   } catch (err) {
+//     res.status(500).json(err);
+//   }
+// };
 
 module.exports.createPost = async (req, res) => {
 
@@ -345,7 +344,6 @@ module.exports.deleteCommentPost = (req, res) => {
   }
 };
 
-//get user's all posts
 
 module.exports.getallposts = async (req, res) => {
   try {

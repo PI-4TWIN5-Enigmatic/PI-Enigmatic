@@ -15,10 +15,11 @@ import './profilepage.css'
 import { useGetUserID } from '../../hooks/useGetUserID'
 
 const ProfilePageUser = () => {
-  const id = window.localStorage.getItem("id")
 
   const [user, setUser] = useState(null);
-
+ 
+  const {id} = useParams();
+  const token = useSelector((state) => state.token);
 
   useEffect(() => {
     fetch(`http://localhost:8000/api/getuser/${id}`)
@@ -31,30 +32,11 @@ const ProfilePageUser = () => {
   }, [id]);
 
 
-  
-  const {idd} = useParams();
-  const token = useSelector((state) => state.token);
+ 
 
 
 
-  const getUser = async()=>{
-    const response = await fetch (`http://localhost:8000/api/getuser/${idd}` , {
-    method:"GET",
-    headers: { Authorization: `Bearer ${token}` },
-
-
-
-    });
-
-    const data = await response.json();
-    setUser(data);
-    console.log(data);
-};
-
-
-useEffect(()=>{
-    getUser();
-},[]);
+ 
 
 if(!user) return null ;
 

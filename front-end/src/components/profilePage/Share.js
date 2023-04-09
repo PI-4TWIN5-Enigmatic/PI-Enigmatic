@@ -25,6 +25,9 @@ import { Cookies, useCookies } from 'react-cookie';
 
 
 const Share = () => {
+    const currentUser = JSON.parse(localStorage.getItem('user'))
+
+
 
 
     const idCurrentUser = window.localStorage.getItem("id");
@@ -73,7 +76,7 @@ const Share = () => {
 
     const [posterId, setposterid] = useState('');
     const [iddd, setid] = useState(null);
-    const [tet,settext]=useState('');
+    const [tet, settext] = useState('');
 
 
 
@@ -189,8 +192,8 @@ const Share = () => {
         axios.post("https://api.cloudinary.com/v1_1/dxououehj/upload", form)
             .then((result) => {
                 const data = {
-                    posterId: user._id,
-                    
+                    posterId: user?._id,
+
                     message: messagee.current.value,
                     img: result.data.secure_url,
                     likers: [],
@@ -230,26 +233,26 @@ const Share = () => {
             },
             body: JSON.stringify({
                 text: text,
-                commenterpseudo: user.firstName,
+                commenterpseudo: currentUser.firstName,
                 commenterid: idCurrentUser,
-                commenterphoto: user.profilePicture,
+                commenterphoto: currentUser?.profilePicture
 
             })
 
         }).then(response => response.json())
 
-        .then(result => {
-            const newData = posts.map(e=>{
-                if (e._id==result._id){
-                    return result
-                }return e
-                
-            }) ;
-    setData(newData)  
-    settext(text)
-    }) ;
-   
-  
+            .then(result => {
+                const newData = posts.map(e => {
+                    if (e._id == result._id) {
+                        return result
+                    } return e
+
+                });
+                setData(newData)
+                settext(text)
+            });
+
+
     }
 
 
@@ -293,18 +296,18 @@ const Share = () => {
                 console.log('Post deleted successfully');
                 toast.info("Post have been deleted")
 
-            }) .then(result => {
-                const newData = posts.map(e=>{
-                    
-                        return e._id !==result._id
+            }).then(result => {
+                const newData = posts.map(e => {
 
-                    
-                    
+                    return e._id !== result._id
+
+
+
                 })
-            setData(newData)
-            window.location.reload();
+                setData(newData)
+                window.location.reload();
 
-        }
+            }
             )
             .catch(error => {
                 console.error('Error deleting item', error);
@@ -337,12 +340,12 @@ const Share = () => {
 
 
                 const newPost = {
-                    posterId: user._id,
+                    posterId: user?._id,
                     message: messagee.current.value,
                     img: result.data.secure_url,
-                    posterphoto: user.profilePicture,
-                    posterpseudo:user.firstName,
-                    posterlastname:user.lastName,
+                    posterphoto: currentUser?.profilePicture,
+                    posterpseudo: currentUser.firstName,
+                    posterlastname: currentUser.lastName,
                     likers: [],
                     comments: [],
 
@@ -352,7 +355,7 @@ const Share = () => {
                 axios.post("http://localhost:8000/api/post", newPost)
                     .then(response => {
                         console.log(response);
-                        window.location.reload();
+                window.location.reload();
                         // Handle success response
                     })
                     .catch(error => {
@@ -390,17 +393,19 @@ const Share = () => {
         }).then(response => response.json())
 
             .then(result => {
-            const newData = posts.map(e=>{
-                if (e._id==result._id){
-                    return result
-                }else{return e
-                }
+                const newData = posts.map(e => {
+                    if (e._id == result._id) {
+                        return result
+                    } else {
+                        return e
+                    }
+                })
+                    ;
+                setData(newData)
             })
-            ;
-            setData(newData)
-        })}
-    
-    
+    }
+
+
 
 
 
@@ -418,17 +423,18 @@ const Share = () => {
         }).then(response => response.json())
 
             .then(result => {
-                const newData = posts.map(e=>{
-                    if (e._id==result._id){
+                const newData = posts.map(e => {
+                    if (e._id == result._id) {
                         return result
-                    }return e
-                    
-                }) ;
-        setData(newData)
+                    } return e
 
-                
+                });
+                setData(newData)
 
-    })}
+
+
+            })
+    }
 
 
 
@@ -497,16 +503,22 @@ const Share = () => {
                         <div className="profile-thumb">
                             <a href="#">
                                 <figure className="profile-thumb-middle">
-                                    <img src={profilePicture} alt="profile picture" />
+                                    <img src={currentUser?.profilePicture} alt="profile picture" />
                                 </figure>
                             </a>
                         </div>
+                       
 
-                        <div className="share-content-box w-100" onClick={handleShoww}>
+                        
+
+
+                        <div className="share-content-box w-100"    onClick={handleShoww}  >
 
                             <form className="share-text-box">
+                           
                                 <InputEmoji name="share" className="share-text-field"
-                                    aria-disabled="true" placeholder={"what's on your mind " + firstName + " ? "}
+                                    aria-disabled="true" placeholder={"what's on your mind " + firstName + " ? "} 
+
                                     data-toggle="modal" data-target="#textbox" id="email"
                                 >
 
@@ -517,7 +529,7 @@ const Share = () => {
 
                         </div>
 
-                        {cookies.access_token && (<Modal class="modal fade" id="textbox" aria-labelledby="textbox" style={{ width: '1900px', marginTop: '150px' }} show={showModall} onHide={handleClosee}>
+                        {cookies.access_token && (currentUser?._id==user?._id) && (<Modal class="modal fade" id="textbox" aria-labelledby="textbox" style={{ width: '1900px', marginTop: '150px' }} show={showModall} onHide={handleClosee}>
                             <div class="modal-content" style={{
                                 height: '150%',
                                 width: '150%'
@@ -532,7 +544,7 @@ const Share = () => {
                                         <div className="profile-thumb">
                                             <a href="#">
                                                 <figure className="profile-thumb-middle">
-                                                    <img src={profilePicture} alt="profile picture" />
+                                                    <img src={currentUser?.profilePicture} alt="profile picture" />
                                                 </figure>
                                             </a>
                                         </div>
@@ -540,9 +552,13 @@ const Share = () => {
 
 
 
-                                        <textarea class="share-field-big custom-scroll" placeholder="De quoi souhaitez vous discutez?"
+                                       {(currentUser?._id==user?._id) ? ( <textarea class="share-field-big custom-scroll" placeholder="De quoi souhaitez vous discutez?"
                                             onChange={handleInputChange} data-target="#textbox" id="email"
-                                            ref={messagee}   ></textarea>  </div>
+                                            ref={messagee}   ></textarea> ):( 
+                                                <textarea class="share-field-big custom-scroll" placeholder={"Write something for  " + firstName +" ..." }
+                                           data-target="#textbox" id="email"
+                                               ></textarea> )}
+                                              </div>
                                 </Modal.Body>
 
 
@@ -662,7 +678,6 @@ const Share = () => {
 
                 {Array.from(posts).map((e) =>
 
-
                     <div className="card" key={e._id}>
 
 
@@ -679,49 +694,85 @@ const Share = () => {
 
 
                             <div className="posted-author">
-                                <h6 className="author"><a href="profile.html">{e.posterpseudo}  {e.posterlastname} </a></h6>
-                                <span className="date">{moment(e.createdAt).fromNow()}</span>
+                          
+                                                
+                                 <h6 className="author"><a href="profile.html">{e.posterpseudo}  {e.posterlastname} </a></h6>  {/*):(
+                                    <h6 className="author"><a href="profile.html">{e.posterpseudo}  {e.posterlastname}   </a>
+                                <h7 >envoyer à {user.firstName}</h7> </h6>)}*/}
+                                <span className="date">{moment(e.createdAt).fromNow()}</span> 
 
                             </div>
 
-                            <div className="post-settings-bar">
+                            { (currentUser?._id==user?._id  ) && (  <div className="post-settings-bar">
                                 <span></span>
                                 <span></span>
                                 <span></span>
-                                <div className="post-settings arrow-shape">
+                               <div className="post-settings arrow-shape">
                                     <ul>
-                                        <li><button onClick={() => setisupdated(!isupdated)}>edit post</button ></li>
+                                   
+                                        <li>
+                                            <button onClick={() => {
+                                                if (currentUser?._id==user?._id  ) {
+                                                    setisupdated(e._id);
+                                                }
+                                            }}>edit post</button>
+                                        </li>
 
-
-
-
-                                        <li><button onClick={() => handleDelete(e._id)}>delete post </button></li>
+                                        { (currentUser?._id==user?._id  ) && (
+                                        <li><button onClick={() => handleDelete(e._id)}>delete post </button></li>)}
                                     </ul>
                                 </div>
-                            </div>
-                        </div>
+                           </div>
+                       )}  </div>
                         <div className="post-content">
                             {isupdated === false && <p className="post-desc">
                                 {e.message}
                             </p>}
-                            {isupdated && (
-                                <div className='update-post'>
+                            {isupdated === e._id ? (
+                                <div className='update-post'  >
+
+                                    <button type="button" data-mdb-ripple-color="dark" onClick={() => setisupdated(false)} style={{ paddingLeft: "510px" }}>
+                                        X
+                                    </button>
                                     <textarea className='textareaaaa' defaultValue={e.message}
                                         onChange={(e) => setmessage(e.target.value)} />
-                                        
+
                                     <img src={e.img} alt="postpicture" style={{ marginLeft: "3px" }} />
 
-                                        <label className="iconn-wrapper" >
-                                            <FaPhotoVideo className="icon-bluee" style={{marginLeft: "5px"}} />
+                                    <label className="iconn-wrapper" >
+                                        <FaPhotoVideo className="icon-bluee" style={{ marginLeft: "5px" }} />
 
-                                            <span className="label">Photo </span>
-                                            <input style={{ display: 'none' }} type="file" id="file" accept=".png,.jpg,.jpeg" onChange={(e) => setimage(e.target.files[0])} />
+                                        <span className="label">Photo </span>
+                                        <input style={{ display: 'none' }} type="file" id="file" accept=".png,.jpg,.jpeg" onChange={(e) => setimage(e.target.files[0])} />
 
-                                        </label>
+                                    </label>
                                     <div className='button-container'>
                                         <button className='btn' onClick={() => handleupdate(e._id)}>valider modification</button>
                                     </div></div>
+                            ) : (
+
+                                <div className="post-content">
+                                    {isupdated && <p className="post-desc">
+                                        {e.message}
+                                    </p>}
+
+
+                                    {isupdated && (<img src={e.img} alt="postpicture" style={{ marginLeft: "0px" }} />)}
+
+
+
+
+                                </div>
+
+
+
                             )}
+
+
+
+
+
+
                             {/* <input type="email" defaultValue={e.message} onChange={(e) => setmessage(e.target.value)}  className="single-field" placeholder="Email"/>
 
                             <button onClick={() => handleupdate(e._id)}>hi</button>
@@ -732,8 +783,8 @@ const Share = () => {
                                         <figure className="post-thumb">
                                             <a className="gallery-selector" >
 
-                                             
-                            {!isupdated && (   <img src={e.img} alt="postpicture" style={{ marginLeft: "80px" }} />)}
+
+                                                {!isupdated && (<img src={e.img} alt="postpicture" style={{ marginLeft: "80px" }} />)}
 
 
 
@@ -751,7 +802,7 @@ const Share = () => {
                         <div className="post-meta">
 
 
-                            {!e.likers.includes(user._id) ? (
+                            {!e.likers.includes(user?._id) ? (
 
                                 <button class="post-meta-like" style={{ color: "black" }}>
                                     {cookies.access_token && (<i class="bi bi-heart-beat" style={{ color: "black" }}
@@ -763,7 +814,7 @@ const Share = () => {
                                 <button class="post-meta-like" style={{ color: "red" }}>
                                     {cookies.access_token && (<i class="bi bi-heart-beat" style={{ color: "red" }}
                                         onClick={() => { unlikePost(e._id) }}></i>)}
-                                   {cookies.access_token &&  ( <span> {e.likers.length}   </span>)}
+                                    {cookies.access_token && (<span> {e.likers.length}   </span>)}
                                 </button>)}
 
 
@@ -814,12 +865,12 @@ const Share = () => {
                                 <form onSubmit={(event) => {
                                     event.preventDefault()
 
-                                    handlecomment(event.target[0].value, e._id)        
-                                                                event.target.reset();
+                                    handlecomment(event.target[0].value, e._id)
+                                    event.target.reset();
 
                                 }}>
 
-                                    <input type="text" placeholder="add a comment" className='form'  aria-multiline="true" style={{width:'500px'}}  />
+                                    <input type="text" placeholder="add a comment" className='form' aria-multiline="true" style={{ width: '500px' }} />
                                 </form>
                                 {/* <InputEmoji     ></InputEmoji> */}
 
@@ -911,19 +962,23 @@ const Share = () => {
 
 
 
-                        </div></div>
+             </div> </div>
+
+
+
+        
+
+    
 
 
 
 
-
-                )}
-
-
+            
+       )}         
 
 
-
-            </div>
+       
+                  </div>
 
 
 
