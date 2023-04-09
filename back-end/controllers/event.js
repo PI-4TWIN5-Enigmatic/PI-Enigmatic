@@ -388,5 +388,28 @@ exports.deleteEvent = (req, res) => {
               res.status(404).json({error:err.message});
       }
       }
+
+
+      exports.getEventsByIds = async (req, res) => {
+        try {
+          const { ids } = req.body;
+          const events = [];
+      
+          for (const id of ids) {
+            const e = await Event.findById(id);
+      
+            if (e === null) {
+              console.log(`events ${id} not found in database`);
+              continue;
+            }
+      
+            events.push(e);
+          }
+      
+          res.status(200).json(events);
+        } catch (err) {
+          res.status(500).json({ error: err.message });
+        }
+      }
     
       
