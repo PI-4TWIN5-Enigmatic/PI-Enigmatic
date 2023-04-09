@@ -65,7 +65,12 @@ function App() {
     <Route path="/presenceList/:id" element={<PresenceList />}></Route>
     <Route path="/partners/:id" element={<Partners/>}></Route>
     <Route path="/partnershipConfirmed" element={<PartnershipConfirmed />}></Route>
-    <Route path="/HomePage/:id" element={<ProfilePageUser />}></Route>
+
+    
+    
+    
+    {cookies.access_token &&
+    <Route path="/HomePage/:id" element={<ProfilePageUser />}></Route>}
 
 
     <Route path="*" element={<NotFound />}></Route>

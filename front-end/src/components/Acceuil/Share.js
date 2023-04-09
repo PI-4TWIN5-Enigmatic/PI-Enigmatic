@@ -24,6 +24,8 @@ import axios from 'axios';
 
 const Share = () => {
 
+    const currentUser = JSON.parse(localStorage.getItem('user'))
+    const [isupdated, setisupdated] = useState(false);
 
     const postid = useParams();
     const idCurrentUser = window.localStorage.getItem("id");
@@ -37,13 +39,14 @@ const Share = () => {
     const handleShoww = () => setShoww(true);
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
-
+    const [img, setimage] = useState('');
+    const [message, setmessage] = useState('');
 
 
     const [isVisible, setIsVisible] = useState(true);
     const toggleVisibility = () => {
         setIsVisible(!isVisible);
-    };
+    }
 
 
 
@@ -70,7 +73,7 @@ const Share = () => {
 
 
     const getpostbyid = async () => {
-        const response = await fetch("http://localhost:8000/api/post/getpost", {
+        const response = await fetch(`http://localhost:8000/api/post/all/${id}`, {
             method: "GET", headers: {
                 "Content-Type": "application/json",
 
@@ -85,7 +88,27 @@ const Share = () => {
     useEffect(() => {
         getpostbyid();
     }, []);
+    
 
+    
+  
+    const get = async () => {
+        const response = await fetch("http://localhost:8000/api/post/getpost", {
+            method: "GET", headers: {
+                "Content-Type": "application/json",
+
+            },
+
+        });
+
+        const data = await response.json();
+        
+
+        console.log(data);
+    };
+    useEffect(() => {
+        get();
+    }, []);
 
 
 
@@ -132,6 +155,43 @@ const Share = () => {
 
 
 
+    const handleupdate = (id) => {
+
+        const form = new FormData()
+        form.append('file', img)
+        form.append('upload_preset', "siwarse");
+        axios.post("https://api.cloudinary.com/v1_1/dxououehj/upload", form)
+            .then((result) => {
+
+
+
+
+                const data = {
+
+                    message,
+                    img: result.data.secure_url,
+
+
+                };
+
+                axios.put(`http://localhost:8000/api/post/updatepost/${id}`, data)
+                    .then(response => {
+                        console.log(response);
+                        toast.info("Post have been updated")
+                        // Handle success response
+                    })
+                    .catch(error => {
+                        console.error(error);
+                        // Handle error response
+                    });
+
+
+            })
+    }
+
+
+
+
 
 
 
@@ -144,8 +204,9 @@ const Share = () => {
         axios.post("https://api.cloudinary.com/v1_1/dxououehj/upload", form)
             .then((result) => {
                 const data = {
-                    posterId: user._id,
+                    posterId: user?._id,
                     message: messagee.current.value,
+                   
                     img: result.data.secure_url,
                     likers: [],
                     comments: [],
@@ -174,6 +235,7 @@ const Share = () => {
     const handlecomment = (text, e) => {
 
 
+        const currentUser = JSON.parse(localStorage.getItem('user'))
 
 
         // Send a POST request to the backend API
@@ -184,8 +246,10 @@ const Share = () => {
             },
             body: JSON.stringify({
                 text: text,
-                commenterpseudo: user.firstName,
+                commenterpseudo: currentUser.firstName,
                 commenterid: idCurrentUser,
+                commenterphoto: currentUser.profilePicture,
+
             })
 
         }).then(response => response.json())
@@ -268,9 +332,12 @@ const Share = () => {
 
 
                 const newPost = {
-                    posterId: user._id,
+                    posterId: user?._id,
                     message: messagee.current.value,
                     img: result.data.secure_url,
+                    posterphoto: user.profilePicture,
+                    posterpseudo:user.firstName,
+                    posterlastname:user.lastName,
                     likers: [],
                     comments: [],
 
@@ -529,7 +596,6 @@ const Share = () => {
 
 
                 </div>
-
                 {Array.from(posts).map((e) =>
 
 
@@ -542,14 +608,14 @@ const Share = () => {
                             <div className="profile-thumb">
                                 <a href="#">
                                     <figure className="profile-thumb-middle">
-                                        <img src={profilePicture} alt="profile picture" />
+                                        <img src={e.posterphoto} alt="profile picture" />
                                     </figure>
                                 </a>
                             </div>
 
 
                             <div className="posted-author">
-                                <h6 className="author"><a href="profile.html">{firstName} {lastName}</a></h6>
+                                <h6 className="author"><a href="profile.html">{e.posterpseudo} {e.posterlastname}</a></h6>
                                 <span className="date">{moment(e.createdAt).fromNow()}</span>
 
                             </div>
@@ -560,43 +626,75 @@ const Share = () => {
                                 <span></span>
                                 <div className="post-settings arrow-shape">
                                     <ul>
+                                   
+                                      {(currentUser?._id==e.posterId )  && (  <li>
+                                            <button onClick={() => {
+                                                if (currentUser?._id==e.posterId ) {
+                                                    setisupdated(e._id);
+                                                }
+                                            }}>edit post</button>
+                                        </li>)}
 
-                                        <li><button onClick={handleshowme}>edit post</button ></li>
-                                        <Modal className='sharebox' show={showModalme} onHide={handleCloseme} >
-                                            <Modal.Header className='modelheader2' closeButton>  </Modal.Header>
-                                            <Modal.Body className='modelcontentt'>
-
-
-                                                <div className='class="share-creation-state__member-info'>
-                                                    <div className="profile-thumb">
-                                                        <a href="#">
-                                                            <figure className="profile-thumb-middle">
-                                                                <img src={profilePicture} alt="profile picture" />
-                                                            </figure>
-                                                        </a>
-                                                    </div>
-
-
-                                                </div>
-                                            </Modal.Body></Modal>
-
-
-                                        <li><button onClick={() => handleDelete(e._id)}>delete post </button></li>
+                                        { (currentUser?._id==user?._id  ) && (
+                                        <li><button onClick={() => handleDelete(e._id)}>delete post </button></li>)}
                                     </ul>
                                 </div>
-                            </div>
-                        </div>
+                           </div>
+                         </div>
                         <div className="post-content">
-                            <p className="post-desc">
+                            {isupdated === false && <p className="post-desc">
                                 {e.message}
-                            </p>
+                            </p>}
+                            {isupdated === e._id ? (
+                                <div className='update-post'  >
+
+                                    <button type="button" data-mdb-ripple-color="dark" onClick={() => setisupdated(false)} style={{ paddingLeft: "510px" }}>
+                                        X
+                                    </button>
+                                    <textarea className='textareaaaa' defaultValue={e.message}
+                                        onChange={(e) => setmessage(e.target.value)} />
+
+                                    <img src={e.img} alt="postpicture" style={{ marginLeft: "3px" }} />
+
+                                    <label className="iconn-wrapper" >
+                                        <FaPhotoVideo className="icon-bluee" style={{ marginLeft: "5px" }} />
+
+                                        <span className="label">Photo </span>
+                                        <input style={{ display: 'none' }} type="file" id="file" accept=".png,.jpg,.jpeg" onChange={(e) => setimage(e.target.files[0])} />
+
+                                    </label>
+                                    <div className='button-container'>
+                                        <button className='btn' onClick={() => handleupdate(e._id)}>valider modification</button>
+                                    </div></div>
+                            ) : (
+
+                                <div className="post-content">
+                                    {isupdated && <p className="post-desc">
+                                        {e.message}
+                                    </p>}
+
+
+                                    {isupdated && (<img src={e.img} alt="postpicture" style={{ marginLeft: "0px" }} />)}
+
+
+
+
+                                </div>
+
+
+
+                            )}
+
+
+
+
+
                             <div className="post-thumb-gallery img-gallery">
                                 <div className="row no-gutters">
                                     <div className="col-8">
                                         <figure className="post-thumb">
                                             <a className="gallery-selector" >
-                                                <img src={e.img} alt="postpicture" style={{ marginLeft: "80px" }} />
-                                            </a>
+                                            {!isupdated && (<img src={e.img} alt="postpicture" style={{ marginLeft: "80px" }} />)}                                            </a>
                                         </figure>
                                     </div>
 
@@ -610,7 +708,7 @@ const Share = () => {
                         <div className="post-meta">
 
 
-                            {!e.likers.includes(user._id) ? (
+                            {!e.likers.includes(user?._id) ? (
 
                                 <button class="post-meta-like" style={{ color: "black" }}>
                                     <i class="bi bi-heart-beat" style={{ color: "black" }}
@@ -699,7 +797,7 @@ const Share = () => {
                                             <div class="profile-thumb">
                                                 <a href="#">
                                                     <figure class="profile-thumb-middle">
-                                                        <img src={profilePicture} alt="profile picture" />
+                                                        <img src={record.commenterphoto} alt="profile picture" />
                                                     </figure>
                                                 </a>
                                             </div>
@@ -776,7 +874,7 @@ const Share = () => {
 
 
 
-
+                
 
             </div>
 

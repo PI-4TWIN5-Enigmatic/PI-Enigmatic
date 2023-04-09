@@ -12,6 +12,19 @@ const PostSchema = new mongoose.Schema(
       trim: true,
       maxlength: 500,
     },
+
+    posterpseudo:{
+      type:String,
+    },
+
+    posterlastname:{
+      type:String,
+    },
+    
+    posterphoto: {
+      type: String,
+    },
+
     img: {
       type: String,
     },
@@ -28,6 +41,7 @@ const PostSchema = new mongoose.Schema(
           text:{type: String},
           commenterid:{type:ObjectId},
           commenterpseudo:{type :String},
+          commenterphoto:{type :String},
         }
       ],
       required: true,

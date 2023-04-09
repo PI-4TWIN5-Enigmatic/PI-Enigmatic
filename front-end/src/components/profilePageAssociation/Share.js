@@ -103,6 +103,8 @@ const Share = () => {
                 text: text,
                 commenterpseudo: association.name,
                 commenterid: association._id,
+                commenterphoto: association.logoPicture,
+
             })
 
         }).then(response => response.json())
@@ -129,6 +131,8 @@ const Share = () => {
                     posterId: association._id,
                     message: messagee.current.value,
                     img: result.data.secure_url,
+                    posterphoto: association.logoPicture,
+                    posterpseudo:association.name,
                     likers: [],
                     comments: [],
 
@@ -434,14 +438,14 @@ const Share = () => {
                             <div className="profile-thumb">
                                 <a href="#">
                                     <figure className="profile-thumb-middle">
-                                        <img src={logoPicture} alt="profile picture" />
+                                        <img src={e.posterphoto} alt="profile picture" />
                                     </figure>
                                 </a>
                             </div>
 
 
                             <div className="posted-author">
-                                <h6 className="author"><a href="profile.html">{name} </a></h6>
+                                <h6 className="author"><a href="profile.html">{e.posterpseudo} </a></h6>
                                 <span className="date">{moment(e.createdAt).fromNow()}</span>
 
                             </div>
@@ -590,7 +594,7 @@ const Share = () => {
                                             <div class="profile-thumb">
                                                 <a href="#">
                                                     <figure class="profile-thumb-middle">
-                                                        <img src={logoPicture} alt="profile picture" />
+                                                        <img src={record.commenterphoto} alt="profile picture" />
                                                     </figure>
                                                 </a>
                                             </div>

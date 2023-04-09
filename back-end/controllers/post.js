@@ -2,7 +2,23 @@ const postModel = require('../models/post.model')
 const UserModel = require('../models/user')
 const ObjectID = require("mongoose").Types.ObjectId;
 const PostModel = require('../models/post.model')
-const Association=require('../models/association')
+const Association = require('../models/association')
+
+
+
+module.exports.all = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const user = await UserModel.findById(id);
+    const following = [...user.followingProfil, id]; // add user ID to following array
+    const posts = await PostModel.find({ posterId: { $in: following } }).sort({ createdAt: -1 });
+    res.status(200).json(posts);
+  } catch (err) {
+    res.status(500).json(err);
+  }
+}
+
+
 
 
 
@@ -21,8 +37,8 @@ module.exports.readPost = (req, res) => {
 //     const currentUser = await UserModel.findById(req.body.posterId);
 //     const userPosts = await postModel.find({ posterId: currentUser._id });
 //     const friendPosts = await Promise.all(
-//       currentUser.followings.map((friendId) => {
-//         return Post.find({ userId: friendId });
+//       currentUser.followingProfil.map((followingProfil) => {
+//         return Post.find({ userId: followingProfil });
 //       })
 //     );
 //     res.json(userPosts.concat(...friendPosts))
@@ -35,6 +51,9 @@ module.exports.createPost = async (req, res) => {
 
   const newPost = new postModel({
     posterId: req.body.posterId,
+    posterpseudo: req.body.posterpseudo,
+    posterlastname:req.body.posterlastname,
+    posterphoto: req.body.posterphoto,
     message: req.body.message,
     img: req.body.img,
     likers: [],
@@ -55,7 +74,7 @@ module.exports.updatePost = (req, res) => {
 
   const updatedRecord = {
     message: req.body.message,
-    img:req.body.img
+    img: req.body.img
   };
 
   PostModel.findByIdAndUpdate(
@@ -73,14 +92,14 @@ module.exports.updatePost = (req, res) => {
 
 // exports.updatePost = async (req, res) => {
 //   try {
-    
+
 //       const data = await PostModel.findOneAndUpdate(
 //         { _id: req.params.id },
 //         req.body,
 //         { new: true }
 //       );
 //       res.status(201).json(data);
-    
+
 //   } catch (error) {
 //     console.log(error.message);
 //   }
@@ -229,9 +248,10 @@ module.exports.commentPost = (req, res) => {
       {
         $push: {
           comments: {
+            commenterphoto: req.body.commenterphoto,
             text: req.body.text,
-            commenterpseudo:req.body.commenterpseudo,
-            commenterid:req.body.commenterid
+            commenterpseudo: req.body.commenterpseudo,
+            commenterid: req.body.commenterid
           },
         },
       },
@@ -240,7 +260,7 @@ module.exports.commentPost = (req, res) => {
         if (!err) return res.send(docs);
         else return res.status(400).send(err);
       }
-    );
+    )
   } catch (err) {
     return res.status(400).send(err);
   }
@@ -268,7 +288,7 @@ module.exports.commentPost = (req, res) => {
 
 
 
- 
+
 
 
 
@@ -324,7 +344,6 @@ module.exports.deleteCommentPost = (req, res) => {
   }
 };
 
-//get user's all posts
 
 module.exports.getallposts = async (req, res) => {
   try {
