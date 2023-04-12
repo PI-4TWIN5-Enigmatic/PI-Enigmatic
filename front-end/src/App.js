@@ -69,8 +69,8 @@ function App() {
     
     
     
-    {cookies.access_token &&
-    <Route path="/HomePage/:id" element={<ProfilePageUser />}></Route>}
+
+    <Route path="/HomePage/:id" element={<ProfilePageUser />}></Route>
 
 
     <Route path="*" element={<NotFound />}></Route>

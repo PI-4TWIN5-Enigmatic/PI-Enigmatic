@@ -23,10 +23,12 @@ import axios from 'axios';
 
 
 const Share = () => {
+    const [change, setChange] = useState(false);
 
     const currentUser = JSON.parse(localStorage.getItem('user'))
     const [isupdated, setisupdated] = useState(false);
 
+    const [tet, settext] = useState('');
     const postid = useParams();
     const idCurrentUser = window.localStorage.getItem("id");
 
@@ -87,8 +89,8 @@ const Share = () => {
     };
     useEffect(() => {
         getpostbyid();
-    }, []);
-    
+       setChange(false);
+      }, [change]);
 
     
   
@@ -156,40 +158,37 @@ const Share = () => {
 
 
     const handleupdate = (id) => {
-
-        const form = new FormData()
-        form.append('file', img)
-        form.append('upload_preset', "siwarse");
-        axios.post("https://api.cloudinary.com/v1_1/dxououehj/upload", form)
-            .then((result) => {
-
-
-
-
-                const data = {
-
-                    message,
-                    img: result.data.secure_url,
-
-
-                };
-
-                axios.put(`http://localhost:8000/api/post/updatepost/${id}`, data)
-                    .then(response => {
-                        console.log(response);
-                        toast.info("Post have been updated")
-                        // Handle success response
-                    })
-                    .catch(error => {
-                        console.error(error);
-                        // Handle error response
-                    });
-
-
-            })
-    }
-
-
+        const form = new FormData();
+        if (img != null) form.append("file", img);
+        else form.append("file", posts[0].img);
+        let msg;
+        if (message == null) msg = posts[0].message;
+        else msg=message;
+        form.append("upload_preset", "siwarse");
+        axios
+          .post("https://api.cloudinary.com/v1_1/dxououehj/upload", form)
+          .then((result) => {
+            const data = {
+              message: msg,
+              img: result.data.secure_url,
+            };
+    
+            axios
+              .put(`http://localhost:8000/api/post/updatepost/${id}`, data)
+              .then((response) => {
+                console.log(response);
+                toast.info("Post have been updated");
+                setChange(true);
+    
+                // Handle success response
+              })
+              .catch((error) => {
+                console.error(error);
+                // Handle error response
+              });
+          });
+      };
+    
 
 
 
@@ -217,7 +216,9 @@ const Share = () => {
                 axios.put(`http://localhost:8000/api/post/${id}`, data)
                     .then(response => {
                         console.log(response);
-                        toast.info("Event have been updated")                    // Handle success response
+                        toast.info("Event have been updated")      
+                        setChange(true);
+                        // Handle success response
 
                         // Handle success response
                     })
@@ -233,32 +234,32 @@ const Share = () => {
 
 
     const handlecomment = (text, e) => {
-
-
-        const currentUser = JSON.parse(localStorage.getItem('user'))
-
-
         // Send a POST request to the backend API
         fetch(`http://localhost:8000/api/post/comment-post/${e}`, {
-            method: "PUT", headers: {
-                "Content-Type": "application/json",
-
-            },
-            body: JSON.stringify({
-                text: text,
-                commenterpseudo: currentUser.firstName,
-                commenterid: idCurrentUser,
-                commenterphoto: currentUser.profilePicture,
-
-            })
-
-        }).then(response => response.json())
-
-            .then((result) => console.log(result));
-
-    }
-
-
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            text: text,
+            commenterpseudo: currentUser.firstName,
+            commenterid: idCurrentUser,
+            commenterphoto: currentUser?.profilePicture,
+          }),
+        })
+          .then((response) => response.json())
+    
+          .then((result) => {
+            const newData = posts.map((e) => {
+              if (e._id == result._id) {
+                return result;
+              }
+              return e;
+            });
+            setData(newData);
+            settext(text);
+          });
+      };
     const getUser = async () => {
         const response = await fetch(`http://localhost:8000/api/getuser/${id}`, {
             method: "GET", headers: {
@@ -298,7 +299,7 @@ const Share = () => {
             .then(response => {
                 console.log('Post deleted successfully');
                 toast.info("Post have been deleted")
-                window.location.reload();
+                setChange(true);
 
             })
             .catch(error => {
@@ -335,11 +336,12 @@ const Share = () => {
                     posterId: user?._id,
                     message: messagee.current.value,
                     img: result.data.secure_url,
-                    posterphoto: user.profilePicture,
-                    posterpseudo:user.firstName,
-                    posterlastname:user.lastName,
+                    posterphoto: currentUser?.profilePicture,
+                    posterpseudo: currentUser.firstName,
+                    posterlastname: currentUser.lastName,
                     likers: [],
                     comments: [],
+
 
                 };
                 // Send a POST request to the backend API
@@ -347,8 +349,7 @@ const Share = () => {
                 axios.post("http://localhost:8000/api/post", newPost)
                     .then(response => {
                         console.log(response);
-                        window.location.reload();
-                        // Handle success response
+                        setChange(true);
                     })
                     .catch(error => {
                         console.error(error);
@@ -385,8 +386,7 @@ const Share = () => {
         }).then(response => response.json())
 
             .then((result) => console.log(result));
-        window.location.reload()
-
+setChange(true)
 
     }
 
@@ -406,7 +406,7 @@ const Share = () => {
         }).then(response => response.json())
 
             .then((result) => console.log(result));
-        window.location.reload()
+            setChange(true);
 
 
     }
@@ -768,9 +768,14 @@ const Share = () => {
 
 
                             <div className="comment-containerrrrr">
-                                <form onSubmit={(event) => {
-                                    handlecomment(event.target[0].value, e._id)
-                                }}>
+                            <form
+                    onSubmit={(event) => {
+                      event.preventDefault();
+
+                      handlecomment(event.target[0].value, e._id);
+                      event.target.reset();
+                    }}
+                  >
 
                                     <input type="text" placeholder="add a comment ..." className='form' style={{  fontsize:'50px' }} />
                                 </form>
@@ -804,7 +809,6 @@ const Share = () => {
 
                                             <div class="posted-author">
                                                 <h6 class="author">{record.commenterpseudo}</h6>
-                                                <span class="date">{moment(record.createdAt).fromNow()}</span>
                                             </div>
 
                                             <div class="post-settings-bar">
