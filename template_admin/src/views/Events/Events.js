@@ -36,12 +36,23 @@ const Events = () => {
 
     const [data, setData] = useState(null);
 
+    const handleDelete = (id) => {
+      if (window.confirm(`Are you sure you want to delete this event?`)){
+      axios.delete(`http://localhost:8000/event/deleteEvent/${id}`, {headers:{Authorization:cookies.access_token}})
+        .then(response => {
+          console.log('Item deleted successfully');
+
+        })
+        .catch(error => {
+          console.error('Error deleting item', error);
+        });}
+    };
 
     useEffect(() => {
       axios.get("http://127.0.0.1:8000/event/getAllEvent", {headers:{Authorization:cookies.access_token}}).then((response) => {
           setEvents(response.data);
       });
-    }, []);
+    }, [handleDelete]);
 
 
     const handlePageClick = ({ selected }) => {
@@ -55,6 +66,7 @@ const Events = () => {
         u.nameEvent.toLowerCase().includes(query)
       ).length / itemsPerPage
     );
+
 
 
 
@@ -96,6 +108,7 @@ return (
      <CTableHeaderCell scope="col">Poster</CTableHeaderCell>
 
      <CTableHeaderCell scope="col">Association</CTableHeaderCell>
+     <CTableHeaderCell scope="col">Options</CTableHeaderCell>
 
         </CTableRow>
  </CTableHead>
@@ -106,20 +119,23 @@ return (
         .map((e) => (
        <CTableRow key={e._id}>
            <CTableDataCell  >{e.nameEvent}</CTableDataCell>
-           <CTableDataCell style={{  maxWidth: "200px"}} >{e.descriptionEvent}</CTableDataCell>
+           <CTableDataCell style={{  maxWidth: "2000px"}} >{e.descriptionEvent}</CTableDataCell>
 
            <CTableDataCell  >{e.typeEvent}</CTableDataCell>
 
            <CTableDataCell  >{e.locationEvent}</CTableDataCell>
 
            <CTableDataCell  >{e.dateEvent}</CTableDataCell>
-           <CTableDataCell  >< img src={e.eventPicture} style={{width:"50%"}}/> </CTableDataCell>
+           <CTableDataCell  >< img src={e.eventPicture} style={{width:"100%"}}/> </CTableDataCell>
 
            <CTableDataCell  >
 
            <Link to={`/association/${e.organisateurEvent}`}><CButton   color="info" variant="ghost">Details Association</CButton></Link>
 
            </CTableDataCell>
+           <CTableDataCell  ><CButton   color="danger" variant="ghost" onClick={() => 
+                                          handleDelete(e._id)}>Delete Event</CButton> </CTableDataCell>
+
 
 
          </CTableRow>

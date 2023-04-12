@@ -2,11 +2,13 @@ import React from 'react'
 import { useEffect, useState } from 'react';
 import { Cookies, useCookies } from "react-cookie";
 import { Link, useParams } from 'react-router-dom';
-
+import {ImArrowDown2 , ImArrowUp2 } from "react-icons/im";
 const RecentNotifications = () => {
     // const [cookies,setCookies] = useCookies(["access_token"]);
     const token =window.localStorage.getItem("token");
     const [cookies,setCookies] = useCookies(["access_token"]);
+    const [showMoreReviews, setShowMoreReviews] = useState(false);
+    const [numReviews, setNumReviews] = useState(4);
 
     const  [association,setAssociation]=useState([]);
 
@@ -29,6 +31,16 @@ const RecentNotifications = () => {
         },[]);
 
 
+        const handleShowMoreClick = () => {
+            setShowMoreReviews(true);
+            setNumReviews(numReviews + 4);
+          };
+
+          const showLessReviews = () => {
+            setNumReviews(4);
+          };
+
+
 
   return (
 <>
@@ -39,7 +51,7 @@ const RecentNotifications = () => {
                                 <div className ="widget-body">
                                     <ul className ="like-page-list-wrapper">
 
-                                        {association.map((a)=>
+                                        {association.slice(0, numReviews).map((a)=>
                                         
                                         <li className ="unorder-list" key={a._id}>
                                             <div className ="profile-thumb">
@@ -55,7 +67,42 @@ const RecentNotifications = () => {
                                         </li>
                                         
                                         )}
-                                        
+                                         <div className='d-flex justify-content-center '>
+                                         <button 
+                                                style={{
+                                                    marginRight: '40px',
+                                                    color: 'white',
+                                                    backgroundColor: '#dc4734',
+                                                    border: '2px solid #dc4734',
+                                                    borderRadius: '10px',
+                                                    padding: '5px 5px',
+                                                    transition: 'all 0.3s ease',
+                                                    fontWeight: 'bold'
+                                                }}
+                                                onMouseEnter={e => e.target.style.backgroundColor = '#dc4734'}
+                                                onClick={handleShowMoreClick}
+                                                >
+                                <ImArrowDown2 className="icon" />
+
+                                                </button>                
+                                                <button
+                                                        style={{
+                                                            marginRight: '40px',
+                                                            color: 'white',
+                                                            backgroundColor: '#dc4734',
+                                                            border: '2px solid #dc4734',
+                                                            borderRadius: '10px',
+                                                            padding: '5px 5px',
+                                                            transition: 'all 0.3s ease',
+                                                            fontWeight: 'bold'
+                                                        }}
+                                                        onMouseEnter={e => e.target.style.backgroundColor = '#dc4734'}
+                                                        onClick={showLessReviews}
+                                                        >
+                                <ImArrowUp2 className="icon" />
+
+                                                        </button>                   
+                                        </div>
 
                                  
                                     </ul>

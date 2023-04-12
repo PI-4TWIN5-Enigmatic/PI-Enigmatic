@@ -2,7 +2,7 @@ const express = require('express')
 const router = express.Router()
 const {createEvent , getAssociationEvents , getEventById ,getAllEvent , updateEvent , 
     deleteEvent ,participateEvent,interestedInEvent, reviewEvent, deleteReviewEvent, 
-    attendeesList,unconfirm, getRating, getUserScore, sendMailEvent,confirmPartner, favoriteEvents} = require("../controllers/event")
+    attendeesList,unconfirm, getRating, getUserScore, sendMailEvent,confirmPartner, favoriteEvents, getEventsByIds} = require("../controllers/event")
 const{verifyToken}=require ("../middleware/auth")
 
 
@@ -23,5 +23,7 @@ router.get("/getUserScore/:id", getUserScore);
 router.post("/sendMailEvent", sendMailEvent);
 router.post("/confirmPartner", confirmPartner);
 router.patch("/favEvent", favoriteEvents);
+router.post('/getEventsByIds' ,getEventsByIds);
+
 
 module.exports = router;
