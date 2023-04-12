@@ -1,102 +1,59 @@
 import React from 'react'
+import { useState, useEffect } from "react";
+import { json, useParams } from "react-router-dom";
 
 const Memories = () => {
+
+
+    const [change, setChange] = useState(false);
+    const { id } = useParams();
+
+    const [posts, setData] = useState("");
+    const getpostbyid = async () => {
+        const response = await fetch(
+          `http://localhost:8000/api/post/getposts/${id}`,
+          {
+            method: "GET",
+            headers: {
+              "Content-Type": "application/json",
+            },
+          }
+        );
+    
+        const data = await response.json();
+        setChange(true);
+
+        setData(data);
+        console.log(data);
+      };
+      useEffect(() => {
+        getpostbyid();
+       setChange(false);
+      }, [change]);
   return (
 <>
 
 
                
 
-                            <div className="card widget-item">
+                            <div className="card widget-item" >
                                 <h4 className ="widget-title">Sweets Memories</h4>
                                 <div className ="widget-body">
                                     <div className ="sweet-galley img-gallery">
                                         <div className ="row row-5">
                                             <div className ="col-4">
-                                                <div className ="gallery-tem">
-                                                    <figure className ="post-thumb">
+                                                <div className ="gallery-tem"  style={{display:"flex",flexWrap: "nowrap",width:"200px", "marginright": "50px"}}  >{Array.from(posts).map((e) => (
+
+                                                    <figure className ="post-thumb"key={e._id} style={{display:"inline-block",width:"800px", "marginright": "50px"}} >
                                                         <a className ="gallery-selector" href="assets/images/gallery/gallery-1.jpg">
-                                                            <img src="../assets/images/gallery/gallery-1.jpg" alt="sweet memory" />
+                                                            <img src={e.img} alt="sweet memory" style={{display:"flex",overflow:"auto",width:"1000px",  "margin": "10px"
+}} />
                                                         </a>
                                                     </figure>
-                                                </div>
-                                            </div>
-                                            <div className ="col-4">
-                                                <div className ="gallery-tem">
-                                                    <figure className ="post-thumb">
-                                                        <a className ="gallery-selector" href="assets/images/gallery/gallery-2.jpg">
-                                                            <img src="../assets/images/gallery/gallery-2.jpg" alt="sweet memory" />
-                                                        </a>
-                                                    </figure>
-                                                </div>
-                                            </div>
-                                            <div className ="col-4">
-                                                <div className ="gallery-tem">
-                                                    <figure className ="post-thumb">
-                                                        <a className ="gallery-selector" href="assets/images/gallery/gallery-3.jpg">
-                                                            <img src="../assets/images/gallery/gallery-3.jpg" alt="sweet memory" />
-                                                        </a>
-                                                    </figure>
-                                                </div>
-                                            </div>
-                                            <div className ="col-4">
-                                                <div className ="gallery-tem">
-                                                    <figure className ="post-thumb">
-                                                        <a className ="gallery-selector" href="assets/images/gallery/gallery-4.jpg">
-                                                            <img src="../assets/images/gallery/gallery-4.jpg" alt="sweet memory" />
-                                                        </a>
-                                                    </figure>
-                                                </div>
-                                            </div>
-                                            <div className ="col-4">
-                                                <div className ="gallery-tem">
-                                                    <figure className ="post-thumb">
-                                                        <a className ="gallery-selector" href="assets/images/gallery/gallery-5.jpg">
-                                                            <img src="../assets/images/gallery/gallery-5.jpg" alt="sweet memory" />
-                                                        </a>
-                                                    </figure>
-                                                </div>
-                                            </div>
-                                            <div className ="col-4">
-                                                <div className ="gallery-tem">
-                                                    <figure className ="post-thumb">
-                                                        <a className ="gallery-selector" href="assets/images/gallery/gallery-6.jpg">
-                                                            <img src="../assets/images/gallery/gallery-6.jpg" alt="sweet memory" />
-                                                        </a>
-                                                    </figure>
-                                                </div>
-                                            </div>
-                                            <div className ="col-4">
-                                                <div className ="gallery-tem">
-                                                    <figure className ="post-thumb">
-                                                        <a className ="gallery-selector" href="assets/images/gallery/gallery-7.jpg">
-                                                            <img src="../assets/images/gallery/gallery-7.jpg" alt="sweet memory" />
-                                                        </a>
-                                                    </figure>
-                                                </div>
-                                            </div>
-                                            <div className ="col-4">
-                                                <div className ="gallery-tem">
-                                                    <figure className ="post-thumb">
-                                                        <a className ="gallery-selector" href="assets/images/gallery/gallery-8.jpg">
-                                                            <img src="../assets/images/gallery/gallery-8.jpg" alt="sweet memory" />
-                                                        </a>
-                                                    </figure>
-                                                </div>
-                                            </div>
-                                            <div className ="col-4">
-                                                <div className ="gallery-tem">
-                                                    <figure className ="post-thumb">
-                                                        <a className ="gallery-selector" href="assets/images/gallery/gallery-9.jpg">
-                                                            <img src="../assets/images/gallery/gallery-9.jpg" alt="sweet memory" />
-                                                        </a>
-                                                    </figure>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
+                                               ))}  </div>
+                           </div></div></div></div></div>
+                                        
+                                           
                            
 
 </>  )
