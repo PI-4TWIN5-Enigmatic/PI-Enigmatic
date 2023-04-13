@@ -1,7 +1,7 @@
 import React, { useRef } from "react";
 import { useState, useEffect } from "react";
 
-import { json, useParams } from "react-router-dom";
+import { Link, json, useParams } from "react-router-dom";
 import moment from "moment";
 import InputEmoji from "react-input-emoji";
 import { Picker } from "emoji-mart";
@@ -379,17 +379,14 @@ const Share = () => {
   };
 
   return (
-    <> 
-     <div className="col-lg-6 order-1 order-lg-2">
+    <>
+      <div className="col-lg-6 order-1 order-lg-2">
         <div className="card card-small">
           <div className="share-box-inner">
             <div className="profile-thumb">
               <a href="#">
                 <figure className="profile-thumb-middle">
-                  <img
-                    src={profilePicture}
-                    alt="profile picture"
-                  />
+                  <img src={profilePicture} alt="profile picture" />
                 </figure>
               </a>
             </div>
@@ -563,11 +560,9 @@ const Share = () => {
           </div>
         </div>
 
-       
-
         {Array.from(posts).map((e) => (
           <div className="card" key={e._id}>
-            <div className="post-title d-flex align-items-center"> 
+            <div className="post-title d-flex align-items-center">
               <div className="profile-thumb">
                 <a href="#">
                   <figure className="profile-thumb-middle">
@@ -577,9 +572,11 @@ const Share = () => {
               </div>
               <div className="posted-author">
                 <h6 className="author">
-                  <a href="profile.html">
-                    {user.firstName} {user.lastName}
-                  </a>
+                  <Link to={`/profile/${user._id}`}>
+                    <a href="">
+                      {user.firstName} {user.lastName}
+                    </a>
+                  </Link>
                 </h6>{" "}
                 {/*):(
                                     <h6 className="author"><a href="profile.html">{e.posterpseudo}  {e.posterlastname}   </a>
@@ -799,7 +796,6 @@ const Share = () => {
 
                         <div class="posted-author">
                           <h6 class="author">{record.commenterpseudo}</h6>
-                         
                         </div>
 
                         <div class="post-settings-bar">
@@ -828,7 +824,7 @@ const Share = () => {
             )}
             <div></div>{" "}
           </div>
-                  ))}
+        ))}
       </div>
     </>
   );
