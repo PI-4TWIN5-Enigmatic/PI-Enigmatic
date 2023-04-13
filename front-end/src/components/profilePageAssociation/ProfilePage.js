@@ -122,7 +122,6 @@ const ProfilePage = () => {
         
                                  <Memories />
 
-                                 <LikedPages />
 
                          </aside>
 

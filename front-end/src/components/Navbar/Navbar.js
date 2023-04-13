@@ -30,8 +30,24 @@ const Navbar = () => {
   const socket = useRef()
   const scrollRef = useRef();
   const [cookies, setCookies] = useCookies(["access_token"]);
+  const [friendUser , setFriendUser] = useState(null);
 
 
+  useEffect(()=>
+  {
+      const friendId = currentChat?.members.find((m)=> m !== user._id);
+      const getUser = async ()=>{
+          try{
+          const res = await axios.get("http://127.0.0.1:8000/api/getuser/"+friendId)
+          setFriendUser(res.data)
+          }catch(err){
+              console.log(err)
+          }
+      }
+      getUser()
+
+  },[currentChat]
+  )
 
 
 
@@ -275,52 +291,52 @@ const Navbar = () => {
             <div className="footer-card position-relative ">
 
               <div className="chat-output-box show">
-                <div className="live-chat-title">
+              <div className ="live-chat-title">
+                                
+                                <div className ="profile-thumb active">
+                                    <a href="#">
+                                        <figure className ="profile-thumb-small">
+                                            <img src={friendUser?.profilePicture} alt="profile picture"/>
+                                        </figure>
+                                    </a>
+                                </div>
+                              
 
-                  <div className="profile-thumb active">
-                    <a href="#">
-                      <figure className="profile-thumb-small">
-                        <img src="assets/images/profile/profile-small-15.jpg" alt="profile picture" />
-                      </figure>
-                    </a>
-                  </div>
+                  <div className ="posted-author">
+                                         <h6 className ="author" style={{color:'white'}}>{friendUser?.firstName} {friendUser?.lastName}</h6>
+                                         <span className ="active-pro">active now</span>
+                                     </div>
+                                     <div className ="live-chat-settings ml-auto">
+                                       
+                                         <button className ="close-btn" data-close="chat-output-box" onClick={()=> setCurrentChat(null)}><AiOutlineClose/></button>
+                                     </div>
+                                 </div>
+                                 <div className ="message-list-inner">
 
-                  <div className="posted-author">
-                    <h6 className="author"><a href="profile.html">Robart Marloyan</a></h6>
-                    <span className="active-pro">active now</span>
-                  </div>
-                  <div className="live-chat-settings ml-auto">
-
-                    <button className="close-btn" data-close="chat-output-box" onClick={() => setCurrentChat(null)}><AiOutlineClose /></button>
-                  </div>
-                </div>
-                <div className="message-list-inner">
-
-                  {
-                    currentChat ?
-                      <>
-                        <ul className="message-list custom-scroll" style={{ overflow: "scroll", marginBottom: "100px" }}>
-                          {messages.map((m, index) => (
-                            <div ref={scrollRef}>
-                              <Messages key={index} message={m} own={m.sender == user?._id} />
-                            </div>
-                          ))}
-
-
-                        </ul>
-                      </> : <span style={{ height: 300 }} >open a conversation</span>}
-                  <div className="chat-text-field mob-text-box">
-                    <textarea className="live-chat-field custom-scroll" placeholder="Text Message" onChange={(e) => setNewMessage(e.target.value)} value={newMessage} ></textarea>
-                    <button className="chat-message-send" type="submit" onClick={handleSubmitChat}>
-                      <AiOutlineSend />
-                    </button>
-                  </div>
-                </div>
-              </div>
-
-
-            </div>
-
+                                    {
+                                        currentChat ?
+                                    <>
+                                     <ul className ="message-list custom-scroll" style={{overflow: "scroll" , marginBottom:"100px"}}>
+                                    {messages.map((m,index)=>(
+                                        <div ref={scrollRef}> 
+                                              <Messages key={index} message={m} own={m.sender == user?._id}/>
+                                        </div>
+                                    ))}
+                                   
+                                         
+                                     </ul>
+                                     </> : <span style={{height: 300}} >open a conversation</span>}
+                                     <div className="chat-text-field mob-text-box">
+                                    <textarea className="live-chat-field custom-scroll" placeholder="Text Message" onChange={(e)=> setNewMessage(e.target.value)} value={newMessage} ></textarea>
+                                    <button className="chat-message-send" type="submit"  onClick={handleSubmitChat}>
+                                    <AiOutlineSend/>
+                                    </button>
+                                </div>
+                              </div>
+                             </div>
+                            
+                         
+                        </div>
 
 
 

@@ -10,6 +10,7 @@ import { Cookies, useCookies } from "react-cookie";
 import {motion} from "framer-motion"
 import "./EventDisplay.css"
 import moment from 'moment';
+
 const EventDisplay = () => {
     const [association,setAssociation]= useState(null);
     const[event,setEvent]=useState("");
@@ -21,17 +22,19 @@ const EventDisplay = () => {
     const[query,setQuery]=useState('')
 
 
+
     //Swiper
     const carouselRef=useRef();
     const[width,setWidth]=useState(0);
 
     useEffect(()=>{
-      // setCookies("access_token", token);
 
           setWidth(carouselRef.current.scrollWidth - carouselRef.current.offsetWidth);
     })
 
     //endSwiper
+
+
 
 
 
@@ -52,7 +55,7 @@ const EventDisplay = () => {
             }
         })
           .catch(error => console.error(error));
-      }, [id]);
+      }, []);
 
 
       useEffect(() => {
@@ -63,7 +66,7 @@ const EventDisplay = () => {
             console.log(data);
             setEvent(data);})
           .catch(error => console.error(error));
-      }, [id]);
+      }, []);
       
 
       const navigate = useNavigate();
@@ -113,7 +116,7 @@ const EventDisplay = () => {
         
         {/* style={{backgroundColor:'rgb(213 205 200)'}} */}
 
-    <main >
+    <main  >
         <div className ="main-wrapper"  >
             <img className ="profile-banner-large bg-img" src="../assets/images/banner/profile-banner.jpg" />
             
@@ -129,7 +132,7 @@ const EventDisplay = () => {
 
                              <select className="nice-select" name="sort"style={{marginRight: "40px"}}  onChange={(e) => setTimePeriod(e.target.value)}>
                                     <option value="">Event Status</option>
-                                    <option value="past">Passed Events</option>
+                                    <option value="past">Archived Events</option>
                                     <option value="current">Today's Events</option>     
                                     <option value="upcoming">Upcoming Events</option>       
   
@@ -182,11 +185,12 @@ const EventDisplay = () => {
                                         </ul>
 
                                       )}
-                                    
+
                                 </div>
                             </div>
-                            
+                                             
                             <h4 className="widget-title">{e.nameEvent} </h4>
+
                             <div className="d-flex justify-content-left"   >
                               </div>
                             <div style={{  marginRight: "15px" }}>

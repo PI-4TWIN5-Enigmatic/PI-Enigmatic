@@ -12,6 +12,7 @@ import { io } from "socket.io-client"
 import About from '../profilePage/About';
 
 import { BsFillHouseDoorFill,BsFillChatSquareDotsFill,BsBellFill } from "react-icons/bs";
+import NotFound from "../NotFound";
 
 const Navbar = () => {
     const [cookies, setCookies] = useCookies(["access_token"]);
@@ -28,7 +29,8 @@ const Navbar = () => {
       const socket = useRef()
       const scrollRef = useRef();
 
- 
+      const [friendUser , setFriendUser] = useState(null);
+
     const logout = () => {
         setCookies("access_token", "");
         window.localStorage.clear();
@@ -40,6 +42,23 @@ const Navbar = () => {
         navigate("/");
       };
 
+
+
+  useEffect(()=>
+  {
+      const friendId = currentChat?.members.find((m)=> m !== user?._id);
+      const getUser = async ()=>{
+          try{
+          const res = await axios.get("http://127.0.0.1:8000/api/getuser/"+friendId)
+          setFriendUser(res.data)
+          }catch(err){
+              console.log(err)
+          }
+      }
+      getUser()
+
+  },[currentChat]
+  )
 
       
     
@@ -182,7 +201,10 @@ const Navbar = () => {
                {cookies.access_token && (  <div className="header-top-navigation">
                   <nav>
                     <ul>
+                   
                     <li className="active">  <a  className="msg-trigger-btn" href={`/Profile/${idCurrentUser}`} > Profile</a> </li>
+                   
+
 
                         <li className="msg-trigger">
                       <a className="msg-trigger-btn" onClick={handleDropDown}>
@@ -261,7 +283,7 @@ const Navbar = () => {
 
 
 
-  <div className="footer-area reveal-footer">
+                  <div className="footer-area reveal-footer">
     <div className="container-fluid">
       <div className="row">
         <div className="col-12">
@@ -269,52 +291,52 @@ const Navbar = () => {
             <div className="footer-card position-relative ">
 
               <div className="chat-output-box show">
-                <div className="live-chat-title">
+              <div className ="live-chat-title">
+                                
+                                <div className ="profile-thumb active">
+                                    <a href="#">
+                                        <figure className ="profile-thumb-small">
+                                            <img src={friendUser?.profilePicture} alt="profile picture"/>
+                                        </figure>
+                                    </a>
+                                </div>
+                              
 
-                  <div className="profile-thumb active">
-                    <a href="#">
-                      <figure className="profile-thumb-small">
-                        <img src="assets/images/profile/profile-small-15.jpg" alt="profile picture" />
-                      </figure>
-                    </a>
-                  </div>
+                  <div className ="posted-author">
+                                         <h6 className ="author" style={{color:'white'}}>{friendUser?.firstName} {friendUser?.lastName}</h6>
+                                         <span className ="active-pro">active now</span>
+                                     </div>
+                                     <div className ="live-chat-settings ml-auto">
+                                       
+                                         <button className ="close-btn" data-close="chat-output-box" onClick={()=> setCurrentChat(null)}><AiOutlineClose/></button>
+                                     </div>
+                                 </div>
+                                 <div className ="message-list-inner">
 
-                  <div className="posted-author">
-                    <h6 className="author"><a href="profile.html">{user?.lastName}</a></h6>
-                    <span className="active-pro">active now</span>
-                  </div>
-                  <div className="live-chat-settings ml-auto">
-
-                    <button className="close-btn" data-close="chat-output-box" onClick={() => setCurrentChat(null)}><AiOutlineClose /></button>
-                  </div>
-                </div>
-                <div className="message-list-inner">
-
-                  {
-                    currentChat ?
-                      <>
-                        <ul className="message-list custom-scroll" style={{ overflow: "scroll", marginBottom: "100px" }}>
-                          {messages.map((m, index) => (
-                            <div ref={scrollRef}>
-                              <Messages key={index} message={m} own={m.sender == user?._id} />
-                            </div>
-                          ))}
-
-
-                        </ul>
-                      </> : <span style={{ height: 300 }} >open a conversation</span>}
-                  <div className="chat-text-field mob-text-box">
-                    <textarea className="live-chat-field custom-scroll" placeholder="Text Message" onChange={(e) => setNewMessage(e.target.value)} value={newMessage} ></textarea>
-                    <button className="chat-message-send" type="submit" onClick={handleSubmitChat}>
-                      <AiOutlineSend />
-                    </button>
-                  </div>
-                </div>
-              </div>
-
-
-            </div>
-
+                                    {
+                                        currentChat ?
+                                    <>
+                                     <ul className ="message-list custom-scroll" style={{overflow: "scroll" , marginBottom:"100px"}}>
+                                    {messages.map((m,index)=>(
+                                        <div ref={scrollRef}> 
+                                              <Messages key={index} message={m} own={m.sender == user?._id}/>
+                                        </div>
+                                    ))}
+                                   
+                                         
+                                     </ul>
+                                     </> : <span style={{height: 300}} >open a conversation</span>}
+                                     <div className="chat-text-field mob-text-box">
+                                    <textarea className="live-chat-field custom-scroll" placeholder="Text Message" onChange={(e)=> setNewMessage(e.target.value)} value={newMessage} ></textarea>
+                                    <button className="chat-message-send" type="submit"  onClick={handleSubmitChat}>
+                                    <AiOutlineSend/>
+                                    </button>
+                                </div>
+                              </div>
+                             </div>
+                            
+                         
+                        </div>
 
 
 
@@ -325,6 +347,8 @@ const Navbar = () => {
       </div>{" "}
     </div>
   </div>{ " " }
+
+
 
 
                                                     

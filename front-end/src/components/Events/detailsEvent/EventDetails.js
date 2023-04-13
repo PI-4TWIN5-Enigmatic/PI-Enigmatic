@@ -7,13 +7,11 @@ import { useEffect, useState } from 'react';
 import { useParams ,Link } from 'react-router-dom';
 import L from "leaflet";
 import {MapContainer , TileLayer } from 'react-leaflet'
-import { Button, Col ,Container ,Row} from 'react-bootstrap'
+import {  Col ,Container ,Row} from 'react-bootstrap'
 import { toast } from 'react-toastify';
 import { useSelector } from 'react-redux';
 import { Cookies, useCookies } from "react-cookie";
-import Partner from './Partner';
 import Rating from '@mui/material/Rating';
-import Picker from '@emoji-mart/react'
 import moment from 'moment';
 
 const EventDetails = () => {
@@ -32,7 +30,7 @@ const EventDetails = () => {
 
     const [showMoreReviews, setShowMoreReviews] = useState(false);
     const [numReviews, setNumReviews] = useState(4);
-
+    const [organisateur,setOrganisateur]=useState("");
     const [revieew, setRevieew] = useState("");
     const [interestedCount, setInterestedCount] = useState("");
     const [participatedCount, setParticipatedCount] = useState("");
@@ -43,8 +41,10 @@ const EventDetails = () => {
     const [globalRating,setGlobalRating]= useState(0);
     const [value, setValue] = React.useState(0);
     const[event,setEvent]=useState("");
-    const [timePeriod, setTimePeriod] = useState('');
-
+    const [isEventTimePassed, setIsEventTimePassed] = useState('');
+    const [isFav, setIsFav] = useState("");
+    console.log("🚀 ~ file: EventDetails.js:46 ~ EventDetails ~ isFav:", isFav)
+    const [currentUser, setCurrentUser] = useState("");
     const {id} = useParams();
     
     const position = [36.8065, 10.1815]
@@ -59,7 +59,7 @@ const EventDetails = () => {
       L.Marker.prototype.options.icon = DefaultIcon;
 
 
-
+ 
     
 
     const handleShowMoreClick = () => {
@@ -93,6 +93,7 @@ const EventDetails = () => {
     const eventReviews = event.reviews
 
 
+
     const deleteReview = async (reviewIdd) => {
       if (window.confirm(`Are you sure you want to delete this review?`)){
       const response = await fetch(`http://localhost:8000/event/deleteReview/${id}`, {
@@ -109,6 +110,46 @@ const EventDetails = () => {
     const handleRatingChange = (event, newValue) => {
       setValue(newValue);
   };
+
+
+  //FAVORITE_EVENT
+  const patchFav = async () => {
+      
+    const response = await fetch(`http://localhost:8000/event/favEvent`, {
+        method: "PATCH",
+        headers: {
+            "Content-Type": "application/json",
+
+          },
+          body: JSON.stringify({ userId: user , eventId: id }),
+    });
+
+  };
+
+  const getUser = async()=>{
+    const response = await fetch (`http://localhost:8000/api/getuser/${user}` , {
+    method:"GET",
+
+    });
+
+    const data = await response.json();
+    setCurrentUser(data);
+    console.log(data);
+
+};
+
+  useEffect(()=>{
+    getUser();      
+
+  },[]
+  )
+
+
+  //END_FAVORITE_EVENT
+
+
+
+
 
     useEffect(() => {
       fetch(`http://localhost:8000/event/getRating/${id}`)
@@ -131,10 +172,7 @@ const EventDetails = () => {
 
     };
 
-    const handleRefreshClick = () => {
-      window.location.reload();
-    };
-
+  
     const patchInterested = async () => {
       
       const response = await fetch(`http://localhost:8000/event/interestedInEvent/${id}`, {
@@ -152,19 +190,27 @@ const EventDetails = () => {
 
 
 
+
+      const currentTime = moment();
+     
+    
+
       useEffect(() => {
         
         fetch(`http://localhost:8000/event/getEventById/${id}`, {headers:{Authorization:cookies.access_token}})
           .then(response => response.json())
           .then(data => {
             setEvent(data);
+            const eventTime = moment(data.dateEvent);
+            setIsEventTimePassed(eventTime.isBefore(currentTime))
            setInterestedCount ( Object.keys(data.interested).length);
            setParticipatedCount( Object.keys(data.participants).length);
            setIsparticipated( Boolean(data.participants[user]));
            setIsInterested( Boolean(data.interested[user]));
+           setIsFav(Boolean(currentUser.favEvents[id]))
 
            if (data && data.hasOwnProperty('organisateurEvent')) {
-
+            setOrganisateur(data.organisateurEvent)
            fetch(`http://localhost:8000/association/get/${data.organisateurEvent}`)
            .then(response => response.json())
            .then(dataa => {
@@ -187,34 +233,9 @@ const EventDetails = () => {
 
        
           
-      }, [id,patchParticipate,patchInterested,isInterested,isparticipated,participatedCount,interestedCount]);
+      }, [id,patchFav,patchInterested,patchParticipate]);
 
   
-
-   
-
-
-
-    const goUpdate=()=>{
-      window.location.replace(`http://localhost:3000/updateEvent/${id}`)
-    }
-    const goList=()=>{
-      window.location.replace(`http://localhost:3000/presenceList/${id}`)
-    }
-
-    const goPartners=()=>{
-      window.location.replace(`http://localhost:3000/partners/${id}`)
-    }
-
-
-    
-
-    const goBack=()=>{
-      window.location.replace(`http://localhost:3000/EventDisplay/${association._id}`)
-    }
-  
-    
-
 
     
 
@@ -233,9 +254,10 @@ const EventDetails = () => {
             
           <Container className="mt-3 p-4">
           <div className='d-flex justify-content-end' >
-              <button type="button" className="btn btn-light " data-mdb-ripple-color="dark" onClick={goBack} >
-               X 
-            </button></div>
+              <button type="button" className="btn btn-light " data-mdb-ripple-color="dark" >
+               
+            </button>
+            </div>
             <Row>
               
             <Col>
@@ -349,8 +371,11 @@ const EventDetails = () => {
                             </div>
                         </li>
                       )}
-                                 <button className="d-flex justify-content-center" onClick={handleShowMoreClick}>Show More</button>
-                                 <button className="d-flex justify-content-center" onClick={showLessReviews}>Show Less</button>
+                      <div className='d-flex justify-content-center'>
+                      <button className="btn btn-primary  " style={{ marginRight: '100px' }}onClick={handleShowMoreClick}>Show More</button>
+                      <button className="btn btn-secondary "  onClick={showLessReviews}>Show Less</button>
+                      </div>
+                                
 
 
                         {/* <!-- post status end --> */}
@@ -360,11 +385,25 @@ const EventDetails = () => {
 
 
                   <div className="col-xl-6">
-                    
+                    <div className='d-flex justify-content-end'>
+                    {isFav ? (  
+                         <button className='like-button'>
+                                   <img className="heart-color" src="../assets/images/icons/heart-color.png"  onClick={patchFav} alt=""style={{width:"30px"}} /> 
+                     </button>
+                                    
+                                    
+                                    
+                                    ):( 
+                    <button className='like-button'>
+                                    <img className="heart" src="../assets/images/icons/heart.png" alt="" style={{width:"30px"}} onClick={patchFav} />
+                     </button>
+                     )}
+                    </div>
+                                            
                     <div className="justify-content-center d-flex">
 
                     <div className="card widget-item  justify-content-center d-flex " style={{width:"80%"}}>
-                     
+                  
                              <div className="widget-body  justify-content-center d-flex">
                                     <div className="add-thumb">
                                             <img src={event.eventPicture} className="img-fluid justify-content-center d-flex "
@@ -399,7 +438,7 @@ const EventDetails = () => {
 
                                                              
 
-                             {isInterested ? (
+                             { !isEventTimePassed && (isInterested ? (
                          <button type="button" className="btn btn-secondary btn-lg"  onClick={() => {
                                                                            patchInterested();
                                                                          }}>Interested In</button>
@@ -409,10 +448,10 @@ const EventDetails = () => {
                          <button type="button" className="btn btn-light btn-lg"  onClick={() => {
                                                                            patchInterested();
                                                                          }}>are you interested ?</button>
-                                                                         )}
+                                                                         ))}
 
 
-                       {isparticipated ? (
+                       {  !isEventTimePassed && (isparticipated ? (
                          <button type="button" className="btn btn-info btn-lg"  onClick={() => {
                                                                            patchParticipate();
                                                                          }}>Participated In</button>
@@ -422,7 +461,7 @@ const EventDetails = () => {
                          <button type="button" className="btn btn-danger btn-lg"  onClick={() => {
                                                                            patchParticipate();
                                                                          }}>Want to participate ?</button>
-                                                                         )}
+                                                                         ))}
 
 
                                
@@ -476,11 +515,19 @@ const EventDetails = () => {
             
               <div class="button-container justify-content-left d-flex" 
                            >
-                          <button type="button" className="btn btn-primary btn-lg " style={{marginRight: "20px"}} onClick={goList} >Check List Of Presence</button>
+                          <button type="button" className="btn btn-primary btn-lg " style={{marginRight: "20px"}}  >
+                          <Link to={`http://localhost:3000/presenceList/${id}`}>  Check List Of Presence </Link>
 
-                          <button type="button" className="btn btn-primary btn-lg " style={{marginRight: "20px"}} onClick={goPartners} > Add Parteners</button>
+                            </button>
 
-                          <button className="btn btn-primary btn-lg" style={{marginRight: "20px"}} onClick={goUpdate}> Update Event </button>
+                          <button type="button" className="btn btn-primary btn-lg " style={{marginRight: "20px"}}  >
+                          <Link to={`http://localhost:3000/partners/${id}`}>  Add Parteners </Link>
+
+                             </button>
+
+                          <button className="btn btn-primary btn-lg" style={{marginRight: "20px"}} >
+                          <Link to={`http://localhost:3000/updateEvent/${id}}`}>  Update Event </Link>
+                              </button>
 
                           </div>
 
@@ -515,8 +562,23 @@ const EventDetails = () => {
                        
                             <label className="form-label" >Description</label>
                             </div>
+                            <button 
+                                                style={{
+                                                    marginRight: '40px',
+                                                    color: '#dc4734',
+                                                    backgroundColor: 'transparent',
+                                                    border: '2px solid #dc4734',
+                                                    borderRadius: '20px',
+                                                    padding: '5px 5px',
+                                                    transition: 'all 0.3s ease',
+                                                    fontWeight: 'bold'
+                                                }}
+                                                onMouseEnter={e => e.target.style.backgroundColor = '#f5e1e1'}
+                                                onMouseLeave={e => e.target.style.backgroundColor = 'transparent'}
+                                                onClick={()=>{handleSubmit();}}                                                >
+                                                      Submit                      
+                                                      </button>   
 
-                            <button type="button" className="btn btn-primary btn-lg "  onClick={()=>{handleSubmit();}} >Submit</button>
 
                             </div>  
 

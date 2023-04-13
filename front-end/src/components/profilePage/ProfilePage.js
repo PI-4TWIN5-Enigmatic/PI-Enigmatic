@@ -92,7 +92,9 @@ const handlePhotoSelection = (event) => {
   return (
     <>
 
+
     <Navbar />
+    <div class="main-wrapper pt-80"  style={{backgroundColor:'#bcbcbc42'}}  >
     <main >
 
                 <div className ="container">
@@ -165,7 +167,7 @@ const handlePhotoSelection = (event) => {
         </div>
     
     </div>
-    </main>
+    </main></div>
     
 
     

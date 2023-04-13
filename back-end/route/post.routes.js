@@ -1,6 +1,6 @@
 const express = require('express')
 const router = express.Router()
-const {createPost,getpostbyid,getassociationpost,get,
+const {createPost,getpostbyid,getassociationpost,get,all,
  gettimeline,   readPost,updatePost,getallposts,deletePost,likePost,unlikePost,commentPost,editCommentPost,deleteCommentPost} = require("../controllers/post");
 const { verifyToken } = require('../middleware/auth');
 
@@ -16,6 +16,8 @@ router.get('/getpostsassociation/:id', getassociationpost);
 
 
 router.get('/get/:id', getallposts);
+router.get('/all/:id', all);
+
 
 
 
