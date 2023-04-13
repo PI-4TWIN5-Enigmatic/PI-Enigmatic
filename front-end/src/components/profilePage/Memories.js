@@ -5,7 +5,6 @@ import { json, useParams } from "react-router-dom";
 const Memories = () => {
 
 
-    const [change, setChange] = useState(false);
     const { id } = useParams();
 
     const [posts, setData] = useState("");
@@ -21,15 +20,14 @@ const Memories = () => {
         );
     
         const data = await response.json();
-        setChange(true);
 
         setData(data);
         console.log(data);
       };
       useEffect(() => {
         getpostbyid();
-       setChange(false);
-      }, [change]);
+       
+      }, []);
   return (
 <>
 
