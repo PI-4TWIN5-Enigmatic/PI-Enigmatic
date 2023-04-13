@@ -280,7 +280,7 @@ const Navbar = () => {
                   </div>
 
                   <div className="posted-author">
-                    <h6 className="author"><a href="profile.html">Robart Marloyan</a></h6>
+                    <h6 className="author"><a href="profile.html">{user?.lastName}</a></h6>
                     <span className="active-pro">active now</span>
                   </div>
                   <div className="live-chat-settings ml-auto">

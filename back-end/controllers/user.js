@@ -506,4 +506,25 @@ exports.unfollowUser = async (req, res) => {
 };
 
 
+exports.getFollowedProfiles = async (req, res) => {
+  try {
+    const user = await User.findById(req.params.userId).populate("followedProfil");
+    res.json(user.followedProfil);
+  } catch (err) {
+    console.log(err);
+    res.status(500).json({ error: "Server error" });
+  }
+};
+
+exports.getFollowingProfiles = async (req, res) => {
+  try {
+    const user = await User.findById(req.params.userId).populate("followingProfil");
+    res.json(user.followingProfil);
+  } catch (err) {
+    console.log(err);
+    res.status(500).json({ error: "Server error" });
+  }
+};
+
+
 
