@@ -189,7 +189,7 @@ const RequestDonnation = () => {
                         fontWeight: "bold",
                       }}
                     >
-                      Request Donnation
+                      Asking for Donations ?
                     </h3>
                   </center>
                   <div className="card card-small">
