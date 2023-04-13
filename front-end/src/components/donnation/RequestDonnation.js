@@ -11,6 +11,8 @@ import { toast } from "react-toastify";
 
 
 const RequestDonnation = () => {
+    const [isLoading, setIsLoading] = useState(false);
+
     const [user, setUser] = useState(null);
     const { id } = useParams();
     const navigate = useNavigate();
@@ -136,15 +138,23 @@ const RequestDonnation = () => {
         }
     };
 
-    const getUser = async () => {
-        const response = await fetch(`http://localhost:8000/api/getuser/${id}`, {
+  const getUser = async () => {
+    setIsLoading(true);
+    try {const response = await fetch(`http://localhost:8000/api/getuser/${id}`, {
             method: "GET",
         });
 
         const data = await response.json();
         setUser(data);
-        console.log(data);
-    };
+      
+    } catch (error) {
+    console.log(error);
+  }
+  setIsLoading(false);
+}
+        
+       
+   
 
     useEffect(() => {
         getUser();
@@ -152,32 +162,21 @@ const RequestDonnation = () => {
     if (!user) return null;
     const { profilePicture } = user;
 
-    return (
-      <>
-        <Navbar />
-        <main>
-          <div
-            className="main-wrapper"
-            style={{ backgroundColor: "#bcbcbc42" }}
-          >
-            <img
-              className="profile-banner-large bg-img"
-              src="/../../assets/images/banner/profile-banner.jpg"
-            />
+  return (
+    <>
+      {isLoading ? (
+        <h1>Loading...</h1>
+      ) : (
+        <div>
+          <Navbar />
 
-            <About />
+          <div
+            class="main-wrapper pt-80"
+            style={{ backgroundColor: "#bcbcbc42", marginTop: "30px" }}
+          >
             <div className="container">
               <div className="row">
-                <div className="col-lg-3 order-2 order-lg-1">
-                  <aside className="widget-area profile-sidebar">
-                    <UserWidget />
-                  </aside>
-                </div>
-                <div className="col-lg-3 order-3">
-                  <aside className="widget-area">
-                    <RecentNotifications />
-                  </aside>
-                </div>
+                <div class="col-lg-3 order-2 order-lg-1"></div>
 
                 <div className="col-lg-6 order-1 order-lg-2">
                   <center>
@@ -190,7 +189,7 @@ const RequestDonnation = () => {
                         fontWeight: "bold",
                       }}
                     >
-                      Request Donnation
+                      Asking for Donations ?
                     </h3>
                   </center>
                   <div className="card card-small">
@@ -367,7 +366,8 @@ const RequestDonnation = () => {
                                 setPicture(event.target.files[0])
                               }
                             />
-                          </div><br></br>
+                          </div>
+                          <br></br>
 
                           <button
                             onClick={handleSubmit}
@@ -386,8 +386,9 @@ const RequestDonnation = () => {
               </div>
             </div>
           </div>
-        </main>
-      </>
-    );
+        </div>
+      )}
+    </>
+  );
 };
 export default RequestDonnation;
