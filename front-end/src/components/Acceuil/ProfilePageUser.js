@@ -92,10 +92,10 @@ const{
                 <div class="card card-profile widget-item p-0">
                                 <div class="profile-banner">
                                     <figure className="profile-banner-smal" style={{border:'none',height:'100px'}}>
-                                        <a href="profile.html">
+                                        <a href="">
                                             <img src="../../assets/unnamed.png "alt="" style={{border:'none',height:'100px'}}/>
                                         </a>
-                                        <a href="profile.html" class="profile-thumb-2">
+                                        <a href="" class="profile-thumb-2">
                                             <img src={profilePicture} alt=""/>
                                         </a>
                                     </figure>

@@ -1,9 +1,14 @@
 import React from 'react'
 import { useState,useEffect } from 'react';
-import { Link, useParams } from 'react-router-dom';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 import axios from 'axios'
 import { useCookies } from "react-cookie";
 import {BiMessageAdd} from "react-icons/bi"
+import { Button } from 'react-bootstrap';
+import { Badge } from 'react-bootstrap';
+import { Modal } from 'react-bootstrap';
+import Image from 'react-bootstrap/Image';
+
 
 
 
@@ -14,6 +19,23 @@ const About =() => {
     const [user,setUser]= useState(null);
     const { id } =useParams()
     const [following, setFollowing] = useState(false);
+    const [followingCount, setFollowingCount] = useState(0);
+    const [followersCount, setFollowersCount] = useState(0);
+    const [followingList, setFollowingList] = useState([]);
+  const [followersList, setFollowersList] = useState([]);
+  const navigate = useNavigate();
+
+  const [show, setShow] = useState(false);
+  const handleClose = () => setShow(false);
+  const handleShow = () => setShow(true);
+
+  const [show1, setShow1] = useState(false);
+  const handleClose1 = () => setShow1(false );
+  const handleShow1 = () => setShow1(true);
+  const handleNavig = (id) =>   {
+    
+  }
+ 
 
 //     const [userProfileImage, setUserProfileImage] = useState({});
   
@@ -30,8 +52,30 @@ const About =() => {
       setUser(data);
       console.log(data);
       setFollowing(data.followedProfil.includes(currentUser?._id));
+      setFollowingCount(data.followingProfil.length);
+      setFollowersCount(data.followedProfil.length);
+  
+      console.log(followersList)
+
   };
 
+   const getFollowersList = async () => {
+    try {
+      const response = await axios.get(`http://127.0.0.1:8000/api/${id}/followedProfiles`);
+      setFollowersList(response.data);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+   const getFollowingList = async () => {
+    try {
+      const response = await axios.get(`http://127.0.0.1:8000/api/${id}/followingProfiles`);
+      setFollowingList(response.data);
+    } catch (err) {
+      console.log(err);
+    }
+  };
 
  
        
@@ -39,7 +83,9 @@ const About =() => {
      
   useEffect(()=>{
     getUser();
-},[]);
+    getFollowersList();
+    getFollowingList();
+},[following,id]);
 
 if(!user) return null ;
                 const{
@@ -134,6 +180,18 @@ const handleUnfollow = async () => {
                         </Link>
                       </li>
                       <li>
+                      <Button onClick={handleShow1}  variant="danger">
+      Following Profile <Badge bg="dark">{followingCount}</Badge>
+     
+    </Button>
+                      </li>
+                      <li>
+                      <Button variant="danger" onClick={handleShow} >
+      Followed Profile <Badge bg="dark">{followersCount}</Badge>
+     
+    </Button>
+                      </li>
+                      <li>
                       {currentUser?._id === id ? null : (
        <div>
                       {following  ? (
@@ -171,6 +229,62 @@ const handleUnfollow = async () => {
           </div>
         </div>
       </div>
+
+      <Modal show={show} onHide={handleClose}>
+        <Modal.Header closeButton>
+          <Modal.Title>Followed Profiles</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+        <ul className="dropdown-msg-list ">
+        {followersList.map((following) => (
+           <Link to={`/Profile/${following._id}`}  >
+                      <div  key={following._id} onClick={handleClose}>
+
+            <li className="msg-list-item d-flex flex-container">
+            <Image roundedCircle src={following.profilePicture} alt="Profile" width="50"/>
+            <h5 style={{marginLeft:'10px'}}> {following.firstName} {following.lastName}</h5>
+            </li>
+            </div>
+            </Link>
+            ))}
+            </ul>
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="danger" onClick={handleClose}>
+            Close
+          </Button>
+        
+        </Modal.Footer>
+      </Modal>
+
+
+
+
+        <Modal show={show1} onHide={handleClose1}>
+        <Modal.Header closeButton>
+          <Modal.Title>Following Profiles</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+        <ul className="dropdown-msg-list ">
+        {followingList.map((following) => (
+          <Link to={`/Profile/${following._id}`}  >
+          <div key={following._id}  onClick={handleClose1}>
+           
+                 <li className="msg-list-item d-flex flex-container">
+            <Image roundedCircle src={following.profilePicture} alt="Profile" width="50"/>
+            <h5 style={{marginLeft:'10px'}}> {following.firstName} {following.lastName}</h5>
+            </li>
+            </div>
+            </Link>))}
+            </ul>
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="danger" onClick={handleClose1}>
+            Close
+          </Button>
+          
+        </Modal.Footer>
+      </Modal>
     </>
   );
 }

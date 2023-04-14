@@ -17,6 +17,7 @@ import "./Navbar.css"
 
 
 
+
 const Navbar = () => {
   const [isDropDown, setIsDropDown] = useState(false);
   const navigate = useNavigate();
@@ -47,6 +48,7 @@ const Navbar = () => {
 
   },[currentChat]
   )
+
 
 
 
@@ -109,7 +111,7 @@ const Navbar = () => {
 
     socket.current.emit("addUser", user?._id);
     socket.current.on("getUsers", users => {
-      console.log(users)
+      
     })
 
 

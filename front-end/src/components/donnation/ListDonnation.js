@@ -3,47 +3,66 @@ import { useState, useEffect } from "react";
 import { Link, useParams, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import axios from "axios";
+import moment from "moment";
 
 function Case(props) {
   const { entity } = props;
+
+  const [isLoading, setIsLoading] = useState(false);
+  
+  const [userId,setUserId] = useState(null)
   const [userName, setUserName] = useState(null);
   const [userImage, setUserImage] = useState(null);
   const [userEmail, setUserEmail] = useState(null);
   const getUser = async (id) => {
-    const response = await fetch(`http://localhost:8000/api/getuser/${id}`, {
-      method: "GET",
-    });
-    const data = await response.json();
-    return data;
+    setIsLoading(true)
+    try {
+      const response = await fetch(`http://localhost:8000/api/getuser/${id}`, {
+        method: "GET",
+      });
+      const data = await response.json();
+      return data;
+      
+    } catch (error) {
+      console.log(error)
+    }
+    
   };
 
   useEffect(() => {
-    const userId = entity.requester;
-    getUser(userId)
+    const requesterId = entity.requester;
+    setUserId(requesterId);
+    getUser(requesterId)
       .then((userData) => {
         if (userData) {
           setUserImage(userData.profilePicture);
           setUserName(`${userData.firstName} ${userData.lastName}`);
           setUserEmail(userData.email);
+          setIsLoading(false);
         }
       })
       .catch((error) => console.error(error));
   }, [entity]);
   return (
     <>
-      <div className="profile-thumb">
-        <a href="#">
-          <figure className="profile-thumb-middle">
-            <img src={userImage} alt="profile picture" />
-          </figure>
-        </a>
-      </div>
-
-      <div className="posted-author">
-        <h4 className="author">
-          <a href="">{userName}</a>
-        </h4>
-      </div>
+      
+          <div className="profile-thumb">
+            <a href="#">
+              <figure className="profile-thumb-middle">
+                <img src={userImage} alt="profile picture" />
+              </figure>
+            </a>
+          </div>
+          <div className="posted-author">
+                <h6 className="author">
+                  <a href="profile.html">
+                   <Link to={`/profile/${userId}`}>
+                <a href="">{userName}</a>
+              </Link>
+                  </a>
+                </h6>
+          </div>
+      
     </>
   );
 }
@@ -131,7 +150,7 @@ function ListDonnation(props) {
               <div></div>
             )}
           </div>
-          <span className="post-time">{d.createdAt}</span>
+          <span className="date">{moment(d.createdAt).fromNow()}</span>
           <div className="post-content">
             <h5
               style={{
@@ -189,7 +208,7 @@ function ListDonnation(props) {
                   color: "rgb(220,71,52)",
                 }}
               >
-                Goal : {d.goal} ml {" "}
+                Goal : {d.goal} ml{" "}
               </h6>
             ) : (
               <h6
