@@ -34,6 +34,7 @@ const PresenceList = () => {
     const[part,setPart]=useState("");
     const[confirmedUsers,setConfirmedUsers]=useState("");
     const[usersData,setUsersData]=useState("");
+    const[change,setChange]=useState(false);
 
 
 
@@ -43,6 +44,7 @@ const PresenceList = () => {
           .then(data => {
             console.log(data);
             setEvent(data);
+            setChange(false)
             setPart(Object.keys(data.participants));
             fetch(`http://localhost:8000/api/getUsersById` ,{
                 method: "POST",
@@ -76,7 +78,7 @@ const PresenceList = () => {
         })
         
           .catch(error => console.error(error));
-      }, []);
+      }, [change]);
 
 
       
@@ -92,9 +94,8 @@ const PresenceList = () => {
               body: JSON.stringify({ userId: u }),
         })    
         .catch(error => console.error(error));}
-        window.location.reload();
 
-        
+        setChange(true)
      }
 
 
@@ -111,7 +112,7 @@ const PresenceList = () => {
             })    
             .catch(error => console.error(error));}
     
-            window.location.reload();
+            setChange(true)
 
          }
 
@@ -159,9 +160,7 @@ const PresenceList = () => {
           ).length / itemsPerPage
         );
 
-        const goBack=()=>{
-          window.location.replace(`http://localhost:3000/EventDetails/${id}`)
-        }
+        
   return (
    <>
     <Navbar />
@@ -176,8 +175,9 @@ const PresenceList = () => {
             
           <Container className="mt-3 p-4">
             <div className="justify-content-end d-flex">
-          <button type="button" className="btn btn-light " data-mdb-ripple-color="dark" onClick={goBack} >
-               X 
+          <button type="button" className="btn btn-light " data-mdb-ripple-color="dark"  >
+          <Link style={{ textDecoration: 'none', color: 'black' }} to={`http://localhost:3000/EventDetails/${id}`}>
+              X </Link>
             </button>
           </div>
               <Col md={4} lg={4} sm={4}>

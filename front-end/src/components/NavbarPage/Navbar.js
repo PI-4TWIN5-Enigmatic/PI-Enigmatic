@@ -202,7 +202,7 @@ const Navbar = () => {
                   <nav>
                     <ul>
                    
-                    <li className="active">  <a  className="msg-trigger-btn" href={`/Profile/${idCurrentUser}`} > Profile</a> </li>
+                    <li className="active">  <a  className="msg-trigger-btn" href={`/profile/${idCurrentUser}`} > Profile</a> </li>
                    
 
 

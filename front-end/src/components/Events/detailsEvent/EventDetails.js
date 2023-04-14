@@ -2,26 +2,25 @@ import React from 'react'
 import Navbar from '../../Navbar/Navbar'
 import "leaflet-control-geocoder/dist/Control.Geocoder.css";
 import "leaflet-control-geocoder/dist/Control.Geocoder.js";
-import LeafletGeoCoder from '../LeafletGeoCoder';
-import { useEffect, useState } from 'react';
-import { useParams ,Link } from 'react-router-dom';
+import { useEffect, useState,useCallback } from 'react';
+import { useParams ,Link, useNavigate } from 'react-router-dom';
 import L from "leaflet";
 import {MapContainer , TileLayer } from 'react-leaflet'
 import {  Col ,Container ,Row} from 'react-bootstrap'
 import { toast } from 'react-toastify';
 import { useSelector } from 'react-redux';
-import { Cookies, useCookies } from "react-cookie";
+import {  useCookies } from "react-cookie";
 import Rating from '@mui/material/Rating';
 import moment from 'moment';
+import { Marker, Popup } from 'react-leaflet';
 
 const EventDetails = () => {
 
-
+const navigate = useNavigate();
 
   const [cookies, _]=useCookies(['access_token'])
 
 
-  const token = useSelector((state) => state.token);
 
     const user =localStorage.getItem('id')
 
@@ -43,12 +42,14 @@ const EventDetails = () => {
     const[event,setEvent]=useState("");
     const [isEventTimePassed, setIsEventTimePassed] = useState('');
     const [isFav, setIsFav] = useState("");
-    console.log("🚀 ~ file: EventDetails.js:46 ~ EventDetails ~ isFav:", isFav)
     const [currentUser, setCurrentUser] = useState("");
     const {id} = useParams();
-    
-    const position = [36.8065, 10.1815]
+    const [latLng, setLatLng] = useState("");
+    const [change, setChange] = useState(false);
+    const position = latLng;
+    const currentTime = moment();
 
+     //LEAFLET_MAP  
 
     let DefaultIcon = L.icon({
         iconUrl: "../assets/images/marker.png",
@@ -59,8 +60,29 @@ const EventDetails = () => {
       L.Marker.prototype.options.icon = DefaultIcon;
 
 
- 
+      const fetchData = async (data) => {
+        const url = `https://nominatim.openstreetmap.org/search?q=${data}&format=json`;
+  
+        try {
+          const response = await fetch(url);
+          const data = await response.json();
+  
+          if (data.length === 0) {
+            throw new Error('No results found');
+          }
+          const { lat, lon } = data[0];
+          setLatLng([parseFloat(lat), parseFloat(lon)]);
+        } catch (error) {
+          console.error(error);
+        }
+      };
+      
+  
+      //END_LEAFLET_MAP
     
+
+
+      //LIST_BUTTONS_FUNCTIONS
 
     const handleShowMoreClick = () => {
       setShowMoreReviews(true);
@@ -69,10 +91,17 @@ const EventDetails = () => {
 
   
     
-  const showLessReviews = () => {
-    setNumReviews(4);
-  };
+    const showLessReviews = () => {
+      setNumReviews(4);
+    };
 
+
+    //END_LIST_BUTTONS_FUNCTIONS
+
+
+
+
+    //REVIEWS_SECTION
 
     const handleSubmit = (e) => {
       const response =  fetch(`http://localhost:8000/event/reviewEvent/${id}`, {
@@ -84,7 +113,7 @@ const EventDetails = () => {
             },
             body: JSON.stringify({ reviewerId: user , reviewerPseudo: useer.firstName , reviewerPhoto: useer.profilePicture, review:revieew , rating:value}),
       });
-
+      setChange(true)
       toast.info("Review has been added");                
       setRevieew("");
       setValue("");
@@ -94,60 +123,22 @@ const EventDetails = () => {
 
 
 
-    const deleteReview = async (reviewIdd) => {
-      if (window.confirm(`Are you sure you want to delete this review?`)){
-      const response = await fetch(`http://localhost:8000/event/deleteReview/${id}`, {
-          method: "PATCH",
-          headers: {
-              "Content-Type": "application/json",
-              Authorization:cookies.access_token
+      const deleteReview = async (reviewIdd) => {
+        if (window.confirm(`Are you sure you want to delete this review?`)){
+        const response = await fetch(`http://localhost:8000/event/deleteReview/${id}`, {
+            method: "PATCH",
+            headers: {
+                "Content-Type": "application/json",
+                Authorization:cookies.access_token
 
-            },
-            body: JSON.stringify({ reviewerId: reviewIdd }),
-      });}
-    };
+              },
+              body: JSON.stringify({ reviewerId: reviewIdd }),
+        });}
+      };
 
-    const handleRatingChange = (event, newValue) => {
-      setValue(newValue);
-  };
-
-
-  //FAVORITE_EVENT
-  const patchFav = async () => {
-      
-    const response = await fetch(`http://localhost:8000/event/favEvent`, {
-        method: "PATCH",
-        headers: {
-            "Content-Type": "application/json",
-
-          },
-          body: JSON.stringify({ userId: user , eventId: id }),
-    });
-
-  };
-
-  const getUser = async()=>{
-    const response = await fetch (`http://localhost:8000/api/getuser/${user}` , {
-    method:"GET",
-
-    });
-
-    const data = await response.json();
-    setCurrentUser(data);
-    console.log(data);
-
-};
-
-  useEffect(()=>{
-    getUser();      
-
-  },[]
-  )
-
-
-  //END_FAVORITE_EVENT
-
-
+        const handleRatingChange = (event, newValue) => {
+          setValue(newValue);
+      };
 
 
 
@@ -158,56 +149,117 @@ const EventDetails = () => {
           setGlobalRating(data);})
         .catch(error => console.error(error));
     }, [id,globalRating,eventReviews,value]);
+
+
+  //END_REVIEW_SECTION
+
+
+  //FAVORITE_EVENT
+
+
+  const getUser = async()=>{
+    const response = await fetch (`http://localhost:8000/api/getuser/${user}` , {
+    method:"GET",
+
+    });
+
+    const data = await response.json();
+    setCurrentUser(data);
+    setIsFav(Boolean(data.favEvents[id]))
+
+    console.log(data);
+
+};
+
+ 
+
+  const patchFav = useCallback(async () => {
+    const response = await fetch(`http://localhost:8000/event/favEvent`, {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ userId: user , eventId: id }),
+    });
+    
+    const updatedUser = { ...currentUser };
+    setCurrentUser(updatedUser);
+    setChange(true)
+  
+    if (isFav) {
+      updatedUser.favEvents[id] = false;
+    } else {
+      updatedUser.favEvents[id] = true;
+    }
+
+  }, []);
+  
+
+
+  //END_FAVORITE_EVENT
+
+
+
+
+
+    //INTERACTION_SECTION
+
+    const patchParticipate = useCallback(async () => {
+      const response = await fetch(`http://localhost:8000/event/participateEvent/${id}`, {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: cookies.access_token
+        },
+        body: JSON.stringify({ userId: user }),
+      });
+    
+      setChange(true)
+
+    }, []);
+    
+  
+
+
+    const patchInterested = useCallback(async () => {
+      const response = await fetch(`http://localhost:8000/event/interestedInEvent/${id}`, {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: cookies.access_token
+        },
+        body: JSON.stringify({ userId: user }),
+      });
+    
+      setChange(true)
+
+    }, []);
     
 
-    const patchParticipate = async () => {
-      const response = await fetch(`http://localhost:8000/event/participateEvent/${id}`, {
-          method: "PATCH",
-          headers: {
-              "Content-Type": "application/json",
-              Authorization:cookies.access_token
-            },
-            body: JSON.stringify({ userId: user }),
-      });
 
-    };
+    //END_INTERACTION_SECTION
 
-  
-    const patchInterested = async () => {
-      
-      const response = await fetch(`http://localhost:8000/event/interestedInEvent/${id}`, {
-          method: "PATCH",
-          headers: {
-              "Content-Type": "application/json",
-              Authorization:cookies.access_token
-
-            },
-            body: JSON.stringify({ userId: user }),
-      });
-
-    };
-
-
-
-
-
-      const currentTime = moment();
      
+
+      
     
 
       useEffect(() => {
+        getUser();
         
         fetch(`http://localhost:8000/event/getEventById/${id}`, {headers:{Authorization:cookies.access_token}})
           .then(response => response.json())
           .then(data => {
+            fetchData(data.locationEvent);
             setEvent(data);
+            setChange(false);
+
             const eventTime = moment(data.dateEvent);
             setIsEventTimePassed(eventTime.isBefore(currentTime))
            setInterestedCount ( Object.keys(data.interested).length);
            setParticipatedCount( Object.keys(data.participants).length);
            setIsparticipated( Boolean(data.participants[user]));
            setIsInterested( Boolean(data.interested[user]));
-           setIsFav(Boolean(currentUser.favEvents[id]))
 
            if (data && data.hasOwnProperty('organisateurEvent')) {
             setOrganisateur(data.organisateurEvent)
@@ -230,14 +282,20 @@ const EventDetails = () => {
        
           })
           .catch(error => console.error(error));
+         
 
        
           
-      }, [id,patchFav,patchInterested,patchParticipate]);
+      }, [change]);
 
-  
+      
 
-    
+        const goBack=()=>{
+          navigate(-1);
+        }
+
+      
+
 
   return (
     <>
@@ -254,8 +312,8 @@ const EventDetails = () => {
             
           <Container className="mt-3 p-4">
           <div className='d-flex justify-content-end' >
-              <button type="button" className="btn btn-light " data-mdb-ripple-color="dark" >
-               
+              <button type="button" className="btn btn-light " data-mdb-ripple-color="dark"  onClick={goBack}>
+               X
             </button>
             </div>
             <Row>
@@ -386,18 +444,15 @@ const EventDetails = () => {
 
                   <div className="col-xl-6">
                     <div className='d-flex justify-content-end'>
-                    {isFav ? (  
-                         <button className='like-button'>
-                                   <img className="heart-color" src="../assets/images/icons/heart-color.png"  onClick={patchFav} alt=""style={{width:"30px"}} /> 
-                     </button>
-                                    
-                                    
-                                    
-                                    ):( 
                     <button className='like-button'>
-                                    <img className="heart" src="../assets/images/icons/heart.png" alt="" style={{width:"30px"}} onClick={patchFav} />
-                     </button>
-                     )}
+                        <img
+                          className={isFav ? "heart-color" : "heart"}
+                          src={isFav ? "../assets/images/icons/heart-color.png" : "../assets/images/icons/heart.png"}
+                          onClick={patchFav}
+                          alt=""
+                          style={{width:"30px"}}
+                        />
+                      </button>
                     </div>
                                             
                     <div className="justify-content-center d-flex">
@@ -422,7 +477,7 @@ const EventDetails = () => {
                                 <br />
                                 <label className="form-label" ><b>Type :</b>{event.typeEvent}</label>
                                 <br />
-                                <label className="form-label" ><b>Price :</b>{event.priceEvent}</label>
+                                <label className="form-label" ><b>Price :</b>{event.priceEvent} Dt</label>
                               <br/>
 
                               {alpha ? ( <></>
@@ -435,40 +490,27 @@ const EventDetails = () => {
                                 
                                 
                                 <div className="d-flex justify-content-center" style={{ paddingRight: "10px" }}>
-
-                                                             
-
-                             { !isEventTimePassed && (isInterested ? (
-                         <button type="button" className="btn btn-secondary btn-lg"  onClick={() => {
-                                                                           patchInterested();
-                                                                         }}>Interested In</button>
-
-                                                                         ) : (
-
-                         <button type="button" className="btn btn-light btn-lg"  onClick={() => {
-                                                                           patchInterested();
-                                                                         }}>are you interested ?</button>
-                                                                         ))}
-
-
-                       {  !isEventTimePassed && (isparticipated ? (
-                         <button type="button" className="btn btn-info btn-lg"  onClick={() => {
-                                                                           patchParticipate();
-                                                                         }}>Participated In</button>
-
-                                                                         ) : (
-
-                         <button type="button" className="btn btn-danger btn-lg"  onClick={() => {
-                                                                           patchParticipate();
-                                                                         }}>Want to participate ?</button>
-                                                                         ))}
-
-
-                               
+                                                  
+                                  {!isEventTimePassed && (
+                                    <>
+                                      <button
+                                        type="button"
+                                        className={`btn btn-${isInterested ? 'secondary' : 'light'} btn-lg`}
+                                        onClick={patchInterested}
+                                      >
+                                        {isInterested ? 'Interested In' : 'Are you interested?'}
+                                      </button>
+                                      <button
+                                        type="button"
+                                        className={`btn btn-${isparticipated ? 'info' : 'danger'} btn-lg`}
+                                        onClick={patchParticipate}
+                                      >
+                                        {isparticipated ? 'Participated In' : 'Want to participate?'}
+                                      </button>
+                                    </>
+                                  )}                              
                                
                          </div>)}
-
-
 
 
                                 </div>
@@ -485,13 +527,20 @@ const EventDetails = () => {
                                 <div className="form-outline mb-4">
                                 <h4 className="widget-title"><i className="bi bi-location-pointer" style={{paddingRight: "10px"}}></i>Location : </h4>
                                 <label className="form-label" >{event.locationEvent}</label>
-                                <MapContainer center={position} zoom={13} scrollWheelZoom={false}>
-                                <TileLayer
-                                      attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-                                      url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-                                                    />
-                                <LeafletGeoCoder   />
-                                </MapContainer>
+                                {position && (
+                                 <MapContainer center={position} zoom={13} scrollWheelZoom={false}>
+                                 <TileLayer
+                                   attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+                                   url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+                                 />
+                                 <Marker position={position}>
+                                   <Popup>
+                                     A pretty CSS3 popup. <br /> Easily customizable.
+                                   </Popup>
+                                 </Marker>
+                               </MapContainer>
+                                
+                                )}
                                 </div>
                                 </div>
                   </div>
@@ -515,19 +564,23 @@ const EventDetails = () => {
             
               <div class="button-container justify-content-left d-flex" 
                            >
-                          <button type="button" className="btn btn-primary btn-lg " style={{marginRight: "20px"}}  >
-                          <Link to={`http://localhost:3000/presenceList/${id}`}>  Check List Of Presence </Link>
+                          <button type="button" className="btn btn-danger btn-lg " style={{marginRight: "20px"}}  >
+                          <Link style={{ textDecoration: 'none', color: 'white' }} to={`http://localhost:3000/presenceList/${id}`}>  Check List Of Presence </Link>
 
                             </button>
 
-                          <button type="button" className="btn btn-primary btn-lg " style={{marginRight: "20px"}}  >
-                          <Link to={`http://localhost:3000/partners/${id}`}>  Add Parteners </Link>
+                          <button type="button" className="btn btn-danger btn-lg " style={{marginRight: "20px"}}  >
+                          <Link style={{ textDecoration: 'none', color: 'white' }} to={`http://localhost:3000/partners/${id}`}>  Add Parteners </Link>
 
                              </button>
 
-                          <button className="btn btn-primary btn-lg" style={{marginRight: "20px"}} >
-                          <Link to={`http://localhost:3000/updateEvent/${id}}`}>  Update Event </Link>
+                          <button className="btn btn-danger btn-lg" style={{marginRight: "20px"}} >
+                          <Link style={{ textDecoration: 'none', color: 'white' }} to={`http://localhost:3000/updateEvent/${id}`}>  Update Event </Link>
                               </button>
+
+                              {/* <button className="btn btn-danger btn-lg" style={{marginRight: "20px"}} >
+                          <Link style={{ textDecoration: 'none', color: 'white' }} to={`http://localhost:3000/meeting/${id}`}>  Meeting Room </Link>
+                              </button> */}
 
                           </div>
 
@@ -562,20 +615,8 @@ const EventDetails = () => {
                        
                             <label className="form-label" >Description</label>
                             </div>
-                            <button 
-                                                style={{
-                                                    marginRight: '40px',
-                                                    color: '#dc4734',
-                                                    backgroundColor: 'transparent',
-                                                    border: '2px solid #dc4734',
-                                                    borderRadius: '20px',
-                                                    padding: '5px 5px',
-                                                    transition: 'all 0.3s ease',
-                                                    fontWeight: 'bold'
-                                                }}
-                                                onMouseEnter={e => e.target.style.backgroundColor = '#f5e1e1'}
-                                                onMouseLeave={e => e.target.style.backgroundColor = 'transparent'}
-                                                onClick={()=>{handleSubmit();}}                                                >
+                            <button className='btn btn-danger'
+                                                          onClick={handleSubmit}                                  >
                                                       Submit                      
                                                       </button>   
 

@@ -174,7 +174,7 @@ const Navbar = () => {
   };
 
   const rediret = () => {
-
+    window.localStorage.clear()
     navigate("/");
   };
 
@@ -268,7 +268,7 @@ const Navbar = () => {
                        
                         {!cookies.access_token ? (
         <button style={{borderRadius: 30,marginBottom:15}} className="submit-btn "  onClick={rediret}>login/signup</button>
-        ) ||     window.localStorage.clear()
+        )     
       : (
         <button style={{borderRadius: 30,marginBottom:15}} className="submit-btn "  onClick={logout}>Log Out</button>
         )}
