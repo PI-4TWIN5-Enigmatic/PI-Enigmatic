@@ -8,7 +8,6 @@ import L from "leaflet";
 import {MapContainer , TileLayer } from 'react-leaflet'
 import {  Col ,Container ,Row} from 'react-bootstrap'
 import { toast } from 'react-toastify';
-import { useSelector } from 'react-redux';
 import {  useCookies } from "react-cookie";
 import Rating from '@mui/material/Rating';
 import moment from 'moment';
@@ -111,7 +110,7 @@ const navigate = useNavigate();
               Authorization:cookies.access_token
 
             },
-            body: JSON.stringify({ reviewerId: user , reviewerPseudo: useer.firstName , reviewerPhoto: useer.profilePicture, review:revieew , rating:value}),
+            body: JSON.stringify({ reviewerId: user ,review:revieew , rating:value}),
       });
       setChange(true)
       toast.info("Review has been added");                
@@ -120,6 +119,7 @@ const navigate = useNavigate();
       
     }
     const eventReviews = event.reviews
+    console.log("🚀 ~ file: EventDetails.js:123 ~ EventDetails ~ eventReviews:", eventReviews)
 
 
 
@@ -256,10 +256,10 @@ const navigate = useNavigate();
 
             const eventTime = moment(data.dateEvent);
             setIsEventTimePassed(eventTime.isBefore(currentTime))
-           setInterestedCount ( Object.keys(data.interested).length);
-           setParticipatedCount( Object.keys(data.participants).length);
-           setIsparticipated( Boolean(data.participants[user]));
-           setIsInterested( Boolean(data.interested[user]));
+            setInterestedCount ( Object.keys(data.interested).length);
+            setParticipatedCount( Object.keys(data.participants).length);
+            setIsparticipated( Boolean(data.participants[user]));
+            setIsInterested( Boolean(data.interested[user]));
 
            if (data && data.hasOwnProperty('organisateurEvent')) {
             setOrganisateur(data.organisateurEvent)
@@ -387,17 +387,17 @@ const navigate = useNavigate();
                                 {/* <!-- profile picture end --> */}
                                 <div className="profile-thumb">
                                         <figure className="profile-thumb-middle">
-                                            <img src={a.reviewerPhoto} alt="picture" />
+                                            <img src={a.reviewerId.profilePicture} alt="picture" />
                                         </figure>
                                 </div>
                                 {/* <!-- profile picture end --> */}
 
                                 <div className="posted-author">
-                                    <h6 className="author"><a href="profile.html">{a.reviewerPseudo}</a></h6>
+                                    <h6 className="author"><Link to={`/profile/${a.reviewerId._id}`}>{a.reviewerId.firstName} {a.reviewerId.lastName}</Link></h6>
                                     <span class="post-time">{new Date(a.timestamp).toString().substring(0, 24)}</span>
 
                                 </div >
-                                { alpha ? (
+                                { alpha || (a.reviewerId._id === user) ? (
 
                                 <div className="post-settings-bar" >
                                     <span></span>
@@ -430,10 +430,19 @@ const navigate = useNavigate();
                         </li>
                       )}
                       <div className='d-flex justify-content-center'>
-                      <button className="btn btn-primary  " style={{ marginRight: '100px' }}onClick={handleShowMoreClick}>Show More</button>
-                      <button className="btn btn-secondary "  onClick={showLessReviews}>Show Less</button>
-                      </div>
-                                
+                      <button outline rounded className='btn btn-danger'  onClick={handleShowMoreClick}  style={{ marginRight: '100px' }}>
+                      <i className="bi bi-person-down">  Show More</i>
+
+                      {/* <MDBIcon fas icon="caret-down" style={{ marginRight: '10px' }}/> */}
+                      </button>
+
+
+                      <button outline rounded className='btn btn-danger'  onClick={showLessReviews}  style={{ marginRight: '100px' }}>
+                                      {/* <MDBIcon fas icon="caret-up" style={{ marginRight: '10px' }}/> */}
+                                      <i className="bi bi-person-down">  Show Less</i>
+
+                      </button>
+                                      </div>
 
 
                         {/* <!-- post status end --> */}
