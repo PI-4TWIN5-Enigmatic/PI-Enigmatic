@@ -18,8 +18,9 @@ import "./Navbar.css"
 
 
 
-const Navbar = () => {
+const Navbar = ( props ) => {
   const [isDropDown, setIsDropDown] = useState(false);
+  const [isDropDownN, setIsDropDownN] = useState(false);
   const navigate = useNavigate();
   const user = JSON.parse(localStorage.getItem('user'))
   const [conversations, setConversation] = useState([]);
@@ -153,7 +154,12 @@ const Navbar = () => {
     setIsDropDown(!isDropDown);
   };
 
+  const handleDropDownNotification = () => {
+    setIsDropDownN(!isDropDownN);
+  };
+
   const style = isDropDown ? { display: 'block'} : {display: 'none' };
+  const styleN = isDropDownN ? { display: 'block'} : {display: 'none' };
 
   useEffect(() => {
     socket.current = io("ws://localhost:8900");
@@ -237,7 +243,33 @@ const Navbar = () => {
                       </div>
                     </li>
 
-                    <li class="notification-trigger"><a class="msg-trigger-btn" href="#b">notification</a> </li>
+                    <li class="notification-trigger"><a className="msg-trigger-btn" onClick={handleDropDownNotification}>
+                        notifications
+                      </a>
+
+                      <div className="message-dropdown " style={styleN} id="a">
+                        <div className="dropdown-title">
+                          <p className="recent-msg">recent notifications</p>
+                          {/* <div className="message-btn-group">
+                            <button>New group</button>
+                            <button>New Message</button>
+                          </div> */}
+                        </div>
+                        <ul className="dropdown-msg-list ">
+                          <li>(${props.donation && props.donation.sector})</li>
+                        {/* {donation.length > 0 && (
+                          <ul>
+                           <li>ccvghgvhjbknl</li>
+                          
+                            
+                          </ul>
+                        )} */}
+                      </ul>
+                        {/* <div className="msg-dropdown-footer">
+                          <button>See all in messenger</button>
+                          <button>Mark All as Read</button>
+                        </div> */}
+                      </div> </li>
                    </ul>  
                    </nav>
                 </div>)}
