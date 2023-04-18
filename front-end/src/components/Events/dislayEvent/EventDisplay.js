@@ -20,6 +20,7 @@ const EventDisplay = () => {
     const token =window.localStorage.getItem("token");
     const [cookies,setCookies] = useCookies(["access_token"]);
     const[query,setQuery]=useState('')
+    const[change,setChange]=useState(false)
 
 
 
@@ -64,9 +65,11 @@ const EventDisplay = () => {
           .then(response => response.json())
           .then(data => {
             console.log(data);
-            setEvent(data);})
+            setEvent(data)
+            setChange(false)
+            ;})
           .catch(error => console.error(error));
-      }, []);
+      }, [change]);
       
 
       const navigate = useNavigate();
@@ -76,6 +79,7 @@ const EventDisplay = () => {
         axios.delete(`http://localhost:8000/event/deleteEvent/${id}`, {headers:{Authorization:cookies.access_token}})
           .then(response => {
             console.log('Item deleted successfully');
+            setChange(true)
             toast.info("Event have been deleted")                    // Handle success response
 
           })

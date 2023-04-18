@@ -6,10 +6,12 @@ import "leaflet-control-geocoder/dist/Control.Geocoder.css";
 import "leaflet-control-geocoder/dist/Control.Geocoder.js";
 import LeafletGeoCoder from '../LeafletGeoCoder';
 import axios from 'axios';
-import { useParams } from 'react-router-dom';
+import { useParams,Link } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { Cookies, useCookies } from "react-cookie";
+import { Alert } from "react-bootstrap";
+import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
 
 
 const UpdateEvent = () => {
@@ -51,6 +53,70 @@ const UpdateEvent = () => {
         setLocationEvent(data);
         }
 
+
+        const [errors,setErrors] = useState(
+            {
+                nameEvent:'',
+                descriptionEvent:'',
+                dateEvent:'',
+                typeEvent:'',
+                eventPicture:'',
+                priceEvent:'',
+                locationEvent:''
+            }
+        )
+    
+    
+        const formValidation = () => {
+            
+            let etat = true ;
+            let localError = {
+                nameEvent:'',
+                descriptionEvent:'',
+                dateEvent:'',
+                typeEvent:'',
+                eventPicture:'',
+                priceEvent:'',
+            }
+            if(nameEvent === "" ){
+               localError.nameEvent = " name required" ;
+               etat = false;
+            }
+        
+             if(descriptionEvent === "" || descriptionEvent.length < 23  ){
+                localError.descriptionEvent = " description required and 23 caracters min" ;
+                etat = false;
+             }
+          
+             if(dateEvent === "" ){
+                localError.dateEvent = "  Date required" ;
+                etat = false;
+             }
+           
+             if(typeEvent === "" ){
+                localError.typeEvent = " Event Type required" ;
+                etat = false;
+             }
+             if(eventPicture === "" ){
+                localError.eventPicture = " Event Picture required" ;
+                etat = false;
+    
+             } if(priceEvent === "" ){
+                localError.priceEvent = " Event Price required" ;
+                etat = false;
+    
+             } if(locationEvent === "" ){
+                localError.locationEvent = " Event Location required" ;
+                etat = false;
+             }
+           
+             setErrors(localError)
+            //  console.log(localError)
+             return etat ; 
+              
+    
+        }
+
    
 
 
@@ -58,7 +124,8 @@ const UpdateEvent = () => {
     const handleSubmit = (e) => {
 
         
-
+        const isFormValid = formValidation();
+        if(isFormValid){
 
         const dataimg = new FormData()
         dataimg.append("file",eventPicture)
@@ -82,10 +149,12 @@ const UpdateEvent = () => {
              axios.put(`http://localhost:8000/event/updateEvent/${id}`, data , {headers:{Authorization:cookies.access_token}})
                 .then(response => {
                     console.log(response);
-                    toast.info("Event have been updated")                    // Handle success response
+                    toast.info("Event has been updated ")                    // Handle success response
 
                     // Handle success response
                 })
+                navigate(`/EventDetails/${id}`)
+
                 .catch(error => {
                     console.error(error);
                     // Handle error response
@@ -94,11 +163,10 @@ const UpdateEvent = () => {
         
         )
     
-        if(window.confirm(`Event have been updated successfully`)){
-            navigate(`/EventDetails/${id}`)
+    }else{
+        console.log("form invalid");
+    }
 
-        }
-    
     }
 
 
@@ -118,11 +186,9 @@ const UpdateEvent = () => {
       
       const navigate = useNavigate();
 
-
       const goBack=()=>{
-        navigate(`/EventDetails/${id}`)
+        navigate(-1);
       }
-
 
 
   return (
@@ -157,6 +223,7 @@ const UpdateEvent = () => {
                             <div className="row">
                             <div className="form-outline mb-4">
                             <input type="text" id="form3Example8" className="form-control form-control-lg" value={nameEvent} onChange={(e) => setNameEvent(e.target.value)} />
+                            {errors.nameEvent !== "" ? <Alert key="danger" variant="danger">{errors.nameEvent} </Alert> : ''}
                             <label className="form-label" >Name</label>
                             </div>
 
@@ -164,11 +231,13 @@ const UpdateEvent = () => {
                             
                             <div className="form-outline mb-4">
                             <input type="text" id="form3Example8" className="form-control form-control-lg" value={descriptionEvent} onChange={(e) => setDescriptionEvent(e.target.value)} />
+                            {errors.descriptionEvent !== "" ? <Alert key="danger" variant="danger">{errors.descriptionEvent}</Alert> : ''}
                             <label className="form-label" >Description</label>
                             </div>
 
                             <div className="form-outline mb-4">
                             <input type="datetime-local" id="form3Example8" className="form-control form-control-lg" value={dateEvent} onChange={(e) => setDateEvent(e.target.value)}/>
+                            {errors.dateEvent !== "" ? <Alert key="danger" variant="danger">{errors.dateEvent} </Alert> : ''}
                             <label className="form-label" >Date</label>
                             </div>
 
@@ -179,6 +248,7 @@ const UpdateEvent = () => {
                             <div className="form-outline mb-4">
                             <div className="mb-3">
                             <input className="form-control" type="file" id="formFile" onChange={(event) => seteventPicture(event.target.files[0])} />
+                            {errors.eventPicture !== "" ? <Alert key="danger" variant="danger">{errors.eventPicture} </Alert>: ''}
                             <label className="form-label">Choose a Picture</label>
 
                                           </div>
@@ -186,18 +256,28 @@ const UpdateEvent = () => {
                                  
 
 
-                            <div className="form-outline mb-4">
-                            <select className="nice-select" name="sort" onChange={(e) => setTypeEvent(e.target.value)} value={typeEvent}>
-                                    <option >Type Event</option>
+                             <div className="form-outline mb-4">
+                            <div style={{ display: "inline-block" , verticalAlign: "middle"  }}>
+                                <AttachMoneyIcon />
+                                </div>
+                                <div style={{ display: "inline-block" ,  verticalAlign: "middle" }}>
+                                <select className="nice-select" name="sort" style={{ width: "490px" }} onChange={(e) => setTypeEvent(e.target.value)} value={typeEvent}>
+                                    <option value="" disabled="true" >Type Event</option>
                                     <option value="Free Event">Free Event</option>
                                     <option value="Paid Event">Paid Event</option>
-                                                                
-                                                            </select>
+                                </select>
+                                </div>         
+                            
                             </div>
+                            {errors.typeEvent !== "" ? <Alert key="danger" variant="danger">{errors.typeEvent}</Alert> : ''}
+
                                     
+                            <br/>
                             <div className="form-outline mb-4">
-                            <input type="text" id="form3Example97" className="form-control form-control-lg" value={priceEvent} onChange={(e) => setPriceEvent(e.target.value)}  />
-                            <label className="form-label">If it's a paid event, please enter the price of the tickets here :  </label>
+                            <label className="form-label">If it's a paid event, please enter the price of the tickets here (DT)  :  </label>
+                            <input type="number" id="form3Example97" className="form-control form-control-lg" value={priceEvent} onChange={(e) => setPriceEvent(e.target.value)}  />
+                            {errors.priceEvent !== "" ? <Alert key="danger" variant="danger">{errors.priceEvent} </Alert> : ''}
+
                             </div>
 
 
@@ -210,13 +290,19 @@ const UpdateEvent = () => {
                                 />
                                 <LeafletGeoCoder onData={handleDataFromChild}  />
                             </MapContainer>
+                            {errors.locationEvent !== "" ? <Alert key="danger" variant="danger">{errors.locationEvent} </Alert> : ''}
+
                             <label className="form-label" >Location</label>
                             </div>
 
 
                             <div className="d-flex justify-content-end pt-3">
-                            <button type="button" className="btn btn-light btn-lg" onClick={goBack}>Go back</button>
-                            <button type="button" className="btn btn-danger btn-lg ms-2" onClick={handleSubmit}>Submit form</button>
+               
+                            <button type="button" className="btn btn-light btn-lg" onClick={goBack}>             
+                                Go back 
+                            </button>
+                            <button type="button" className="btn btn-danger btn-lg ms-2" onClick={handleSubmit}>
+                                Submit form </button>
                             </div>
 
                         </div>

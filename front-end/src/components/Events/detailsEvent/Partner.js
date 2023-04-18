@@ -17,6 +17,7 @@ import {
   import { useSelector } from 'react-redux';
   import ReactPaginate from 'react-paginate';
   import './EventDetails.css'
+  import { useNavigate } from 'react-router-dom';
 
 const Partner = (props) => {
   const [cookies, _]=useCookies(['token'])
@@ -32,6 +33,8 @@ const Partner = (props) => {
   const  [association,setAssociation]=useState([]);
   const  [associationUser,setAssociationUser]=useState([]);
   const  [partners,setPart]=useState("");
+  const  [change,setChange]=useState(false);
+  const [nameButton,setNameButton]=useState(false)
 
 
   const {id} = useParams();
@@ -58,6 +61,7 @@ const Partner = (props) => {
           .then(response => response.json())
               .then(data => {
                 console.log(data);
+                setChange(false)
                 setEvent(data);
                 fetch(`http://localhost:8000/association/getAssociationsById` ,{
                   method: "POST",
@@ -88,11 +92,6 @@ const Partner = (props) => {
             .catch(error => console.error(error));
           }
          ,[])
-
-
-        const goBack=()=>{
-          window.location.replace(`http://localhost:3000/EventDetails/${id}`)
-        }
 
 
         //RECHERCHE
@@ -149,8 +148,8 @@ const Partner = (props) => {
                   eventDate:event.dateEvent }),
             })    
             .catch(error => console.error(error));}
-            window.location.reload();
-    
+              setChange(true)
+              setNameButton(true)
 
         }
 
@@ -164,7 +163,11 @@ const Partner = (props) => {
           return false;
         };
 
+        const navigate = useNavigate();
 
+        const goBack=()=>{
+          navigate(-1);
+        }
 
 
 
@@ -181,11 +184,13 @@ const Partner = (props) => {
           <div className="col">
             
           <Container className="mt-3 p-4">
-            <div className="justify-content-end d-flex">
-          <button type="button" className="btn btn-light " data-mdb-ripple-color="dark" onClick={goBack} >
-               X 
+          <div className="justify-content-end d-flex">
+
+          <button type="button" className="btn btn-light " data-mdb-ripple-color="dark"  onClick={goBack}>
+               X
             </button>
-          </div>
+            </div>
+
               <Col md={4} lg={4} sm={4}>
 
               <h2>Associations List</h2>
@@ -239,7 +244,7 @@ const Partner = (props) => {
                                 {lookOut(a) ? (
                                 <Link ><CButton   color="info" variant="ghost" >Already Partner </CButton></Link>
                               ) :(
-                                <Link ><CButton   color="info"  onClick={()=>{addPartner(a.email,a.name,a._id)}}> Send An Email </CButton></Link>
+                                <Link ><CButton  disabled="" color="info"  onClick={()=>{addPartner(a.email,a.name,a._id)}}> Send An Email </CButton></Link>
                               )}
 
                                

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useRef } from "react";
 import { useState, useEffect } from "react";
 import { useNavigate, useParams, Link } from "react-router-dom";
 import Navbar from "../Navbar/Navbar";
@@ -8,6 +8,8 @@ import axios from "axios";
 import RecentNotifications from "../profilePage/RecentNotifications";
 import ListDonnation from "./ListDonnation"
 import { toast } from "react-toastify";
+import { io } from "socket.io-client"
+
 
 
 const RequestDonnation = () => {
@@ -24,6 +26,23 @@ const RequestDonnation = () => {
     const [description, setDescription] = useState("");
     const [date, setDate] = useState("");
     const [picture, setPicture] = useState("");
+    const [donation, setDonation] = useState(null);
+
+    const socket = useRef();
+
+    useEffect(() => {
+      socket.current = io("ws://localhost:8900");
+      socket.current.on('donation', (data) => {
+        setDonation(data);
+        
+      });
+
+      
+      console.log(donation);
+
+      
+      
+    }, [donation]);
 
     const [errors, setErrors] = useState({
       location: "",
@@ -100,8 +119,18 @@ const RequestDonnation = () => {
                 axios
                     .post(`http://localhost:8000/donnation/requestDonnation/${id}`, data)
                     .then((response) => {
-                        console.log(response);
-                       toast.info("Donnation have been created"); 
+                      socket.current.emit('requestDonnation', data);
+                      console.log(response);
+                      toast.info("Donnation have been created"); 
+
+                    // Ajouter la notification
+                    axios.post(`http://localhost:8000/notifications/addNotifications/${response.data.donationId}`)
+                    .then((response) => {
+
+                    }).catch((error) => {
+                      console.error(error);
+                    });
+                      
                     })
                     .catch((error) => {
                         console.error(error);
@@ -127,7 +156,17 @@ const RequestDonnation = () => {
                   )
                   .then((response) => {
                     console.log(response);
+                    socket.current.emit('requestDonnation', data);
+                   
                     toast.info("Donnation have been created");
+
+                     // Ajouter la notification
+                     axios.post(`http://localhost:8000/notifications/addNotifications/${response.data.donationId}`)
+                     .then((response) => {
+
+                     }).catch((error) => {
+                       console.error(error);
+                     });
                   })
                   .catch((error) => {
                     console.error(error);
@@ -168,7 +207,7 @@ const RequestDonnation = () => {
         <h1>Loading...</h1>
       ) : (
         <div>
-          <Navbar />
+          <Navbar  donation={donation}  />
 
           <div
             class="main-wrapper pt-80"
