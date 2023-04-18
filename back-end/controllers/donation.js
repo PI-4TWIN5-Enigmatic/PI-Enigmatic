@@ -1,6 +1,46 @@
 const Donation = require('../models/donation')
 const User = require('../models/user')
+require('dotenv').config()
+const stripe = require("stripe")(process.env.STRIPE_KEY);
 
+
+exports.Payment = async (req, res) => {
+  try {
+    const  priceId  = req.body.data.priceId;
+    const  somm  = req.body.data.amount;
+
+    if (!priceId) {
+      return res.status(400).json({ error: "Price ID is required" });
+    }
+   const price = await stripe.prices.create({
+     unit_amount: somm * 100,
+     currency: "eur",
+     recurring: {
+       interval: "month",
+     },
+     product_data: {
+       name: "Thank your for your donation",
+     },
+   });
+
+    const session = await stripe.checkout.sessions.create({
+      line_items: [
+        {
+          price: price.id,
+          quantity: 1,
+        },
+      ],
+      mode: "subscription",
+      success_url: "http://localhost:3000/profile/64121f904790f49045f2b1d5",
+      cancel_url: "http://localhost:3000/jdsnc",
+    });
+
+    res.send({ url: session.url });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "An error occurred" });
+  }
+};
 
 exports.RequestDonnation = async (req, res) => {
     const requester = await User.findById({ _id: req.params.id })
