@@ -120,8 +120,17 @@ const RequestDonnation = () => {
                     .post(`http://localhost:8000/donnation/requestDonnation/${id}`, data)
                     .then((response) => {
                       socket.current.emit('requestDonnation', data);
-                      
+                      console.log(response);
                       toast.info("Donnation have been created"); 
+
+                    // Ajouter la notification
+                    axios.post(`http://localhost:8000/notifications/addNotifications/${response.data.donationId}`)
+                    .then((response) => {
+
+                    }).catch((error) => {
+                      console.error(error);
+                    });
+                      
                     })
                     .catch((error) => {
                         console.error(error);
@@ -150,6 +159,14 @@ const RequestDonnation = () => {
                     socket.current.emit('requestDonnation', data);
                    
                     toast.info("Donnation have been created");
+
+                     // Ajouter la notification
+                     axios.post(`http://localhost:8000/notifications/addNotifications/${response.data.donationId}`)
+                     .then((response) => {
+
+                     }).catch((error) => {
+                       console.error(error);
+                     });
                   })
                   .catch((error) => {
                     console.error(error);

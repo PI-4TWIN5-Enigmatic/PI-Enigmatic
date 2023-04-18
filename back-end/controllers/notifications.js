@@ -6,13 +6,16 @@ exports.addNotifications = async (req, res) => {
     const requester = await Donation.findById({ _id: req.params.id })
 
     try {
+        if (!requester) {
+            throw new Error("don n'a pas été trouvé")
+        }
+
         const notification = await notifications.create({...req.body,requester:requester.id}).then((doc) => {
-        id = doc._id
+            id = doc._id
         })
         res.status(201).json({
-        sucess: true
-    })
-        
+            sucess: true
+        })
     } catch (error) {
         console.log(error.message)
         res.status(500).json({
@@ -20,7 +23,6 @@ exports.addNotifications = async (req, res) => {
             message: error.message,
         })  
     }
-
 }
 
 

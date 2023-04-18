@@ -35,6 +35,7 @@ import PartnershipConfirmed from './components/Events/detailsEvent/PartnershipCo
 import Partners from './components/Events/detailsEvent/Partner';
 import MeetHomePage from './components/Events/Meetings/MeetHomePage';
 import MeetRoom from './components/Events/Meetings/MeetRoom';
+import Notifications from './components/Notifications/Notifications';
 function App() {
   const [cookies, setCookies] = useCookies(["access_token"]);
   return (
@@ -44,9 +45,11 @@ function App() {
    <BrowserRouter>
       <Routes>
     <Route path="/" element={<Signup />}></Route>
+    <Route path="/noti" element={<Notifications />}></Route>
     <Route path="/signup" element={<Signup />}></Route>
     <Route path="/verif" element={<Verif />}></Route>
     <Route path="/association/cree" element={<Create />}></Route>
+
     <Route path="/association/update/:id" element={<UpdateAssociation />}></Route>
     
     {cookies.access_token &&

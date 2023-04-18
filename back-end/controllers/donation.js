@@ -6,11 +6,14 @@ exports.RequestDonnation = async (req, res) => {
     const requester = await User.findById({ _id: req.params.id })
 
     try {
+        let id;
         const donation = await Donation.create({...req.body,requester:requester.id}).then((doc) => {
         id = doc._id
         })
         res.status(201).json({
-        sucess: true
+        sucess: true,
+        donationId: id
+
     })
         
     } catch (error) {
