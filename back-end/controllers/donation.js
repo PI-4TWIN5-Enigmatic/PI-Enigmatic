@@ -7,7 +7,8 @@ const stripe = require("stripe")(process.env.STRIPE_KEY);
 exports.Payment = async (req, res) => {
   try {
     const  priceId  = req.body.data.priceId;
-    const  somm  = req.body.data.amount;
+    const somm = req.body.data.amount;
+    const idUser = req.body.data.idUser;
 
     if (!priceId) {
       return res.status(400).json({ error: "Price ID is required" });
@@ -19,7 +20,7 @@ exports.Payment = async (req, res) => {
        interval: "month",
      },
      product_data: {
-       name: "Thank your for your donation",
+       name: "Donation",
      },
    });
 
@@ -31,8 +32,8 @@ exports.Payment = async (req, res) => {
         },
       ],
       mode: "subscription",
-      success_url: "http://localhost:3000/profile/64121f904790f49045f2b1d5",
-      cancel_url: "http://localhost:3000/jdsnc",
+      success_url: `http://localhost:3000/HomePage/${idUser}`,
+      cancel_url: "http://localhost:3000/failed",
     });
 
     res.send({ url: session.url });

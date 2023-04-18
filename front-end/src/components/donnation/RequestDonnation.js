@@ -27,6 +27,7 @@ const RequestDonnation = () => {
     const [date, setDate] = useState("");
     const [picture, setPicture] = useState("");
     const [donation, setDonation] = useState(null);
+    const [phone, setPhone] = useState("");
 
     const socket = useRef();
 
@@ -52,7 +53,28 @@ const RequestDonnation = () => {
       description: "",
       date: "",
       picture: "",
+      phone:"",
     });
+function estNumeroTelephoneValide(telephone) {
+  // Vérifier que le numéro de téléphone a une longueur de 8 caractères
+  if (telephone.length !== 8) {
+    return false;
+  }
+  
+  // Vérifier que le premier chiffre du numéro de téléphone est valide
+  const premierChiffre = telephone.charAt(0);
+  if (premierChiffre !== '5' && premierChiffre !== '9' && premierChiffre !== '2' && premierChiffre !== '7' && premierChiffre !== '4') {
+    return false;
+  }
+  
+  // Vérifier que le numéro de téléphone ne contient que des chiffres
+  if (!/^\d+$/.test(telephone)) {
+    return false;
+  }
+  
+  // Le numéro de téléphone est valide
+  return true;
+}
 
     const formValidation = () => {
         let etat = true;
@@ -64,6 +86,7 @@ const RequestDonnation = () => {
           description: "",
           date: "",
           picture: "",
+          phone: "",
         };
         if (location === "") {
             localError.location = " Location required";
@@ -85,10 +108,14 @@ const RequestDonnation = () => {
             localError.description = " Description required";
             etat = false;
         }
-        if (date === "") {
-            localError.date = " Date required";
-            etat = false;
-        }
+      if (phone === "") {
+        localError.phone = " Phone required";
+        etat = false;
+      }
+      if (!estNumeroTelephoneValide(phone)) {
+        localError.phone = "Please enter a valid phone Number";
+        etat = false;
+      }
         setErrors(localError);
         return etat;
     };
@@ -113,6 +140,7 @@ const RequestDonnation = () => {
                     goal,
                     description,
                     date,
+                    phone,
                     picture: result.data.secure_url,
                 };
 
@@ -147,6 +175,7 @@ const RequestDonnation = () => {
                   goal,
                   description,
                   date,
+                  phone,
                 };
 
                 axios
@@ -207,7 +236,7 @@ const RequestDonnation = () => {
         <h1>Loading...</h1>
       ) : (
         <div>
-          <Navbar  donation={donation}  />
+          <Navbar donation={donation} />
 
           <div
             class="main-wrapper pt-80"
@@ -372,14 +401,18 @@ const RequestDonnation = () => {
                             )}
                             <br></br>
                           </div>
+                          
                           <div>
                             <input
-                              onChange={(event) => setDate(event.target.value)}
-                              value={date}
-                              type="date"
+                              onChange={(event) =>
+                                setPhone(event.target.value)
+                              }
+                              value={phone}
+                              type="text"
                               className="share-text-field"
+                              placeholder="Phone number"
                             />
-                            {errors.date !== " " ? (
+                            {errors.phone !== " " ? (
                               <div
                                 style={{
                                   textAlign: "left",
@@ -387,13 +420,14 @@ const RequestDonnation = () => {
                                   color: "rgb(220,71,52)",
                                 }}
                               >
-                                {errors.date}{" "}
+                                {errors.phone}{" "}
                               </div>
                             ) : (
                               ""
                             )}
                             <br></br>
-                          </div>
+                            </div>
+                            <br></br>
                           <div>
                             <label className="form-label">
                               Choose a Picture

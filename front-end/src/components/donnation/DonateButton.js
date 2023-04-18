@@ -5,6 +5,7 @@ const DonateButton = ({ donation, amount }) => {
       priceId: "price_1MxvEKH0YIiHzOkmwMY2wjkQ",
       donation,
       amount,
+      idUser:localStorage.getItem("id"),
     };
   const handlePayment = () => {
     axios
@@ -13,7 +14,6 @@ const DonateButton = ({ donation, amount }) => {
       })
         .then((res) => {
             const benefit = parseInt(donation.benefit) + parseInt(amount);
-            console.log("BENEFIT",benefit)
             axios.put(
               `http://localhost:8000/donnation/updateDonation/${donation._id}`,
               {

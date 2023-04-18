@@ -46,11 +46,15 @@ const donationSchema = new mongoose.Schema(
     },
     date: {
       type: Date,
-      required: true,
+      required: false,
     },
     requester: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "user",
+    },
+    phone: {
+      type: String,
+      required: true
     },
     picture: { type: String },
   },

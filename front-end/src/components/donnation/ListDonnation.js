@@ -169,13 +169,15 @@ function ListDonnation(props) {
             ) : (
               <h6>Goal : {d.goal} </h6>
             )}
+            <br></br>
 
             <p className="post-desc">
               Description : <br></br>
               {d.description}
             </p>
+
             <div>
-              {d.type === "Money" ? (
+              {d.type === "Money" || d.type === "Other" ? (
                 <div>
                   {(() => {
                     const progress =
@@ -189,9 +191,9 @@ function ListDonnation(props) {
                             color: "rgb(220,71,52)",
                           }}
                         >
-                          Donation Progress is {progress} %{" "}
+                          Donation Progress is {progress.toFixed(2)} %{" "}
                         </h4>
-                        <ProgressBar done={progress} />
+                        <ProgressBar done={progress.toFixed(2)} />
                       </>
                     );
                   })()}
@@ -205,6 +207,16 @@ function ListDonnation(props) {
                     />{" "}
                     DT &ensp;&ensp;
                     <DonateButton donation={d} amount={payment} />
+                    <br></br><br></br>
+                    <p
+                      style={{
+                        textAlign: "left",
+                        paddingBottom: "10px",
+                        color: "rgb(220,71,52)",
+                      }}
+                    >
+                      Please call {d.phone} for more information or donation{" "}
+                    </p>
                   </div>
                 </div>
               ) : (
