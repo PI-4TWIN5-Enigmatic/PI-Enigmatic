@@ -74,6 +74,7 @@ const Navbar = () => {
             text: data.text,
             createdAt: Date.now(),
           });
+          console.log(data);
         });
       }, []);
     
@@ -192,7 +193,6 @@ const Navbar = () => {
 
 
 
-
       <div className="col-md-2">
         <div className="header-top sticky bg-white d-none d-lg-block">
           <div className="container">
@@ -202,7 +202,7 @@ const Navbar = () => {
                   <nav>
                     <ul>
                    
-                    <li className="active">  <a  className="msg-trigger-btn" href={`/Profile/${idCurrentUser}`} > Profile</a> </li>
+                    <li className="active">  <a  className="msg-trigger-btn" href={`/profile/${idCurrentUser}`} > Profile</a> </li>
                    
 
 

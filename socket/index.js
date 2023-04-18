@@ -23,10 +23,15 @@ io.on("connection", (socket) => {
   //when ceonnect
   console.log("a user connected.");
 
+  socket.on('requestDonnation', (donation) => {
+    console.log('donation requested:', donation);
+    io.emit('donation', donation);
+  });
+
   //take userId and socketId from user
   socket.on("addUser", (userId) => {
     addUser(userId, socket.id);
-    io.emit("getUsers", users);
+    io.emit("getUsers", users)  ;
   });
 
   //send and get message

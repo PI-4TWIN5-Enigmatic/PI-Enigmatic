@@ -8,8 +8,10 @@ import LeafletGeoCoder from '../LeafletGeoCoder';
 import axios from 'axios';
 import { useParams } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
-import { toast } from 'react-toastify';
 import { Cookies, useCookies } from "react-cookie";
+import { Alert } from "react-bootstrap";
+import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
+import { toast } from 'react-toastify';
 
 const CreateEvent = () => {
 
@@ -39,7 +41,6 @@ const CreateEvent = () => {
             typeEvent:'',
             eventPicture:'',
             priceEvent:'',
-
         }
     )
 
@@ -60,8 +61,8 @@ const CreateEvent = () => {
            etat = false;
         }
     
-         if(descriptionEvent === "" || descriptionEvent.length < 30  ){
-            localError.descriptionEvent = " description required and 30 caracters min" ;
+         if(descriptionEvent === "" || descriptionEvent.length < 23  ){
+            localError.descriptionEvent = " description required and 23 caracters min" ;
             etat = false;
          }
       
@@ -77,7 +78,12 @@ const CreateEvent = () => {
          if(eventPicture === "" ){
             localError.eventPicture = " Event Picture required" ;
             etat = false;
-         }
+
+         } if(priceEvent === "" ){
+            localError.priceEvent = " Event Price required" ;
+            etat = false;
+
+         } 
        
          setErrors(localError)
         //  console.log(localError)
@@ -114,11 +120,16 @@ const CreateEvent = () => {
              axios.post(`http://localhost:8000/event/${id}/createEvent`, data, {headers:{Authorization:cookies.access_token}})
                 .then(response => {
                     console.log(response);
+                    toast.info("Event has been created ")                    // Handle success response
+
                 })
+                navigate(`/EventDisplay/${id}`)
                 .catch(error => {
                     console.error(error);
                     // Handle error response
                 });
+
+
                 }
         )
    
@@ -126,10 +137,6 @@ const CreateEvent = () => {
             console.log("form invalid");
         }
 
-        if(window.confirm(`Event have been added successfully`)){
-            navigate(`/EventDisplay/${id}`)
-
-        }
 
     }
 
@@ -184,7 +191,7 @@ const CreateEvent = () => {
                             <div className="row">
                             <div className="form-outline mb-4">
                             <input type="text" id="form3Example8" className="form-control form-control-lg" value={nameEvent} onChange={(e) => setNameEvent(e.target.value)}  />
-                            {errors.nameEvent !== " " ? <div style={{textAlign:'left' , paddingBottom:'10px', color: 'rgb(220,71,52)'}} >{errors.nameEvent} </div> : ''}
+                            {errors.nameEvent !== "" ? <Alert key="danger" variant="danger">{errors.nameEvent} </Alert> : ''}
 
                             <label className="form-label" >Name</label>
                             </div>
@@ -193,14 +200,14 @@ const CreateEvent = () => {
                             
                             <div className="form-outline mb-4">
                             <input type="text" id="form3Example8" className="form-control form-control-lg" value={descriptionEvent} onChange={(e) => setDescriptionEvent(e.target.value)} />
-                            {errors.descriptionEvent !== " " ? <div style={{textAlign:'left' , paddingBottom:'10px', color: 'rgb(220,71,52)'}} >{errors.descriptionEvent} </div> : ''}
+                            {errors.descriptionEvent !== "" ? <Alert key="danger" variant="danger">{errors.descriptionEvent}</Alert> : ''}
 
                             <label className="form-label" >Description</label>
                             </div>
 
                             <div className="form-outline mb-4">
                             <input type="datetime-local" id="form3Example8" className="form-control form-control-lg" value={dateEvent} onChange={(e) => setDateEvent(e.target.value)}/>
-                            {errors.dateEvent !== " " ? <div style={{textAlign:'left' , paddingBottom:'10px', color: 'rgb(220,71,52)'}} >{errors.dateEvent} </div> : ''}
+                            {errors.dateEvent !== "" ? <Alert key="danger" variant="danger">{errors.dateEvent} </Alert> : ''}
                             <label className="form-label" >Date</label>
                             </div>
 
@@ -211,7 +218,7 @@ const CreateEvent = () => {
                             <div className="form-outline mb-4">
                             <div className="mb-3">
                             <input className="form-control" type="file" id="formFile" onChange={(event) => seteventPicture(event.target.files[0])} />
-                            {errors.eventPicture !== " " ? <div style={{textAlign:'left' , paddingBottom:'10px', color: 'rgb(220,71,52)'}} >{errors.eventPicture} </div> : ''}
+                            {errors.eventPicture !== "" ? <Alert key="danger" variant="danger">{errors.eventPicture} </Alert>: ''}
                             <label className="form-label">Choose a Picture</label>
 
                                           </div>
@@ -220,20 +227,26 @@ const CreateEvent = () => {
 
 
                             <div className="form-outline mb-4">
-                            <select className="nice-select" name="sort" onChange={(e) => setTypeEvent(e.target.value)} value={typeEvent}>
-                                    <option value="">Type Event</option>
+                            <div style={{ display: "inline-block" , verticalAlign: "middle"  }}>
+                                <AttachMoneyIcon />
+                                </div>
+                                <div style={{ display: "inline-block" ,  verticalAlign: "middle" }}>
+                                <select className="nice-select" name="sort" style={{ width: "490px" }} onChange={(e) => setTypeEvent(e.target.value)} value={typeEvent}>
+                                    <option value="" disabled="true" >Type Event</option>
                                     <option value="Free Event">Free Event</option>
-                                    <option value="Paid Event">Paid Event</option>       
-                                                            </select>
-                            {errors.typeEvent !== " " ? <div style={{textAlign:'left' , paddingBottom:'10px', color: 'rgb(220,71,52)'}} >{errors.typeEvent} </div> : ''}
-
-                            </div>
+                                    <option value="Paid Event">Paid Event</option>
+                                </select>
+                                </div>         
                             
-                                    
+                            </div>
+                            {errors.typeEvent !== "" ? <Alert key="danger" variant="danger">{errors.typeEvent}</Alert> : ''}
+
+                            
+                                    <br/>
                             <div className="form-outline mb-4">
-                            <input type="text" id="form3Example97" className="form-control form-control-lg" value={priceEvent} onChange={(e) => setPriceEvent(e.target.value)}  />
-                            {errors.priceEvent !== " " ? <div style={{textAlign:'left' , paddingBottom:'10px', color: 'rgb(220,71,52)'}} >{errors.priceEvent} </div> : ''}
-                            <label className="form-label">If it's a paid event, please enter the price of the tickets here :  </label>
+                            <label className="form-label">If it's a paid event, please enter the price of the tickets here (DT)  :  </label>
+                            <input type="number" id="form3Example97" className="form-control form-control-lg" value={priceEvent} onChange={(e) => setPriceEvent(e.target.value)}  />
+                            {errors.priceEvent !== "" ? <Alert key="danger" variant="danger">{errors.priceEvent} </Alert> : ''}
                             </div>
 
 

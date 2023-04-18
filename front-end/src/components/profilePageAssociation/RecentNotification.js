@@ -59,9 +59,9 @@ const RecentNotifications = () => {
                                                     </figure>
                                             </div>
           
-                                           (   <div className="unorder-list-info">
+                                              <div className="unorder-list-info">
                                                 <h3 className="list-title"><Link to={`/createEvent/${id}`}>Want to add an event ? Click right here </Link></h3>
-                                            </div>)
+                                            </div>
 
                                         </li>                                                                                      
                                 </div>

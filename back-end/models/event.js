@@ -1,4 +1,5 @@
 const mongoose = require('mongoose')
+const User = require('./user');
 
 
 const eventSchema = new mongoose.Schema(
@@ -52,11 +53,9 @@ const eventSchema = new mongoose.Schema(
     reviews : {
       type: [
         {
-          reviewerId:String,
-          reviewerPseudo: String,
-          reviewerPhoto: String,
+          reviewerId:{type: mongoose.Schema.Types.ObjectId,
+          ref: 'User'},
           review: String,
-          emoji:String,
           rating:Number,
           timestamp: Number,
         }

@@ -36,7 +36,10 @@ exports.getEventById =async (req, res ) =>{
     try{
         const{id}=req.params;
         
-        const events = await Event.findById(id);
+        const events = await Event.findById(id).populate({
+          path: "reviews.reviewerId",
+          select: "firstName lastName profilePicture",
+        });
 
         res.status(200).json(events);
 
@@ -154,11 +157,8 @@ exports.deleteEvent = (req, res) => {
                   $push: {
                     reviews: {
                         reviewerId: req.body.reviewerId,
-                        reviewerPseudo: req.body.reviewerPseudo,
-                        reviewerPhoto: req.body.reviewerPhoto,
                         review: req.body.review,
                         rating:req.body.rating,
-                        emoji:req.body.emoji,
                       timestamp: new Date().getTime(),
                     },
                   },

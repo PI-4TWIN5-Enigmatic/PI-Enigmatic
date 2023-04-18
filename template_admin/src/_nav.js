@@ -23,14 +23,14 @@ const _nav = [
     name: 'Users management',
     to: '/users',
     icon: <CIcon icon={cilContact} customClassName="nav-icon" />,
-   
+
   },
   {
     component: CNavItem,
     name: 'Associations management',
     to: '/associations',
     icon: <CIcon icon={cilBuilding} customClassName="nav-icon" />,
-   
+
   },
 
   {
@@ -38,10 +38,18 @@ const _nav = [
     name: 'Events Management',
     to: '/events',
     icon: <CIcon icon={cilBuilding} customClassName="nav-icon" />,
-   
+
   },
- 
- 
+
+  {
+    component: CNavItem,
+    name: 'Donnation Management',
+    to: '/donation',
+    icon: <CIcon icon={cilBuilding} customClassName="nav-icon" />,
+
+  },
+
+
 ]
 
 export default _nav
