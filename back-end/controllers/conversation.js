@@ -1,20 +1,31 @@
 const Conversation = require("../models/conversation")
 
 
-exports.createConversation =async (req, res ) =>{
- 
-    const newConversation = new Conversation({
-        members:[req.body.senderId , req.body.receiverId],
-    });
+exports.createConversation = async (req, res) => {
+    const senderId = req.body.senderId;
+    const receiverId = req.body.receiverId;
 
-    try{
+    try {
+        // Check if conversation already exists
+        const conversationExists = await Conversation.findOne({
+            members: { $all: [senderId, receiverId] },
+        });
+        if (conversationExists) {
+   
+            return res.send("Conversation already exists ! please check your messages ! ")
+        }
+
+        // Create new conversation
+        const newConversation = new Conversation({
+            members: [senderId, receiverId],
+        });
         const savedConversation = await newConversation.save();
-        res.status(200).json(savedConversation);
-    }catch(err){
-        res.status(500).json(err)
+        return res.send("A conversation had been created please check your Messages")
+    } catch (err) {
+        res.status(500).json(err);
     }
+};
 
-}
 
 exports.getConversation = async (req, res) =>{
     try{

@@ -8,6 +8,7 @@ import { Button } from 'react-bootstrap';
 import { Badge } from 'react-bootstrap';
 import { Modal } from 'react-bootstrap';
 import Image from 'react-bootstrap/Image';
+import { toast } from 'react-toastify';
 
 
 
@@ -102,14 +103,19 @@ const handleClick = async (user) => {
     receiverId: id,
     
   };
-  try {
-     await axios.post(
+ 
+      axios.post(
       "http://127.0.0.1:8000/conversation",conversation
-    );
-    console.log(conversation)
-  } catch (err) {
-    console.log(err);
-  }
+    )
+    .then((response) => {
+      console.log(response.data)
+    
+      toast.info(response.data);
+
+})
+
+   
+ 
 };
 
 const handleFollow = async () => {
