@@ -18,7 +18,7 @@ import { Cookies, useCookies } from "react-cookie";
 import { Link } from 'react-router-dom';
 import ReactPaginate from 'react-paginate';
 import './Event.css'
-
+import { useNavigate } from 'react-router-dom';
 
 const Events = () => {
   const [currentPage, setCurrentPage] = useState(0);
@@ -31,6 +31,7 @@ const Events = () => {
 
   const  [association,setAssociation]=useState([]);
 
+  const navigate=useNavigate();
 
   const[query,setQuery]=useState('')
 
@@ -68,7 +69,9 @@ const Events = () => {
     );
 
 
-
+const goStatistic=()=>{
+  navigate('/statistics')
+}
 
 
 
@@ -88,6 +91,8 @@ return (
           aria-label="Search"
           onChange={(e)=>setQuery(e.target.value)}
         />
+              {/* <CButton  className='d-flex justify-content-end' color="primary"  onClick={goStatistic}>View Statistics</CButton>  */}
+
       </div>
     </MDBCol>
      

@@ -8,6 +8,8 @@ const PartnershipConfirmed = () => {
   const location = useLocation();
   const assoId = new URLSearchParams(location.search).get('assoId');
   const eventId = new URLSearchParams(location.search).get('eventId');
+  const [association,setAssociation]= useState(null);
+  const [event,setEvent]= useState(null);
 
   useEffect(()=>{
     fetch(`http://localhost:8000/event/confirmPartner?assoId=${assoId}&eventId=${eventId}`, {
@@ -18,6 +20,22 @@ const PartnershipConfirmed = () => {
                 });
     }
   )
+
+  useEffect(() => {
+    fetch(`http://localhost:8000/association/get/${assoId}`)
+      .then(response => response.json())
+      .then(data => {
+        console.log(data);
+        setAssociation(data);
+    })
+      .catch(error => console.error(error));
+
+      fetch(`http://localhost:8000/event/getEventById/${eventId}`)
+      .then(response => response.json())
+      .then(data => {
+        setEvent(data);})
+  }, []);
+
 
 
   return (
@@ -37,7 +55,22 @@ const PartnershipConfirmed = () => {
          
                 
          <div >
-          All team of Enigmatic would like to congratulate you on your partnership ! 
+
+    <div className="justify-content-center d-flex">
+
+        <div className ="card widget-item  justify-content-center d-flex " style={{width:"80%"}}>
+
+                <div className="form-outline mb-4">
+                <h5>
+                All team of Enigmatic would like to congratulate you on your partnership with {association?.name} on {event?.nameEvent}!
+                </h5>
+                <br/>
+                <img src='../images/congrats.jpg' />
+
+
+                             </div>
+                        </div>
+                </div>
           </div>
           </div>
 

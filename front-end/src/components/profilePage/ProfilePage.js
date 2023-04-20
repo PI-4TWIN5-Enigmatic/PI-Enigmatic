@@ -14,6 +14,7 @@ import { useGetUserID } from '../../hooks/useGetUserID'
 import axios from 'axios';
 import { Cookies, useCookies } from "react-cookie";
 import { useSelector } from 'react-redux';
+import NotFound from '../NotFound'
 
 
 const ProfilePage = () => {
@@ -167,7 +168,8 @@ const handlePhotoSelection = (event) => {
         </div>
     
     </div>
-    </main></div>
+    </main> 
+    </div>
     
 
     
