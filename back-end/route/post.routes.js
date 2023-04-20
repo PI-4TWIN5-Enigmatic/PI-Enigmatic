@@ -41,8 +41,8 @@ router.put('/unlike-post/:id', unlikePost);
 //comments
 
 router.put('/comment-post/:id', commentPost);
-router.patch('/edit-comment-post/:id', editCommentPost);
-router.patch('/delete-comment-post/:id', deleteCommentPost);
+router.put('/edit-comment-post/:id', editCommentPost);
+router.put('/delete-comment-post/:id', deleteCommentPost);
 
 
 

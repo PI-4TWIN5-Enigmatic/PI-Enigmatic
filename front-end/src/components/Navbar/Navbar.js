@@ -16,13 +16,15 @@ import picker from "emoji-picker-react";
 import { BsEmojiSmileFill } from 'react-icons/bs';
 import EmojiPicker from 'emoji-picker-react';
 
+import {  useLocation } from 'react-router-dom';
 
 
 
 
 
 const Navbar = ( props ) => {
-
+  const location = useLocation();
+  const [linkText, setLinkText] = useState('Home');
   const [isDropDown, setIsDropDown] = useState(false);
   const [isDropDownN, setIsDropDownN] = useState(false);
   const navigate = useNavigate();
@@ -37,7 +39,8 @@ const Navbar = ( props ) => {
   const [cookies, setCookies] = useCookies(["access_token"]);
   const [friendUser , setFriendUser] = useState(null);
   const [showEmojiPicker,setShowEmojiPicker] = useState(false);
-  
+  const idCurrentUser=localStorage.getItem('id')
+
 
   const handleEmojiPickerHideShow = () => {
     setShowEmojiPicker(!showEmojiPicker)
@@ -191,8 +194,23 @@ setNewMessage(message)
     });
   }, []);
 
-    const idCurrentUser=localStorage.getItem('id')
 
+  useEffect(() => {
+    if (location.pathname === `/HomePage/${idCurrentUser}`) {
+      setLinkText('profile');
+    } else {
+      setLinkText('home');
+    }
+  }, [location, idCurrentUser]);
+
+  const handleClick = (event) => {
+    event.preventDefault();
+    if (location.pathname === `/HomePage/${idCurrentUser}`) {
+      navigate(`/profile/${idCurrentUser}`);
+    } else {
+      navigate(`/HomePage/${idCurrentUser}`);
+    }
+  };
 
   const logout = () => {
     setCookies("access_token", "");
@@ -229,8 +247,11 @@ setNewMessage(message)
                {cookies.access_token && (  <div className="header-top-navigation">
                   <nav>
                     <ul>
-                      <li className="active">  <a  className="msg-trigger-btn" href={`/HomePage/${idCurrentUser}`} > Home</a> </li>
-
+                    <li className="active">
+          <a className="msg-trigger-btn" href={`/HomePage/${idCurrentUser}`} onClick={handleClick}>
+            {linkText}
+          </a>
+        </li>
                         <li className="msg-trigger">
                       <a className="msg-trigger-btn" onClick={handleDropDown}>
                         message

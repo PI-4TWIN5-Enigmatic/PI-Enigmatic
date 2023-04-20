@@ -84,7 +84,7 @@ const About =() => {
      
   useEffect(()=>{
     getUser();
-    getFollowersList();
+        getFollowersList();
     getFollowingList();
 },[following,id]);
 
@@ -243,11 +243,11 @@ const handleUnfollow = async () => {
         <Modal.Body>
         <ul className="dropdown-msg-list ">
         {followersList.map((following) => (
-           <Link to={`/Profile/${following._id}`}  >
+           <Link to={`/profile/${following._id}`}  >
                       <div  key={following._id} onClick={handleClose}>
 
             <li className="msg-list-item d-flex flex-container">
-            <Image roundedCircle src={following.profilePicture} alt="Profile" width="50"/>
+            <Image roundedCircle src={following.profilePicture} alt="profile" width="50"/>
             <h5 style={{marginLeft:'10px'}}> {following.firstName} {following.lastName}</h5>
             </li>
             </div>
@@ -273,11 +273,11 @@ const handleUnfollow = async () => {
         <Modal.Body>
         <ul className="dropdown-msg-list ">
         {followingList.map((following) => (
-          <Link to={`/Profile/${following._id}`}  >
+          <Link to={`/profile/${following._id}`}  >
           <div key={following._id}  onClick={handleClose1}>
            
                  <li className="msg-list-item d-flex flex-container">
-            <Image roundedCircle src={following.profilePicture} alt="Profile" width="50"/>
+            <Image roundedCircle src={following.profilePicture} alt="profile" width="50"/>
             <h5 style={{marginLeft:'10px'}}> {following.firstName} {following.lastName}</h5>
             </li>
             </div>
