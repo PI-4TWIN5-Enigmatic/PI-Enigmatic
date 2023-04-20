@@ -36,8 +36,10 @@ import Partners from './components/Events/detailsEvent/Partner';
 import MeetHomePage from './components/Events/Meetings/MeetHomePage';
 import MeetRoom from './components/Events/Meetings/MeetRoom';
 import Notifications from './components/Notifications/Notifications';
+import DetailDonation from './components/donnation/DetailDonation';
 function App() {
   const [cookies, setCookies] = useCookies(["access_token"]);
+  
   return (
 
     <>
@@ -45,7 +47,6 @@ function App() {
    <BrowserRouter>
       <Routes>
     <Route path="/" element={<Signup />}></Route>
-    <Route path="/noti" element={<Notifications />}></Route>
     <Route path="/signup" element={<Signup />}></Route>
     <Route path="/verif" element={<Verif />}></Route>
     <Route path="/association/cree" element={<Create />}></Route>
@@ -58,6 +59,9 @@ function App() {
           
           <Route path="/donnation/request/:id" element={<RequestDonnation />}> </Route>
           <Route path="/donnation/update/:id" element ={<UpdateDonnation />}> </Route>
+          <Route path="/donation/detail/:id" element ={<DetailDonation />}> </Route>
+
+
 
     <Route path="/changerPassword" element={<ChangerPassword />}></Route>
    

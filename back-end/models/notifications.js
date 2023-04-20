@@ -2,15 +2,15 @@ const mongoose = require('mongoose');
 
 const notificationSchema = new mongoose.Schema({
 
-    realeted_donation: {            
-        type: mongoose.Schema.Types.ObjectId, ref: 'donation' ,
+    related_donation: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'donation',
+        required: true,
       },
-    read: {
+      read: {
         type: Boolean,
         default: false,
-    },
-});
+      },
+    }, { timestamps: true });
 
-const Notification = mongoose.model('Notification', notificationSchema);
-
-module.exports = Notification;
+module.exports = mongoose.model('Notification', notificationSchema)

@@ -191,3 +191,23 @@ exports.getAssociationsByIds = async (req, res) => {
     res.status(500).json({ error: err.message });
   }
 }
+
+exports.addDonationToUserAssociation = async (req, res) => {
+    try {
+      const { idFounder, idDonation } = req.params;
+      const userAssociation = await Association.findOne({ founder: idFounder });
+      if (userAssociation) {
+        // Associer la donation à l'association de l'utilisateur
+        userAssociation.related_donation.push(idDonation);
+        await userAssociation.save();
+        
+        return res.json({ success: true });
+      } else {
+        // Si aucune association n'a été trouvée
+        return res.status(404).json({ error: "L'utilisateur n'a pas encore d'association" });
+      }
+      
+    } catch (err) {
+      return { error: err.message };
+    }
+  };
