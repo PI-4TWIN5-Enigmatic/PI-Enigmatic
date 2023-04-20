@@ -68,7 +68,7 @@ const LikedPages = () => {
 
 
                         <div className="card widget-item">
-                                <h4 className="widget-title">Your Favorite Events</h4>
+                                <h4 className="widget-title"> Favorite Events</h4>
                                 <div className="widget-body">
                                     <ul className="like-page-list-wrapper">
                                         {favEvents && favEvents.map((e)=>

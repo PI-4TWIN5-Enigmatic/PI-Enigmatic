@@ -5,15 +5,18 @@ import { format } from "timeago.js"
 
 const Messages = ({ message, own }) => {
   const [filteredMessage, setFilteredMessage] = useState("");
+  const emojiRegex = new RegExp('^([\u{1F000}-\u{1FFFF}]+|:[a-z_]+:)+$', 'u');
 
   useEffect(() => {
     const filterMessage = () => {
       const filter = new Filter();
-      const filteredText = filter.clean(message.text);
+      const isEmojiOnly = message.text && emojiRegex.test(message.text.trim());
+      const filteredText = isEmojiOnly ? message.text : filter.clean(message.text);
       setFilteredMessage(filteredText);
     };
     filterMessage();
   }, [message]);
+  
 
   return (
     <>

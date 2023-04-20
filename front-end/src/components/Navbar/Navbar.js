@@ -12,13 +12,19 @@ import About from '../profilePage/About';
 
 import { BsFillHouseDoorFill,BsFillChatSquareDotsFill,BsBellFill } from "react-icons/bs";
 import "./Navbar.css"
+import picker from "emoji-picker-react";
+import { BsEmojiSmileFill } from 'react-icons/bs';
+import EmojiPicker from 'emoji-picker-react';
 
+import {  useLocation } from 'react-router-dom';
 
 
 
 
 
 const Navbar = ( props ) => {
+  const location = useLocation();
+  const [linkText, setLinkText] = useState('Home');
   const [isDropDown, setIsDropDown] = useState(false);
   const [isDropDownN, setIsDropDownN] = useState(false);
   const navigate = useNavigate();
@@ -32,6 +38,8 @@ const Navbar = ( props ) => {
   const scrollRef = useRef();
   const [cookies, setCookies] = useCookies(["access_token"]);
   const [friendUser , setFriendUser] = useState(null);
+  const [showEmojiPicker,setShowEmojiPicker] = useState(false);
+  const idCurrentUser=localStorage.getItem('id')
 
   const [notifications, setNotifications] = useState([]);
     
@@ -44,6 +52,9 @@ const Navbar = ( props ) => {
 
 
 
+  const handleEmojiPickerHideShow = () => {
+    setShowEmojiPicker(!showEmojiPicker)
+  }
   useEffect(()=>
   {
       const friendId = currentChat?.members.find((m)=> m !== user._id);
@@ -59,6 +70,7 @@ const Navbar = ( props ) => {
 
   },[currentChat]
   )
+
 
 
 
@@ -132,6 +144,16 @@ const Navbar = ( props ) => {
 
 
 
+  const handleEmojiClick= (emoji , event) => {
+let message = newMessage;
+console.log(emoji)
+message +=emoji.emoji;
+setNewMessage(message)
+
+  }
+
+
+
 
   const handleSubmitChat = async (e) => {
     e.preventDefault();
@@ -182,8 +204,23 @@ const Navbar = ( props ) => {
     });
   }, []);
 
-    const idCurrentUser=localStorage.getItem('id')
 
+  useEffect(() => {
+    if (location.pathname === `/HomePage/${idCurrentUser}`) {
+      setLinkText('profile');
+    } else {
+      setLinkText('home');
+    }
+  }, [location, idCurrentUser]);
+
+  const handleClick = (event) => {
+    event.preventDefault();
+    if (location.pathname === `/HomePage/${idCurrentUser}`) {
+      navigate(`/profile/${idCurrentUser}`);
+    } else {
+      navigate(`/HomePage/${idCurrentUser}`);
+    }
+  };
 
   const logout = () => {
     setCookies("access_token", "");
@@ -225,8 +262,11 @@ const Navbar = ( props ) => {
                {cookies.access_token && (  <div className="header-top-navigation">
                   <nav>
                     <ul>
-                      <li className="active">  <a  className="msg-trigger-btn" href={`/HomePage/${idCurrentUser}`} > Home</a> </li>
-
+                    <li className="active">
+          <a className="msg-trigger-btn" href={`/HomePage/${idCurrentUser}`} onClick={handleClick}>
+            {linkText}
+          </a>
+        </li>
                         <li className="msg-trigger">
                       <a className="msg-trigger-btn" onClick={handleDropDown}>
                         message
@@ -380,9 +420,26 @@ const Navbar = ( props ) => {
                                      </> : <span style={{height: 300}} >open a conversation</span>}
                                      <div className="chat-text-field mob-text-box">
                                     <textarea className="live-chat-field custom-scroll" placeholder="Text Message" onChange={(e)=> setNewMessage(e.target.value)} value={newMessage} ></textarea>
+                                    <button className="chat-message-send" type="submit"  onClick={handleEmojiPickerHideShow}>
+                                   < BsEmojiSmileFill  />
+                                   </button>
+                                 
                                     <button className="chat-message-send" type="submit"  onClick={handleSubmitChat}>
                                     <AiOutlineSend/>
+                                   
+                                    
+                                    
                                     </button>
+                                  
+
+                                    <div style={{ position: 'relative' }}>
+  {showEmojiPicker && (
+    <div style={{ position: 'absolute',    left: 30,
+    top: -379 }}>
+      <EmojiPicker onEmojiClick={handleEmojiClick} />
+    </div>
+  )}
+</div>
                                 </div>
                               </div>
                              </div>
@@ -398,8 +455,10 @@ const Navbar = ( props ) => {
 
       </div>{" "}
     </div>
+    
+   
   </div>{ " " }
-
+  
 
                                                     
 </div>       

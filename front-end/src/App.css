@@ -8,6 +8,7 @@
 @import './assets/css/plugins/perfect-scrollbar.css';
 /* @import './assets/css/plugins/lightgallery.min.css';  */
 @import './assets/css/style.css';
+@import url('https://fonts.googleapis.com/css?family=Montserrat&display=swap');
 
 /* @import './assets/images/favicon.ico'; */
 /* @import './assets/js/vendor/modernizr-3.6.0.min.js'; */
@@ -22,6 +23,37 @@
 /* @import './assets/js/plugins/imagesloaded.pkgd.min.js'; */
 /* @import './assets/js/plugins/isotope.pkgd.min.js'; */
 /* @import './assets/js/main.js';  */
+
+
+* {
+  box-sizing: border-box;
+}
+
+
+.progress {
+  background-color: #d8d8d8;
+  border-radius: 20px;
+  position: relative;
+  margin: 15px 0;
+  height: 30px;
+  width: 300px;
+}
+
+.progress-done {
+  background: linear-gradient(to left, #F2709C, #FF9472);
+  box-shadow: 0 3px 3px -5px #F2709C, 0 2px 5px #F2709C;
+  border-radius: 20px;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  width: 0;
+  opacity: 0;
+  transition: 1s ease 0.3s;
+}
+
+
 
 
 

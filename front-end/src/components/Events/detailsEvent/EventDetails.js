@@ -291,7 +291,7 @@ const navigate = useNavigate();
       
 
         const goBack=()=>{
-          navigate(-1);
+          navigate(`/EventDisplay/${association._id}`);
         }
 
       
@@ -479,14 +479,14 @@ const navigate = useNavigate();
 
 
                                 <h4 className="widget-title"><i className="bi bi-heart-beat" style={{paddingRight: "10px"}}></i>Description : </h4>
-                                <label className="form-label" >{event.descriptionEvent}</label>
+                                <p >{event.descriptionEvent}</p>
                                 <br />
                                 <h4 className="widget-title"><i className="bi bi-share" style={{paddingRight: "10px"}}></i>Details : </h4>
-                                <label className="form-label" ><b>Date :</b>{new Date(event.dateEvent).toString().substring(0, 24)}</label>
+                                <p ><b>Date :</b>{new Date(event.dateEvent).toString().substring(0, 24)}</p>
                                 <br />
-                                <label className="form-label" ><b>Type :</b>{event.typeEvent}</label>
+                                <p ><b>Type :</b>{event.typeEvent}</p>
                                 <br />
-                                <label className="form-label" ><b>Price :</b>{event.priceEvent} Dt</label>
+                                <p ><b>Price :</b>{event.priceEvent} Dt</p>
                               <br/>
 
                               {alpha ? ( <></>
@@ -507,14 +507,14 @@ const navigate = useNavigate();
                                         className={`btn btn-${isInterested ? 'secondary' : 'light'} btn-lg`}
                                         onClick={patchInterested}
                                       >
-                                        {isInterested ? 'Interested In' : 'Are you interested?'}
+                                        {isInterested ? 'Interested ' : 'Are you interested?'}
                                       </button>
                                       <button
                                         type="button"
                                         className={`btn btn-${isparticipated ? 'info' : 'danger'} btn-lg`}
                                         onClick={patchParticipate}
                                       >
-                                        {isparticipated ? 'Participated In' : 'Want to participate?'}
+                                        {isparticipated ? 'Going ' : 'Want to participate?'}
                                       </button>
                                     </>
                                   )}                              
@@ -535,7 +535,7 @@ const navigate = useNavigate();
 
                                 <div className="form-outline mb-4">
                                 <h4 className="widget-title"><i className="bi bi-location-pointer" style={{paddingRight: "10px"}}></i>Location : </h4>
-                                <label className="form-label" >{event.locationEvent}</label>
+                                <p >{event.locationEvent}</p>
                                 {position && (
                                  <MapContainer center={position} zoom={13} scrollWheelZoom={false}>
                                  <TileLayer
@@ -607,22 +607,24 @@ const navigate = useNavigate();
 
                   
                 </Col>
-                <div className="row">    
+                <div className="row" >    
+
                 <Rating
                 name="simple-controlled"
                 value={value}
                 precision={0.5}
                 onChange={handleRatingChange}
-
+                size="large"
                  />   
-                  <label className="form-label" >Rate your experience</label>
+                
+                  <p >Rate your experience</p>
                   <br/>
 
                             
                             <div className="form-outline mb-4">
                             <input type="text" id="form3Example8" className="form-control form-control-lg"  value={revieew} onChange={(e) => setRevieew(e.target.value)}/>
                        
-                            <label className="form-label" >Description</label>
+                            <p>Description</p>
                             </div>
                             <button className='btn btn-danger'
                                                           onClick={handleSubmit}                                  >

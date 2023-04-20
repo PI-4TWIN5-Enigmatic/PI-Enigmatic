@@ -4,6 +4,8 @@ import { Link, useParams, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import axios from "axios";
 import moment from "moment";
+import DonateButton from "./DonateButton";
+import ProgressBar from "./ProgressBar";
 
 function Case(props) {
   const { entity } = props;
@@ -68,10 +70,13 @@ function Case(props) {
 }
 
 function ListDonnation(props) {
-    const [entities, setEntities] = useState([]);
-    const navigate = useNavigate();
+  const [entities, setEntities] = useState([]);
+  const [payment, setPayment] = useState("");
+
+  const navigate = useNavigate();
 
 
+ 
   const getAllDonnations = async () => {
     const response = await fetch(
       `http://localhost:8000/donnation/getAllDonnation`,
@@ -102,8 +107,7 @@ function ListDonnation(props) {
                 })
         };
     
-  }
-
+    }
   return (
     <>
       {entities.map((d) => (
@@ -152,80 +156,75 @@ function ListDonnation(props) {
           </div>
           <span className="date">{moment(d.createdAt).fromNow()}</span>
           <div className="post-content">
-            <h5
-              style={{
-                textAlign: "left",
-                paddingBottom: "10px",
-                color: "rgb(220,71,52)",
-              }}
-            >
-              Sector : {d.sector}
-            </h5>
-            <h6
-              style={{
-                textAlign: "left",
-                paddingBottom: "10px",
-                color: "rgb(220,71,52)",
-              }}
-            >
-              Type : {d.type}
-            </h6>
+            <h5>Sector : {d.sector}</h5>
+            <h6>Type : {d.type}</h6>
             {d.type === "Money" ? (
-              <h6
-                style={{
-                  textAlign: "left",
-                  paddingBottom: "10px",
-                  color: "rgb(220,71,52)",
-                }}
-              >
-                Goal : {d.goal} DT
-              </h6>
+              <h6>Goal : {d.goal} DT</h6>
             ) : d.type === "Food" ? (
-              <h6
-                style={{
-                  textAlign: "left",
-                  paddingBottom: "10px",
-                  color: "rgb(220,71,52)",
-                }}
-              >
-                Goal : {d.goal} Meal
-              </h6>
+              <h6>Goal : {d.goal} Meal</h6>
             ) : d.type === "Clothes" ? (
-              <h6
-                style={{
-                  textAlign: "left",
-                  paddingBottom: "10px",
-                  color: "rgb(220,71,52)",
-                }}
-              >
-                Goal : {d.goal} Clothes
-              </h6>
+              <h6>Goal : {d.goal} Clothes</h6>
             ) : d.type === "Blood" ? (
-              <h6
-                style={{
-                  textAlign: "left",
-                  paddingBottom: "10px",
-                  color: "rgb(220,71,52)",
-                }}
-              >
-                Goal : {d.goal} ml{" "}
-              </h6>
+              <h6>Goal : {d.goal} ml </h6>
             ) : (
-              <h6
-                style={{
-                  textAlign: "left",
-                  paddingBottom: "10px",
-                  color: "rgb(220,71,52)",
-                }}
-              >
-                Goal : {d.goal}{" "}
-              </h6>
+              <h6>Goal : {d.goal} </h6>
             )}
+            <br></br>
 
             <p className="post-desc">
               Description : <br></br>
               {d.description}
             </p>
+
+            <div>
+              {d.type === "Money" || d.type === "Other" ? (
+                <div>
+                  {(() => {
+                    const progress =
+                      (parseInt(d.benefit) * 100) / parseInt(d.goal);
+                    return (
+                      <>
+                        <h4
+                          style={{
+                            textAlign: "left",
+                            paddingBottom: "10px",
+                            color: "rgb(220,71,52)",
+                          }}
+                        >
+                          Donation Progress is {progress.toFixed(2)} %{" "}
+                        </h4>
+                        <ProgressBar done={progress.toFixed(2)} />
+                      </>
+                    );
+                  })()}
+                  <div>
+                    <label>You want to help ? &ensp;&ensp;</label>
+                    <input
+                      onChange={(event) => setPayment(event.target.value)}
+                      value={payment}
+                      type="number"
+                      className="share-text-field"
+                    />{" "}
+                    DT &ensp;&ensp;
+                    <DonateButton donation={d} amount={payment} />
+                    <br></br><br></br>
+                    <p
+                      style={{
+                        textAlign: "left",
+                        paddingBottom: "10px",
+                        color: "rgb(220,71,52)",
+                      }}
+                    >
+                      Please call {d.phone} for more information or donation{" "}
+                    </p>
+                  </div>
+                </div>
+              ) : (
+                <div></div>
+              )}
+            </div>
+
+            <hr></hr>
             <div className="post-thumb-gallery">
               <figure className="post-thumb img-popup">
                 {d.picture ? (

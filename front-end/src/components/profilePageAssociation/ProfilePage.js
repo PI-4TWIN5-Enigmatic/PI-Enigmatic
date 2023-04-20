@@ -12,6 +12,7 @@ import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import axios from 'axios';
 import { Cookies, useCookies } from "react-cookie";
+import NotFound from '../NotFound'
 
 const ProfilePage = () => {
 
@@ -81,73 +82,78 @@ const ProfilePage = () => {
     <>
 
         <Navbar />
-    <main >
-        <div className ="container">
-               <input
-                type="file"
-                id="cover-photo-input"
-                accept="image/*"
-                multiple
-                onChange={handlePhotoSelection  }
-                style={{ display: 'none' }}
-              />
-
-                {association && (
-                  alpha ? (
-                    <label htmlFor="cover-photo-input">
-                      {association.coverPicture ? (
-                        <img className="profile-banner-large bg-img" src={association.coverPicture} width="3000px" />
-                      ) : (
-                        <img className="profile-banner-large bg-img" src="../../assets/unnamed.png" width="3000px" />
-                      )}
-                    </label>
-                  ) : (
-                    association.coverPicture ? (
-                      <img className="profile-banner-large bg-img" src={association.coverPicture} width="3000px" />
-                    ) : (
-                      <img className="profile-banner-large bg-img" src="../../assets/unnamed.png" width="3000px" />
-                    )
-                  )
-                )} 
-            
-        <About />
-
-
-        <div className ="container">
-                <div className ="row">
-                    <div className ="col-lg-3 order-2 order-lg-1">
-                        <aside className ="widget-area profile-sidebar">
-
-                                <AssociationWidget  /> 
-        
-                                 <Memories />
-
-
-                         </aside>
-
-        
-                     </div>
-
-
-     
-                     <div className ="col-lg-3 order-3">
-                        <aside className ="widget-area">
-        
-                             <RecentNotifications />
-                              <Advertissement />
-                              <Friends />
-                            
-                        </aside>
-                    </div>
-
-                    <Share />
-                </div>
-
     
-        </div>
-    
-    </div>
-    </main>
+      {association && association.isVerified ? (
+        <main >
+         <div className ="container">
+         <input
+          type="file"
+          id="cover-photo-input"
+          accept="image/*"
+          multiple
+          onChange={handlePhotoSelection  }
+          style={{ display: 'none' }}
+        />
+
+          {association && (
+            alpha ? (
+              <label htmlFor="cover-photo-input">
+                {association.coverPicture ? (
+                  <img className="profile-banner-large bg-img" src={association.coverPicture} width="3000px" />
+                ) : (
+                  <img className="profile-banner-large bg-img" src="../../assets/unnamed.png" width="3000px" />
+                )}
+              </label>
+            ) : (
+              association.coverPicture ? (
+                <img className="profile-banner-large bg-img" src={association.coverPicture} width="3000px" />
+              ) : (
+                <img className="profile-banner-large bg-img" src="../../assets/unnamed.png" width="3000px" />
+              )
+            )
+          )} 
+      
+  <About />
+
+
+  <div className ="container">
+          <div className ="row">
+              <div className ="col-lg-3 order-2 order-lg-1">
+                  <aside className ="widget-area profile-sidebar">
+
+                          <AssociationWidget  /> 
+  
+                           <Memories />
+
+
+                   </aside>
+
+  
+               </div>
+
+
+
+               <div className ="col-lg-3 order-3">
+                  <aside className ="widget-area">
+  
+                       <RecentNotifications />
+                        <Advertissement />
+                        <Friends />
+                      
+                  </aside>
+              </div>
+
+              <Share />
+          </div>
+
+
+  </div>
+
+</div>
+
+</main>
+      ) : <></>}
+       
     
 
     

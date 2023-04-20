@@ -52,20 +52,21 @@ const RecentNotifications = () => {
                                     <ul className ="like-page-list-wrapper">
 
                                         {association.slice(0, numReviews).map((a)=>
-                                        
-                                        <li className ="unorder-list" key={a._id}>
-                                            <div className ="profile-thumb">
-                                                
-                                                    <figure className ="profile-thumb-small">
-                                                        <img src={a.logoPicture} alt="profile picture" />
-                                                    </figure>
-                                            </div>
+                                         
+                                         <li className ="unorder-list" key={a._id}>
+                                            {a.isVerified ?  (
+                                         <><div className="profile-thumb">
 
-                                            <div className ="unorder-list-info">
-                                                <h3 className ="list-title"><Link to={`/association/${a._id}`}>{a.name}</Link></h3>
-                                            </div>
-                                        </li>
-                                        
+                                                        <figure className="profile-thumb-small">
+                                                            <img src={a.logoPicture} alt="profile picture" />
+                                                        </figure>
+                                                    </div><div className="unorder-list-info">
+                                                            <h3 className="list-title"><Link to={`/association/${a._id}`}>{a.name}</Link></h3>
+                                                        </div></>
+                                         ) : (null)
+                                     }
+                                     </li> 
+                                       
                                         )}
                                          <div className='d-flex justify-content-center '>
                                          <button 

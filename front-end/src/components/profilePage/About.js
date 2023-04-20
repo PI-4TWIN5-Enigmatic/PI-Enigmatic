@@ -8,6 +8,7 @@ import { Button } from 'react-bootstrap';
 import { Badge } from 'react-bootstrap';
 import { Modal } from 'react-bootstrap';
 import Image from 'react-bootstrap/Image';
+import { toast } from 'react-toastify';
 
 
 
@@ -83,7 +84,7 @@ const About =() => {
      
   useEffect(()=>{
     getUser();
-    getFollowersList();
+        getFollowersList();
     getFollowingList();
 },[following,id]);
 
@@ -102,14 +103,19 @@ const handleClick = async (user) => {
     receiverId: id,
     
   };
-  try {
-     await axios.post(
+ 
+      axios.post(
       "http://127.0.0.1:8000/conversation",conversation
-    );
-    console.log(conversation)
-  } catch (err) {
-    console.log(err);
-  }
+    )
+    .then((response) => {
+      console.log(response.data)
+    
+      toast.info(response.data);
+
+})
+
+   
+ 
 };
 
 const handleFollow = async () => {
@@ -237,11 +243,11 @@ const handleUnfollow = async () => {
         <Modal.Body>
         <ul className="dropdown-msg-list ">
         {followersList.map((following) => (
-           <Link to={`/Profile/${following._id}`}  >
+           <Link to={`/profile/${following._id}`}  >
                       <div  key={following._id} onClick={handleClose}>
 
             <li className="msg-list-item d-flex flex-container">
-            <Image roundedCircle src={following.profilePicture} alt="Profile" width="50"/>
+            <Image roundedCircle src={following.profilePicture} alt="profile" width="50"/>
             <h5 style={{marginLeft:'10px'}}> {following.firstName} {following.lastName}</h5>
             </li>
             </div>
@@ -267,11 +273,11 @@ const handleUnfollow = async () => {
         <Modal.Body>
         <ul className="dropdown-msg-list ">
         {followingList.map((following) => (
-          <Link to={`/Profile/${following._id}`}  >
+          <Link to={`/profile/${following._id}`}  >
           <div key={following._id}  onClick={handleClose1}>
            
                  <li className="msg-list-item d-flex flex-container">
-            <Image roundedCircle src={following.profilePicture} alt="Profile" width="50"/>
+            <Image roundedCircle src={following.profilePicture} alt="profile" width="50"/>
             <h5 style={{marginLeft:'10px'}}> {following.firstName} {following.lastName}</h5>
             </li>
             </div>

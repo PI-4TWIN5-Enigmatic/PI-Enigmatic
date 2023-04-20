@@ -10,7 +10,10 @@ import { Cookies, useCookies } from "react-cookie";
 import {motion} from "framer-motion"
 import "./EventDisplay.css"
 import moment from 'moment';
-
+import { MapContainer, TileLayer, Marker, Popup  } from "react-leaflet";
+import L from "leaflet";
+import "leaflet-control-geocoder/dist/Control.Geocoder.css";
+import "leaflet-control-geocoder/dist/Control.Geocoder.js";
 const EventDisplay = () => {
     const [association,setAssociation]= useState(null);
     const[event,setEvent]=useState("");
@@ -21,6 +24,9 @@ const EventDisplay = () => {
     const [cookies,setCookies] = useCookies(["access_token"]);
     const[query,setQuery]=useState('')
     const[change,setChange]=useState(false)
+    const [isCardVisible , setIsCardVisible]=useState(true)
+    const [data, setData] = useState([]);
+    console.log("🚀 ~ file: EventDisplay.js:26 ~ EventDisplay ~ data:", data)
 
 
 
@@ -34,6 +40,54 @@ const EventDisplay = () => {
     })
 
     //endSwiper
+
+    //MAP
+    const DefaultIco = L.icon({
+      iconUrl:'../assets/images/marker.png',
+      iconSize: [25, 41],
+      iconAnchor: [10, 41],
+      popupAnchor: [2, -40],
+    });
+    L.Marker.prototype.options.icon = DefaultIco;
+
+    const position = [36.81897,  10.16579]
+
+    const fetchData = async (e) => {
+      const url = `https://nominatim.openstreetmap.org/search?q=${e.locationEvent}&format=json`;
+
+      try {
+        const response = await fetch(url);
+        const data = await response.json();
+
+        if (data.length === 0) {
+          throw new Error('No results found');
+        }
+        const { lat, lon } = data[0];
+
+
+        const newData=[
+               [parseFloat(lat), parseFloat(lon)]
+
+        ]
+        return newData;
+
+      }
+
+        catch (error) {
+          console.error(error);
+        }
+      };
+
+
+          function populateDataM(data) {
+          const promises = data.map((e) =>
+          fetchData(e)      );
+          Promise.all(promises).then((newDataArray) => {
+            const newData = newDataArray.flat();
+            setData(newData)
+
+          })
+          }
 
 
 
@@ -66,6 +120,7 @@ const EventDisplay = () => {
           .then(data => {
             console.log(data);
             setEvent(data)
+            populateDataM(data)
             setChange(false)
             ;})
           .catch(error => console.error(error));
@@ -142,6 +197,10 @@ const EventDisplay = () => {
   
                                                             </select> 
 
+                            <button onClick={()=>{
+                              setIsCardVisible(!isCardVisible)
+                            }}> Show/Hide Map Events </button>
+
                             </div>
         
                 </div>
@@ -149,6 +208,7 @@ const EventDisplay = () => {
 
 
         <div className ="container" >
+        <div style={{ display: isCardVisible ? 'block' : 'none' }}>
 
         <div style={{ display: "flex", flexWrap: "wrap" }}>
     
@@ -221,10 +281,36 @@ const EventDisplay = () => {
     
        
                      
-</div>
+</div></div>
     <br></br>
-    </div>
-    </main>
+    <div style={{ display: isCardVisible ? 'none' : 'block' }}>
+    <div className="justify-content-center d-flex">
+
+        <div className ="card widget-item  justify-content-center d-flex " style={{width:"80%"}}>
+
+                <div className="form-outline mb-4">
+                <MapContainer center={position} zoom={7} scrollWheelZoom={false} >
+                <TileLayer
+                  attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+                  url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+                />
+
+                {data.map((e)=>(
+                  <Marker position={[e[0], e[1]]}>
+                  <Popup>
+                    A pretty CSS3 popup. <br /> Easily customizable.
+                  </Popup>
+                </Marker>
+                ))}
+                
+              </MapContainer>
+                                                </div>
+                        </div>
+                </div>
+                    </div>
+            </div>
+        <br/>
+            </main>
     
 
     
