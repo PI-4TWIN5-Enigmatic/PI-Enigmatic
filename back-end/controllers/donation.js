@@ -1,16 +1,60 @@
 const Donation = require('../models/donation')
 const User = require('../models/user')
+require('dotenv').config()
+const stripe = require("stripe")(process.env.STRIPE_KEY);
 
+
+exports.Payment = async (req, res) => {
+  try {
+    const  priceId  = req.body.data.priceId;
+    const somm = req.body.data.amount;
+    const idUser = req.body.data.idUser;
+
+    if (!priceId) {
+      return res.status(400).json({ error: "Price ID is required" });
+    }
+   const price = await stripe.prices.create({
+     unit_amount: somm * 100,
+     currency: "eur",
+     recurring: {
+       interval: "month",
+     },
+     product_data: {
+       name: "Donation",
+     },
+   });
+
+    const session = await stripe.checkout.sessions.create({
+      line_items: [
+        {
+          price: price.id,
+          quantity: 1,
+        },
+      ],
+      mode: "subscription",
+      success_url: `http://localhost:3000/HomePage/${idUser}`,
+      cancel_url: "http://localhost:3000/failed",
+    });
+
+    res.send({ url: session.url });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "An error occurred" });
+  }
+};
 
 exports.RequestDonnation = async (req, res) => {
     const requester = await User.findById({ _id: req.params.id })
 
     try {
+        let id;
         const donation = await Donation.create({...req.body,requester:requester.id}).then((doc) => {
         id = doc._id
         })
         res.status(201).json({
-        sucess: true
+        sucess: true,
+        donationId: id
+
     })
         
     } catch (error) {

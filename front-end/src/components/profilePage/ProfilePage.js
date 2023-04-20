@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useRef } from 'react'
 import Navbar from '../Navbar/Navbar'
 import About from './About'
 import UserWidget from './UserWidget'
@@ -15,18 +15,21 @@ import axios from 'axios';
 import { Cookies, useCookies } from "react-cookie";
 import { useSelector } from 'react-redux';
 import NotFound from '../NotFound'
+import { io } from "socket.io-client"
 
 
 const ProfilePage = () => {
   const [coverPicture, setCoverPicture] = useState('');
   const [user,setUser]= useState(null);
+ 
     console.log("🚀 ~ file: ProfilePage.js:22 ~ ProfilePage ~ user:", user)
     const {id}=useParams();
     console.log("🚀 ~ file: ProfilePage.js:23 ~ ProfilePage ~ id:", id)
     const token = useSelector((state) => state.token);
     const useer = JSON.parse(localStorage.getItem('user'));
     const idd = localStorage.getItem('id')
-
+    const socket = useRef()
+    const [onlineUsers, setOnlineUsers] = useState([]);
 
     const [cookies, _]=useCookies(['token'])
 
@@ -45,9 +48,12 @@ const ProfilePage = () => {
 
 
 
+
 useEffect(()=>{
     getUser();
 },[id , coverPicture]);
+
+
 
 
   
@@ -156,7 +162,7 @@ const handlePhotoSelection = (event) => {
         
                               <RecentNotifications />
                               <Advertissement />
-                              <Friends />
+                              <Friends onlineUsers={onlineUsers} />
                             
                         </aside>
                     </div>

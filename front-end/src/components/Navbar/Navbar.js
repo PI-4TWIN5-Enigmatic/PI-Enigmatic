@@ -12,14 +12,19 @@ import About from '../profilePage/About';
 
 import { BsFillHouseDoorFill,BsFillChatSquareDotsFill,BsBellFill } from "react-icons/bs";
 import "./Navbar.css"
+import picker from "emoji-picker-react";
+import { BsEmojiSmileFill } from 'react-icons/bs';
+import EmojiPicker from 'emoji-picker-react';
 
 
 
 
 
 
-const Navbar = () => {
+const Navbar = ( props ) => {
+
   const [isDropDown, setIsDropDown] = useState(false);
+  const [isDropDownN, setIsDropDownN] = useState(false);
   const navigate = useNavigate();
   const user = JSON.parse(localStorage.getItem('user'))
   const [conversations, setConversation] = useState([]);
@@ -31,8 +36,12 @@ const Navbar = () => {
   const scrollRef = useRef();
   const [cookies, setCookies] = useCookies(["access_token"]);
   const [friendUser , setFriendUser] = useState(null);
+  const [showEmojiPicker,setShowEmojiPicker] = useState(false);
+  
 
-
+  const handleEmojiPickerHideShow = () => {
+    setShowEmojiPicker(!showEmojiPicker)
+  }
   useEffect(()=>
   {
       const friendId = currentChat?.members.find((m)=> m !== user._id);
@@ -48,6 +57,7 @@ const Navbar = () => {
 
   },[currentChat]
   )
+
 
 
 
@@ -121,6 +131,16 @@ const Navbar = () => {
 
 
 
+  const handleEmojiClick= (emoji , event) => {
+let message = newMessage;
+console.log(emoji)
+message +=emoji.emoji;
+setNewMessage(message)
+
+  }
+
+
+
 
   const handleSubmitChat = async (e) => {
     e.preventDefault();
@@ -153,7 +173,12 @@ const Navbar = () => {
     setIsDropDown(!isDropDown);
   };
 
+  const handleDropDownNotification = () => {
+    setIsDropDownN(!isDropDownN);
+  };
+
   const style = isDropDown ? { display: 'block'} : {display: 'none' };
+  const styleN = isDropDownN ? { display: 'block'} : {display: 'none' };
 
   useEffect(() => {
     socket.current = io("ws://localhost:8900");
@@ -237,7 +262,33 @@ const Navbar = () => {
                       </div>
                     </li>
 
-                    <li class="notification-trigger"><a class="msg-trigger-btn" href="#b">notification</a> </li>
+                    <li class="notification-trigger"><a className="msg-trigger-btn" onClick={handleDropDownNotification}>
+                        notifications
+                      </a>
+
+                      <div className="message-dropdown " style={styleN} id="a">
+                        <div className="dropdown-title">
+                          <p className="recent-msg">recent notifications</p>
+                          {/* <div className="message-btn-group">
+                            <button>New group</button>
+                            <button>New Message</button>
+                          </div> */}
+                        </div>
+                        <ul className="dropdown-msg-list ">
+                          <li>(${props.donation && props.donation.sector})</li>
+                        {/* {donation.length > 0 && (
+                          <ul>
+                           <li>ccvghgvhjbknl</li>
+                          
+                            
+                          </ul>
+                        )} */}
+                      </ul>
+                        {/* <div className="msg-dropdown-footer">
+                          <button>See all in messenger</button>
+                          <button>Mark All as Read</button>
+                        </div> */}
+                      </div> </li>
                    </ul>  
                    </nav>
                 </div>)}
@@ -328,9 +379,26 @@ const Navbar = () => {
                                      </> : <span style={{height: 300}} >open a conversation</span>}
                                      <div className="chat-text-field mob-text-box">
                                     <textarea className="live-chat-field custom-scroll" placeholder="Text Message" onChange={(e)=> setNewMessage(e.target.value)} value={newMessage} ></textarea>
+                                    <button className="chat-message-send" type="submit"  onClick={handleEmojiPickerHideShow}>
+                                   < BsEmojiSmileFill  />
+                                   </button>
+                                 
                                     <button className="chat-message-send" type="submit"  onClick={handleSubmitChat}>
                                     <AiOutlineSend/>
+                                   
+                                    
+                                    
                                     </button>
+                                  
+
+                                    <div style={{ position: 'relative' }}>
+  {showEmojiPicker && (
+    <div style={{ position: 'absolute',    left: 30,
+    top: -379 }}>
+      <EmojiPicker onEmojiClick={handleEmojiClick} />
+    </div>
+  )}
+</div>
                                 </div>
                               </div>
                              </div>
@@ -346,8 +414,10 @@ const Navbar = () => {
 
       </div>{" "}
     </div>
+    
+   
   </div>{ " " }
-
+  
 
                                                     
 </div>       
