@@ -16,13 +16,15 @@ import picker from "emoji-picker-react";
 import { BsEmojiSmileFill } from 'react-icons/bs';
 import EmojiPicker from 'emoji-picker-react';
 
+import {  useLocation } from 'react-router-dom';
 
 
 
 
 
 const Navbar = ( props ) => {
-
+  const location = useLocation();
+  const [linkText, setLinkText] = useState('Home');
   const [isDropDown, setIsDropDown] = useState(false);
   const [isDropDownN, setIsDropDownN] = useState(false);
   const navigate = useNavigate();
@@ -37,7 +39,18 @@ const Navbar = ( props ) => {
   const [cookies, setCookies] = useCookies(["access_token"]);
   const [friendUser , setFriendUser] = useState(null);
   const [showEmojiPicker,setShowEmojiPicker] = useState(false);
-  
+  const idCurrentUser=localStorage.getItem('id')
+
+  const [notifications, setNotifications] = useState([]);
+    
+  useEffect(() => {
+    // Récupération des notifications depuis l'API, en incluant les données de la relation related_donation
+    fetch('http://localhost:8000/notifications/getAllNotifications?populate=related_donation')
+      .then(response => response.json())
+      .then(data => setNotifications(data));
+  }, []);
+
+
 
   const handleEmojiPickerHideShow = () => {
     setShowEmojiPicker(!showEmojiPicker)
@@ -191,8 +204,23 @@ setNewMessage(message)
     });
   }, []);
 
-    const idCurrentUser=localStorage.getItem('id')
 
+  useEffect(() => {
+    if (location.pathname === `/HomePage/${idCurrentUser}`) {
+      setLinkText('profile');
+    } else {
+      setLinkText('home');
+    }
+  }, [location, idCurrentUser]);
+
+  const handleClick = (event) => {
+    event.preventDefault();
+    if (location.pathname === `/HomePage/${idCurrentUser}`) {
+      navigate(`/profile/${idCurrentUser}`);
+    } else {
+      navigate(`/HomePage/${idCurrentUser}`);
+    }
+  };
 
   const logout = () => {
     setCookies("access_token", "");
@@ -208,6 +236,11 @@ setNewMessage(message)
   const handlehomebutton = () => {
     navigate(`/HomePage/${idCurrentUser}`)
   }
+  const history = useNavigate();
+
+  const handleNotificationClick = (related_donation) => {
+    navigate(`/donation/detail/${related_donation}`);
+  };
 
 
   return (
@@ -229,8 +262,11 @@ setNewMessage(message)
                {cookies.access_token && (  <div className="header-top-navigation">
                   <nav>
                     <ul>
-                      <li className="active">  <a  className="msg-trigger-btn" href={`/HomePage/${idCurrentUser}`} > Home</a> </li>
-
+                    <li className="active">
+          <a className="msg-trigger-btn" href={`/HomePage/${idCurrentUser}`} onClick={handleClick}>
+            {linkText}
+          </a>
+        </li>
                         <li className="msg-trigger">
                       <a className="msg-trigger-btn" onClick={handleDropDown}>
                         message
@@ -263,9 +299,14 @@ setNewMessage(message)
                     </li>
 
                     <li class="notification-trigger"><a className="msg-trigger-btn" onClick={handleDropDownNotification}>
-                        notifications
+                      <BsBellFill size={20} />
+                        {notifications.length > 0 && (
+                          <span className="notification-badge">{notifications.length}</span>
+                        )}
                       </a>
 
+
+                     
                       <div className="message-dropdown " style={styleN} id="a">
                         <div className="dropdown-title">
                           <p className="recent-msg">recent notifications</p>
@@ -276,14 +317,14 @@ setNewMessage(message)
                         </div>
                         <ul className="dropdown-msg-list ">
                           <li>(${props.donation && props.donation.sector})</li>
-                        {/* {donation.length > 0 && (
-                          <ul>
-                           <li>ccvghgvhjbknl</li>
-                          
-                            
-                          </ul>
-                        )} */}
-                      </ul>
+                          {notifications.map((notification) => (
+                              <div className="notification-item" key={notification._id}>
+                                {notification.related_donation.sector}
+                                <button onClick={() => handleNotificationClick(notification._id)}>details</button>
+                              </div>
+                            ))}
+                           
+                        </ul>
                         {/* <div className="msg-dropdown-footer">
                           <button>See all in messenger</button>
                           <button>Mark All as Read</button>

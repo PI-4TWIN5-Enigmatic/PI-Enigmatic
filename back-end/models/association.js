@@ -81,6 +81,14 @@ const associationSchema = new mongoose.Schema(
         },
         logoPicture: { type: String },
         phone: { type: String , required: true , unique: true },
+        related_donation: {
+          type: [{
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'Donation'
+          }],
+          default: null
+        }
+        
     }, { timestamps: true});
 
     associationSchema.pre('save', function(next) {

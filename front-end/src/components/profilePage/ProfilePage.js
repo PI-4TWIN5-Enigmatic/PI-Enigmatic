@@ -14,6 +14,7 @@ import { useGetUserID } from '../../hooks/useGetUserID'
 import axios from 'axios';
 import { Cookies, useCookies } from "react-cookie";
 import { useSelector } from 'react-redux';
+import NotFound from '../NotFound'
 import { io } from "socket.io-client"
 
 
@@ -173,7 +174,8 @@ const handlePhotoSelection = (event) => {
         </div>
     
     </div>
-    </main></div>
+    </main> 
+    </div>
     
 
     

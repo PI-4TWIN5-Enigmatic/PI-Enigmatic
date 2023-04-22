@@ -1,5 +1,5 @@
 import React from 'react'
-import Navbar from '../NavbarPage/Navbar'
+import Navbar from '../Navbar/Navbar'
 import About from './About'
 import UserWidget from './UserWidget'
 import Share from './Share'
