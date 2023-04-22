@@ -122,7 +122,12 @@ const handleFollow = async () => {
   try {
     const res = await axios.post(`http://127.0.0.1:8000/api/users/${currentUser._id}/follow`, {
       targetUserId: user?._id
-    });
+    }).then((response) => {
+      console.log(response.data)
+    
+      toast.info(response.data);
+
+});
     setFollowing(true);
     console.log(res.data.message);
   } catch (err) {
@@ -135,7 +140,13 @@ const handleUnfollow = async () => {
   try {
     const res = await axios.post(`http://127.0.0.1:8000/api/users/${currentUser._id}/unfollow`, {
       targetUserId: user?._id
-    });
+    })
+    .then((response) => {
+      console.log(response.data)
+    
+      toast.info(response.data);
+
+});
     setFollowing(false);
     console.log(res.data.message);
   } catch (err) {
@@ -187,7 +198,8 @@ const handleUnfollow = async () => {
                       </li>
                       <li>
                       <Button onClick={handleShow1}  variant="danger">
-      Following Profile <Badge bg="dark">{followingCount}</Badge>
+      Following Profile
+       <Badge bg="dark">{followingCount}</Badge>
      
     </Button>
                       </li>
@@ -201,9 +213,9 @@ const handleUnfollow = async () => {
                       {currentUser?._id === id ? null : (
        <div>
                       {following  ? (
-        <button onClick={handleUnfollow}>Unfollow</button>
+        <Button variant="outline-danger"  onClick={handleUnfollow}>Unfollow</Button>
       ) : (
-        <button onClick={handleFollow}>Follow</button>
+        <Button variant="outline-success" onClick={handleFollow}>Follow</Button>
       )}
       </div>)}
                       </li>

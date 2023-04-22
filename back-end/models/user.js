@@ -93,6 +93,7 @@ const userSchema = new mongoose.Schema(
 
     followedProfil: [{ type: mongoose.Types.ObjectId, ref:"User" }],
     followingProfil: [{ type: mongoose.Types.ObjectId, ref:"User" }],
+    followingAssociation: [{ type: mongoose.Types.ObjectId, ref:"Association" }],
     password: { type: String },
     role: {
       type: String,

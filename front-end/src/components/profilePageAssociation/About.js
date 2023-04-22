@@ -3,12 +3,17 @@ import { useState,useEffect } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import axios from 'axios'
 import { Navigate, useNavigate } from 'react-router-dom';
+import { Button } from 'react-bootstrap';
+import { toast } from 'react-toastify';
 
 
 const About =() => {
 
     const [association,setAssociation]= useState(null);
     const {id} = useParams();
+    const currentUser = JSON.parse(localStorage.getItem('user'))
+
+    const [following, setFollowing] = useState(false);
   
   
     const getAssociation = async()=>{
@@ -19,11 +24,52 @@ const About =() => {
   
       const data = await response.json();
       setAssociation(data);
+      setFollowing(data.followedProfil.includes(currentUser?._id));
       console.log(data);
   };
 
+  const handleFollow = async () => {
+    try {
+      const res = await axios.post(`http://127.0.0.1:8000/association/${currentUser._id}/follow`, {
+        targetAssociationId: association?._id
+      })
+      .then((response) => {
+        console.log(response.data)
+      
+        toast.info(response.data);
+  
+  });
+      setFollowing(true);
+      console.log(res.data.message);
+    } catch (err) {
+      console.error(err);
+    }
+  };
+  
+  
+  const handleUnfollow = async () => {
+    try {
+      const res = await axios.post(`http://127.0.0.1:8000/association/${currentUser._id}/unfollow`, {
+        targetAssociationId: association?._id
+      })
+      .then((response) => {
+        console.log(response.data)
+      
+        toast.info(response.data);
+  
+  });
+      setFollowing(false);
+      console.log(res.data.message);
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+
+
   useEffect(()=>{
     getAssociation();
+
 },[]);
 
 if(!association) return null ;
@@ -69,7 +115,16 @@ if(!association) return null ;
                                     <li><a href="about.html">about</a></li>
                                     <li><a href="photos.html">photos</a></li>
                                     <li> <Link to={`/EventDisplay/${id}`}>Events</Link>  </li>
-                                    <li><a href="about.html">more</a></li>
+                                    <li>
+                     
+       <div>
+                      {following  ? (
+        <Button variant="outline-danger" onClick={handleUnfollow}>Unfollow</Button>
+      ) : (
+        <Button variant="outline-success"  onClick={handleFollow}>Follow</Button>
+      )}
+      </div>
+                      </li>
       
                                 </ul>
                             </nav>
