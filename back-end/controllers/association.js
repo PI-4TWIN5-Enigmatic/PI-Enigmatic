@@ -1,4 +1,5 @@
 const Association = require("../models/association")
+const Donation = require("../models/donation")
 const nodemailer = require('nodemailer');
 const transport = nodemailer.createTransport({
     service: 'Gmail',
@@ -258,6 +259,11 @@ exports.addDonationToUserAssociation = async (req, res) => {
         // Associer la donation à l'association de l'utilisateur
         userAssociation.related_donation.push(idDonation);
         await userAssociation.save();
+
+         // Set the isVerified attribute of the donation to true
+        const donation = await Donation.findById(idDonation);
+        donation.isVerified = true;
+        await donation.save();
         
         return res.json({ success: true });
       } else {

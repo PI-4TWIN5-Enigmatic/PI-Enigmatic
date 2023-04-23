@@ -210,7 +210,7 @@ const handleUnfollow = async () => {
                             "id"
                           )}`}
                         >
-                          donnation
+                          donation
                         </Link>
                       </li>
                       <li>
