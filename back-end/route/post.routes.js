@@ -7,7 +7,6 @@ const { verifyToken } = require('../middleware/auth');
 router.get('/getpost', readPost);
 router.get('/get/:id', get);
 
-router.get('/getpost/:id', readPost);
 
 //getpostsuser
 router.get('/getposts/:id', getallposts);
@@ -41,8 +40,8 @@ router.put('/unlike-post/:id', unlikePost);
 //comments
 
 router.put('/comment-post/:id', commentPost);
-router.patch('/edit-comment-post/:id', editCommentPost);
-router.patch('/delete-comment-post/:id', deleteCommentPost);
+router.put('/edit-comment-post/:id', editCommentPost);
+router.put('/delete-comment-post/:id', deleteCommentPost);
 
 
 

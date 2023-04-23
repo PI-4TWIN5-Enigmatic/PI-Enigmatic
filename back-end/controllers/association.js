@@ -1,4 +1,5 @@
 const Association = require("../models/association")
+const Donation = require("../models/donation")
 const nodemailer = require('nodemailer');
 const transport = nodemailer.createTransport({
     service: 'Gmail',
@@ -12,7 +13,8 @@ const transport = nodemailer.createTransport({
 
 const bcrypt = require('bcrypt');
 
-const jwt=require("jsonwebtoken")
+const jwt=require("jsonwebtoken");
+const User = require("../models/user");
 
 
 exports.signupAssociation = async (req,res,next) =>{
@@ -194,3 +196,97 @@ exports.getAssociationsByIds = async (req, res) => {
     res.status(500).json({ error: err.message });
   }
 }
+
+
+
+
+exports.followAssociation = async (req, res) => {
+  const userId = req.params.userId;
+  const targetAssociationId = req.body.targetAssociationId;
+
+  try {
+    const user = await User.findById(userId);
+    const targetAssociation = await Association.findById(targetAssociationId) ;
+   
+    if (!user.followingAssociation.includes(targetAssociation._id)) {
+      user.followingAssociation.push(targetAssociation._id);
+      await user.save();
+
+      targetAssociation.followedProfil.push(user._id);
+      await targetAssociation.save();
+
+      return res.send(`${user.firstName} is now following ${targetAssociation.name}`);
+    } else {
+      return res.send(`${user.firstName} is already following ${targetAssociation.name}`); 
+    }
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: err });
+  }
+};
+
+
+
+
+exports.unfollowAssociation = async (req, res) => {
+  const userId = req.params.userId;
+  const targetAssociationId = req.body.targetAssociationId;
+
+  try {
+    const user = await User.findById(userId);
+    const targetAssociation = await Association.findById(targetAssociationId) ;
+    
+    if (user.followingAssociation.includes(targetAssociation._id)) {
+    
+      user.followingAssociation.pull(targetAssociation._id);
+      await user.save();
+
+      targetAssociation.followedProfil.pull(user._id);
+      await targetAssociation.save();
+
+       return res.send(`${user.firstName} has unfollowed ${targetAssociation.name}` );
+    } else {
+     return  res.send( `${user.firstName} is not following ${targetAssociation.name}`);
+    }
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: err });
+  }
+};
+
+exports.addDonationToUserAssociation = async (req, res) => {
+    try {
+      const { idFounder, idDonation } = req.params;
+      const userAssociation = await Association.findOne({ founder: idFounder });
+      if (userAssociation) {
+        // Associer la donation à l'association de l'utilisateur
+        userAssociation.related_donation.push(idDonation);
+        await userAssociation.save();
+
+         // Set the isVerified attribute of the donation to true
+        const donation = await Donation.findById(idDonation);
+        donation.isVerified = true;
+        await donation.save();
+        
+        return res.json({ success: true });
+      } else {
+        // Si aucune association n'a été trouvée
+        return res.status(404).json({ error: "L'utilisateur n'a pas encore d'association" });
+      }
+      
+    } catch (err) {
+      return { error: err.message };
+    }
+  };
+
+
+  exports.getFollowedProfiles = async (req, res) => {
+    try {
+      const association= await Association.findById(req.params.associationId).populate("followedProfil");
+      res.json(association.followedProfil);
+    } catch (err) {
+      console.log(err);
+      res.status(500).json({ error: "Server error" });
+    }
+  };
+

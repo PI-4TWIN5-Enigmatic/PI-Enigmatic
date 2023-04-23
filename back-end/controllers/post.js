@@ -11,7 +11,8 @@ module.exports.all = async (req, res) => {
     const { id } = req.params;
     const user = await UserModel.findById(id);
     const following = [...user.followingProfil, id]; // add user ID to following array
-    const posts = await PostModel.find({ posterId: { $in: following } }).sort({ createdAt: -1 });
+    const posts = await PostModel.find({ posterId: { $in: following } }).populate({path:"comments.commenterid",select :"firstName lastName profilePicture"}).populate({path:"posterId",select :"firstName lastName profilePicture"})
+    .sort({ createdAt: -1 });
     res.status(200).json(posts);
   } catch (err) {
     res.status(500).json(err);
@@ -26,7 +27,7 @@ module.exports.readPost = (req, res) => {
   postModel.find((err, docs) => {
     if (!err) res.send(docs);
     else console.log("Error to get data : " + err);
-  }).sort({ createdAt: -1 });
+  }).populate({path:"posterId",select :"firstName lastName profilePicture"}).sort({ createdAt: -1 });
 };
 
 
@@ -56,6 +57,8 @@ module.exports.createPost = async (req, res) => {
     posterphoto: req.body.posterphoto,
     message: req.body.message,
     img: req.body.img,
+    video:req.body.video,
+    location:req.body.location,
     likers: [],
     comments: [],
   });
@@ -74,7 +77,6 @@ module.exports.updatePost = (req, res) => {
 
   const updatedRecord = {
     message: req.body.message,
-    img: req.body.img
   };
 
   PostModel.findByIdAndUpdate(
@@ -248,9 +250,7 @@ module.exports.commentPost = (req, res) => {
       {
         $push: {
           comments: {
-            commenterphoto: req.body.commenterphoto,
             text: req.body.text,
-            commenterpseudo: req.body.commenterpseudo,
             commenterid: req.body.commenterid
           },
         },
@@ -349,7 +349,7 @@ module.exports.getallposts = async (req, res) => {
   try {
     const { id } = req.params;
     const user = await UserModel.findById(id);
-    const posts = await PostModel.find({ posterId: user._id }).sort({ createdAt: -1 });
+    const posts = await PostModel.find({ posterId: user._id }).populate({path:"comments.commenterid",select :"firstName lastName profilePicture"}).sort({ createdAt: -1 });
     res.status(200).json(posts);
   } catch (err) {
     res.status(500).json(err);
@@ -362,7 +362,7 @@ module.exports.get = async (req, res) => {
   try {
     const { id } = req.params;
     const user = await UserModel.findById(id);
-    const posts = await PostModel.find({ posterId: user._id });
+    const posts = await PostModel.find({ posterId: user._id }).populate({path:"comments.commenterid",select :"firstName lastName profilePicture"})
     res.status(200).json(posts);
   } catch (err) {
     res.status(500).json(err);
@@ -378,7 +378,8 @@ module.exports.getassociationpost = async (req, res) => {
   try {
     const { id } = req.params;
     const association = await Association.findById(id);
-    const posts = await PostModel.find({ posterId: association._id });
+    const posts = await PostModel.find({ posterId: association._id }).populate({path:"comments.commenterid",select :" firstName lastName profilePicture"})
+    .sort({ createdAt: -1 });;
     res.status(200).json(posts);
   } catch (err) {
     res.status(500).json(err);

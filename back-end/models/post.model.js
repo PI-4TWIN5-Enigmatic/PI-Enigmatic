@@ -3,20 +3,22 @@ const { ObjectId } = mongoose.Schema.Types
 
 const PostSchema = new mongoose.Schema(
   {
-    posterId: {
-      type: ObjectId,
-      ref:"USER"
-    },
+    posterId: {type:ObjectId,ref:'User'},
     message: {
       type: String,
       trim: true,
       maxlength: 500,
     },
 
+
     posterpseudo:{
       type:String,
     },
-
+    location: {
+      type: String,
+      trim: true,
+      
+  },
     posterlastname:{
       type:String,
     },
@@ -26,7 +28,7 @@ const PostSchema = new mongoose.Schema(
     },
 
     img: {
-      type: String,
+      type: [String],
     },
     video: {
       type: String,
@@ -39,14 +41,18 @@ const PostSchema = new mongoose.Schema(
       type: [
         {
           text:{type: String},
-          commenterid:{type:ObjectId},
+          commenterid:{type:ObjectId,ref:'User'},
           commenterpseudo:{type :String},
           commenterphoto:{type :String},
         }
       ],
+
+      
       required: true,
     },
+    
   },
+  
   {
     timestamps: true,
   }

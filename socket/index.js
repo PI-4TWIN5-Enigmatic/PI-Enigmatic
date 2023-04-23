@@ -1,3 +1,4 @@
+
 const io = require("socket.io")(8900, {
   cors: {
     origin: "http://localhost:3000",
@@ -27,6 +28,19 @@ io.on("connection", (socket) => {
     console.log('donation requested:', donation);
     io.emit('donation', donation);
   });
+
+  // const notificationChangeStream = Notification.watch();
+  // notificationChangeStream.on('change', (change) => {
+  //   if (change.operationType === 'insert') {
+  //     io.emit('newNotification', change.fullDocument);
+  //   }
+  // });
+
+  socket.on('newNotification', (notification) => {
+    console.log('Nouvelle notification reçue:', notification);
+  });
+
+  
 
   //take userId and socketId from user
   socket.on("addUser", (userId) => {

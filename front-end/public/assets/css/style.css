@@ -1682,6 +1682,7 @@ textarea:focus {
 
 .post-content {
   padding-top: 18px;
+  position: relative;
 }
 
 .post-desc {

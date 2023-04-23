@@ -21,6 +21,7 @@ import './Donation.css'
 
 
 const Donation = () => {
+  const [users, setUsers] = useState([]);
   const [currentPage, setCurrentPage] = useState(0);
   const [itemsPerPage, setItemsPerPage] = useState(3);
   const [cookies, _]=useCookies(['access_token'])
@@ -34,22 +35,46 @@ const Donation = () => {
 
     const [data, setData] = useState(null);
 
-    const handleDelete = (id) => {
-      if (window.confirm(`Are you sure you want to delete this donation?`)){
-      axios.delete(`http://localhost:8000/donnation/deleteDonnation/${id}`)
-        .then(response => {
-          console.log('Item deleted successfully');
+    useEffect(() => {
+      axios.get('http://localhost:8000/api/users/getAll').then((response) => {
+        setUsers(response.data);
+      });
+    }, []);
 
-        })
-        .catch(error => {
-          console.error('Error deleting item', error);
-        });}
+    const getRequesterName = (donation) => {
+      const user = users.find((user) => user._id === donation.requester);
+      if (user) {
+        return `${user.firstName} ${user.lastName}`;
+      } else {
+        return 'Unknown';
+      }
+    };
+
+    const handleDelete = (id) => {
+      if (window.confirm(`Are you sure you want to delete this donation?`)) {
+        axios.delete(`http://localhost:8000/donnation/deleteDonnation/${id}`)
+          .then(response => {
+            console.log('Donation deleted successfully');
+            // Now delete the notification
+            axios.delete(`http://localhost:8000/notifications/deleteNotificationwith/${id}`)
+              .then(response => {
+                console.log('Notification deleted successfully');
+              })
+              .catch(error => {
+                console.error('Error deleting notification', error);
+              });
+          })
+          .catch(error => {
+            console.error('Error deleting donation', error);
+          });
+      }
     };
 
 
 
+
     useEffect(() => {
-      axios.get("http://localhost:8000/donnation/getAllDonnation" ).then((response) => {
+      axios.get("http://localhost:8000/donnation/getAllDonnations" ).then((response) => {
           setDonation(response.data);
       });
     }, [handleDelete] );
@@ -105,7 +130,7 @@ return (
      <CTableHeaderCell scope="col">Type</CTableHeaderCell>
      <CTableHeaderCell scope="col">Goal</CTableHeaderCell>
      <CTableHeaderCell scope="col">Poster</CTableHeaderCell>
-
+     <CTableHeaderCell scope="col">Requester</CTableHeaderCell>
      <CTableHeaderCell scope="col">Options</CTableHeaderCell>
 
         </CTableRow>
@@ -123,12 +148,21 @@ return (
 
            <CTableDataCell  >{e.goal}</CTableDataCell>
 
-           <CTableDataCell  ><img src={e.picture} style={{width:"60%"}} alt="image_donation"/> </CTableDataCell>
-
-           <CTableDataCell  >
+           <CTableDataCell>
+                    {e.picture ? (
+                      <img
+                        src={e.picture}
+                        style={{ width: "100%" }}
+                        alt="image_donation"
+                      />
+                    ) : (
+                      "No photo"
+                    )}
+                  </CTableDataCell>
+           <CTableDataCell>{getRequesterName(e)}</CTableDataCell>
            <CTableDataCell  ><CButton   color="danger" variant="ghost" onClick={() =>
                                           handleDelete(e._id)} >Delete donation</CButton> </CTableDataCell>
-           </CTableDataCell>
+
 
 
 
