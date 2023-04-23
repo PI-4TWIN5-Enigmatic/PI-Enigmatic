@@ -41,6 +41,16 @@ const Navbar = ( props ) => {
   const [showEmojiPicker,setShowEmojiPicker] = useState(false);
   const idCurrentUser=localStorage.getItem('id')
 
+  const [notifications, setNotifications] = useState([]);
+    
+  useEffect(() => {
+    // Récupération des notifications depuis l'API, en incluant les données de la relation related_donation
+    fetch('http://localhost:8000/notifications/getAllNotifications?populate=related_donation')
+      .then(response => response.json())
+      .then(data => setNotifications(data));
+  }, []);
+
+
 
   const handleEmojiPickerHideShow = () => {
     setShowEmojiPicker(!showEmojiPicker)
@@ -226,6 +236,11 @@ setNewMessage(message)
   const handlehomebutton = () => {
     navigate(`/HomePage/${idCurrentUser}`)
   }
+  const history = useNavigate();
+
+  const handleNotificationClick = (related_donation) => {
+    navigate(`/donation/detail/${related_donation}`);
+  };
 
 
   return (
@@ -284,9 +299,14 @@ setNewMessage(message)
                     </li>
 
                     <li class="notification-trigger"><a className="msg-trigger-btn" onClick={handleDropDownNotification}>
-                        notifications
+                      <BsBellFill size={20} />
+                        {notifications.length > 0 && (
+                          <span className="notification-badge">{notifications.length}</span>
+                        )}
                       </a>
 
+
+                     
                       <div className="message-dropdown " style={styleN} id="a">
                         <div className="dropdown-title">
                           <p className="recent-msg">recent notifications</p>
@@ -297,14 +317,14 @@ setNewMessage(message)
                         </div>
                         <ul className="dropdown-msg-list ">
                           <li>(${props.donation && props.donation.sector})</li>
-                        {/* {donation.length > 0 && (
-                          <ul>
-                           <li>ccvghgvhjbknl</li>
-                          
-                            
-                          </ul>
-                        )} */}
-                      </ul>
+                          {notifications.map((notification) => (
+                              <div className="notification-item" key={notification._id}>
+                                {notification.related_donation.sector}
+                                <button onClick={() => handleNotificationClick(notification._id)}>details</button>
+                              </div>
+                            ))}
+                           
+                        </ul>
                         {/* <div className="msg-dropdown-footer">
                           <button>See all in messenger</button>
                           <button>Mark All as Read</button>

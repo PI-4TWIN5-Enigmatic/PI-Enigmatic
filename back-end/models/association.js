@@ -1,6 +1,7 @@
 const mongoose = require('mongoose')
 const bcrypt = require('bcrypt');
 const user = require('./user');
+const { ObjectId } = mongoose.Schema.Types
 const saltRounds = 10;
 
 const associationSchema = new mongoose.Schema(
@@ -72,12 +73,22 @@ const associationSchema = new mongoose.Schema(
         founder: { 
            type: mongoose.Schema.Types.ObjectId, ref: 'user' ,
         },
+
+        followedProfil: [{ type: mongoose.Types.ObjectId, ref:"User" }],
         coverPicture: {
           type: String,
           default: "",
         },
         logoPicture: { type: String },
         phone: { type: String , required: true , unique: true },
+        related_donation: {
+          type: [{
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'Donation'
+          }],
+          default: null
+        }
+        
     }, { timestamps: true});
 
     associationSchema.pre('save', function(next) {

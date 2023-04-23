@@ -21,8 +21,10 @@ const About =() => {
     const { id } =useParams()
     const [following, setFollowing] = useState(false);
     const [followingCount, setFollowingCount] = useState(0);
+    const [followingAssociationCount, setFollowingAssociationCount] = useState(0);
     const [followersCount, setFollowersCount] = useState(0);
     const [followingList, setFollowingList] = useState([]);
+    const [followingAssociation, setFollowingAssociation] = useState([]);
   const [followersList, setFollowersList] = useState([]);
   const navigate = useNavigate();
 
@@ -33,6 +35,10 @@ const About =() => {
   const [show1, setShow1] = useState(false);
   const handleClose1 = () => setShow1(false );
   const handleShow1 = () => setShow1(true);
+
+  const [show2, setShow2] = useState(false);
+  const handleClose2 = () => setShow2(false );
+  const handleShow2 = () => setShow2(true);
   const handleNavig = (id) =>   {
     
   }
@@ -55,6 +61,7 @@ const About =() => {
       setFollowing(data.followedProfil.includes(currentUser?._id));
       setFollowingCount(data.followingProfil.length);
       setFollowersCount(data.followedProfil.length);
+      setFollowingAssociationCount(data.followingAssociation.length);
   
       console.log(followersList)
 
@@ -78,6 +85,15 @@ const About =() => {
     }
   };
 
+  const getFollowingAssociation = async () => {
+    try {
+      const response = await axios.get(`http://127.0.0.1:8000/api/${id}/followingAssociations`);
+      setFollowingAssociation(response.data);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
  
        
         
@@ -86,6 +102,7 @@ const About =() => {
     getUser();
         getFollowersList();
     getFollowingList();
+    getFollowingAssociation();
 },[following,id]);
 
 if(!user) return null ;
@@ -122,7 +139,12 @@ const handleFollow = async () => {
   try {
     const res = await axios.post(`http://127.0.0.1:8000/api/users/${currentUser._id}/follow`, {
       targetUserId: user?._id
-    });
+    }).then((response) => {
+      console.log(response.data)
+    
+      toast.info(response.data);
+
+});
     setFollowing(true);
     console.log(res.data.message);
   } catch (err) {
@@ -135,7 +157,13 @@ const handleUnfollow = async () => {
   try {
     const res = await axios.post(`http://127.0.0.1:8000/api/users/${currentUser._id}/unfollow`, {
       targetUserId: user?._id
-    });
+    })
+    .then((response) => {
+      console.log(response.data)
+    
+      toast.info(response.data);
+
+});
     setFollowing(false);
     console.log(res.data.message);
   } catch (err) {
@@ -187,7 +215,8 @@ const handleUnfollow = async () => {
                       </li>
                       <li>
                       <Button onClick={handleShow1}  variant="danger">
-      Following Profile <Badge bg="dark">{followingCount}</Badge>
+      Following Profile
+       <Badge bg="dark">{followingCount}</Badge>
      
     </Button>
                       </li>
@@ -198,12 +227,19 @@ const handleUnfollow = async () => {
     </Button>
                       </li>
                       <li>
+                      <Button onClick={handleShow2}  variant="danger">
+      Following Association
+       <Badge bg="dark">{followingAssociationCount}</Badge>
+     
+    </Button>
+                      </li>
+                      <li>
                       {currentUser?._id === id ? null : (
        <div>
                       {following  ? (
-        <button onClick={handleUnfollow}>Unfollow</button>
+        <Button variant="outline-danger"  onClick={handleUnfollow}>Unfollow</Button>
       ) : (
-        <button onClick={handleFollow}>Follow</button>
+        <Button variant="outline-success" onClick={handleFollow}>Follow</Button>
       )}
       </div>)}
                       </li>
@@ -286,6 +322,33 @@ const handleUnfollow = async () => {
         </Modal.Body>
         <Modal.Footer>
           <Button variant="danger" onClick={handleClose1}>
+            Close
+          </Button>
+          
+        </Modal.Footer>
+      </Modal>
+
+
+      <Modal show={show2} onHide={handleClose2}>
+        <Modal.Header closeButton>
+          <Modal.Title>Following Association</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+        <ul className="dropdown-msg-list ">
+        {followingAssociation.map((following) => (
+          <Link to={`/association/${following._id}`}  >
+          <div key={following._id}  onClick={handleClose2}>
+           
+                 <li className="msg-list-item d-flex flex-container">
+            <Image roundedCircle src={following.logoPicture} alt="profile" width="50"/>
+            <h5 style={{marginLeft:'10px'}}> {following.name} </h5>
+            </li>
+            </div>
+            </Link>))}
+            </ul>
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="danger" onClick={handleClose2}>
             Close
           </Button>
           
