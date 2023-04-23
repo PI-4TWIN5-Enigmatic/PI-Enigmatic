@@ -95,10 +95,10 @@ const toggleShowFullMessage = () => {
 
   const [posts, setData] = useState("");
   const [textt, settext] = useState("");
-  const [fileUrl, setFileUrl] = useState("");
+  const [fileUrl, setFileUrl] = useState(null);
 
 
-  const [videourl, setvideourl] = useState("");
+  const [videourl, setvideourl] = useState(null);
 
   const [updatedText, setUpdatedText] = useState("");
   const [isDisabled, setIsDisabled] = useState(true);
@@ -202,58 +202,56 @@ const toggleShowFullMessage = () => {
       });
   }
     
-  //input change with disabled button
-  function handleInputChange(event) {
-    setLoading(false);
-    setIsSubmitting(false);
-    setfile('')
-    
-  setFileUrl("");
-    setInputValue(event.target.value);
-    setIsDisabled(!videoFile && !file && !event.target.value );
-  }
+ //input change with disabled button
+ function handleInputChange(event) {
+  setLoading(false);
+  setIsSubmitting(false);
+
+  setInputValue(event.target?.value);
+  setIsDisabled(!videoFile && !file && !event.target?.value );
+}
+
 
   //show close modal
   const [isClosing, setIsClosing] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
 //fonction delete/close modal
-  function handleCloseModal() {
+function handleCloseModal() {
     
-    if (isSubmitting) {
-      setIsClosing(true);
-      setShowMap(false)
-setfile("")
-    } else {
-      setShoww(false);
-      setIsClosing(false);
-      setIsDisabled(true)
-      setfile("")
-      setFileUrl("")
-      setShowMap(false)
-      setimg("")
-    }
-    setFileUrl(""); // Add this line to reset fileUrl state
+  if (isSubmitting) {
+    setIsClosing(true);
+    setShowMap(false)
+    setmessage('')
+    setLocationEvent('')
 
-  }
-  
-  function handleDeletePost() {
-    setIsDisabled(true);
-
-    setFileUrl("");
-    setLoading(false);
-    setLocationEvent("");
-    setimg("")
-    setfile("")
-    setmessage('');
-    setVideoFile('');
-    setIsClosing(false);
-    setIsSubmitting(false);
+  } else {
     setShoww(false);
-    setFileUrl(""); // Add this line to reset fileUrl state
+    setIsClosing(false);
+    setLocationEvent("")
+    setShowMap(false)
+    setIsDisabled(true)
 
+    setmessage('')
+
+    
   }
+}
 
+function handleDeletePost() {
+  setIsDisabled(true);
+
+  setFileUrl("");
+  setLoading(false);
+  setLocationEvent("");
+
+  setmessage('');
+  setVideoFile('');
+  setIsClosing(false);
+  setIsSubmitting(false);
+  // TODO: Implement logic to delete post
+  setShoww(false);
+}
 
 
   useEffect(() => {
@@ -458,7 +456,7 @@ setfile("")
         setLocationEvent("");
         setLoading(false);
         handleDeletePost();
-        setFileUrl(""); // reset fileUrl to null after posting
+        setFileUrl(null); // reset fileUrl to null after posting
         setvideourl(""); // reset fileUrl to null after posting
         setVideoFile("");
         setLocationEvent("");
