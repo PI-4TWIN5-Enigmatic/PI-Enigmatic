@@ -45,7 +45,7 @@ const Share = () => {
 
     transform: rotate(90deg); // Rotate the spinner by 90 degrees
   `;
-  const componentRef = useRef(null);
+  const componentRef = useRef("");
 
   const currentUser = JSON.parse(localStorage.getItem("user"));
   const [isupdated, setisupdated] = useState(false);
@@ -87,18 +87,18 @@ const toggleShowFullMessage = () => {
 
   
 
-  const [file, setfile] = useState(null);
-  const [videoFile, setVideoFile] = useState(null);
+  const [file, setfile] = useState("");
+  const [videoFile, setVideoFile] = useState("");
 
   const messagee = useRef('');
   const text = useRef();
 
   const [posts, setData] = useState("");
   const [textt, settext] = useState("");
-  const [fileUrl, setFileUrl] = useState(null);
+  const [fileUrl, setFileUrl] = useState("");
 
 
-  const [videourl, setvideourl] = useState(null);
+  const [videourl, setvideourl] = useState("");
 
   const [updatedText, setUpdatedText] = useState("");
   const [isDisabled, setIsDisabled] = useState(true);
@@ -106,7 +106,7 @@ const toggleShowFullMessage = () => {
   const { idd } = useParams();
   const [image, setimg] = useState("");
   const [posterId, setposterid] = useState("");
-  const [iddd, setid] = useState(null);
+  const [iddd, setid] = useState("");
   const [location, setLocationEvent] = useState("");
 
   const [showModalme, setShowme] = useState(false);
@@ -139,7 +139,7 @@ const toggleShowFullMessage = () => {
 
   //disabled button handle imagechange/video change
   function handleImageClick(e) {
-    setFileUrl(null);
+    setFileUrl("");
     setLoading(true);
     setIsImageUploading(true);
   
@@ -206,7 +206,9 @@ const toggleShowFullMessage = () => {
   function handleInputChange(event) {
     setLoading(false);
     setIsSubmitting(false);
-  
+    setfile('')
+    
+  setFileUrl("");
     setInputValue(event.target.value);
     setIsDisabled(!videoFile && !file && !event.target.value );
   }
@@ -215,37 +217,41 @@ const toggleShowFullMessage = () => {
   const [isClosing, setIsClosing] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-
+//fonction delete/close modal
   function handleCloseModal() {
     
     if (isSubmitting) {
       setIsClosing(true);
-      
-
+      setShowMap(false)
+setfile("")
     } else {
       setShoww(false);
       setIsClosing(false);
-      
-
-   
-
-      
+      setIsDisabled(true)
+      setfile("")
+      setFileUrl("")
+      setShowMap(false)
+      setimg("")
     }
+    setFileUrl(""); // Add this line to reset fileUrl state
+
   }
   
   function handleDeletePost() {
     setIsDisabled(true);
 
-    setFileUrl(null);
+    setFileUrl("");
     setLoading(false);
-    setLocationEvent(null);
-
+    setLocationEvent("");
+    setimg("")
+    setfile("")
     setmessage('');
     setVideoFile('');
     setIsClosing(false);
     setIsSubmitting(false);
-    // TODO: Implement logic to delete post
     setShoww(false);
+    setFileUrl(""); // Add this line to reset fileUrl state
+
   }
 
 
@@ -254,7 +260,7 @@ const toggleShowFullMessage = () => {
     setIsDisabled(!fileUrl || (!messagee || !messagee.current?.value) && isImageUploading);
   }, [fileUrl, messagee, isImageUploading]);
   
-
+//end 
 
   const getpostbyid = async () => {
     const response = await fetch(`http://localhost:8000/api/post/all/${id}`, {
@@ -357,40 +363,6 @@ const toggleShowFullMessage = () => {
       });
   };
 
-  const handleSubmit = (e) => {
-    const form = new FormData();
-    form.append("file", file);
-    form.append("upload_preset", "siwarse");
-    axios
-      .post("https://api.cloudinary.com/v1_1/dxououehj/upload", form)
-      .then((result) => {
-        const data = {
-          posterId: user?._id,
-          message: messagee.current?.value,
-
-          img: result.data.secure_url,
-          likers: [],
-          comments: [],
-        };
-
-        // Send a POST request to the backend API
-        axios
-          .put(`http://localhost:8000/api/post/${id}`, data)
-          .then((response) => {
-            console.log(response);
-            toast.info("Event have been updated");
-            setChange(true);
-            // Handle success response
-
-            // Handle success response
-          })
-          .catch((error) => {
-            console.error(error);
-            // Handle error response
-          });
-      });
-  };
-
   const handlecomment = (text, e) => {
     // Send a POST request to the backend API
     fetch(`http://localhost:8000/api/post/comment-post/${e}`, {
@@ -440,11 +412,6 @@ const toggleShowFullMessage = () => {
 
   const { profilePicture, firstName, lastName } = user;
 
-  // if (!posts) return null;
-
-  // const {
-  // img,message
-  // } = posts;
 
   const handleDelete = (id) => {
     axios
@@ -487,14 +454,14 @@ const toggleShowFullMessage = () => {
         console.log(response);
         setChange(true);
         setShowMap(false);
-        setVideoFile(null);
-        setLocationEvent(null);
+        setVideoFile("");
+        setLocationEvent("");
         setLoading(false);
         handleDeletePost();
-        setFileUrl(null); // reset fileUrl to null after posting
-        setvideourl(null); // reset fileUrl to null after posting
-        setVideoFile(null);
-        setLocationEvent(null);
+        setFileUrl(""); // reset fileUrl to null after posting
+        setvideourl(""); // reset fileUrl to null after posting
+        setVideoFile("");
+        setLocationEvent("");
 
         setIsSubmitting(false);
         setIsDisabled(true); // Disable the button again after the post is submitted
@@ -648,7 +615,7 @@ const toggleShowFullMessage = () => {
                           center={position}
                           zoom={13}
                           scrollWheelZoom={false}
-                          style={{ width: "700px", height: "300px" }}
+                          style={{ width: "700px", height: "200px" }}
                         >
                           <TileLayer
                             attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
@@ -659,7 +626,9 @@ const toggleShowFullMessage = () => {
                       </div>
                     )}
                   </div>
-                {fileUrl && !isDisabled &&   <img src={fileUrl} style={{marginLeft:"160px",width:"300px"}}></img> } 
+                  
+                {fileUrl && !isDisabled &&        <img src={fileUrl} style={{marginLeft:"160px",width:"300px"}}></img> } 
+                
 
                   {loading && (
                     <div

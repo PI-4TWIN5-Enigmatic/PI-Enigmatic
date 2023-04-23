@@ -7,7 +7,6 @@ const { verifyToken } = require('../middleware/auth');
 router.get('/getpost', readPost);
 router.get('/get/:id', get);
 
-router.get('/getpost/:id', readPost);
 
 //getpostsuser
 router.get('/getposts/:id', getallposts);
