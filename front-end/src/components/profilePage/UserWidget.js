@@ -73,11 +73,14 @@ const{
                                             <li><a href="#"><i className ="bi bi-phone"></i>{phone}</a></li>
                                             <li><a href="#"><i className="bi bi-gender"></i>{sexe}</a></li>
                                         </ul>
-                                       
-                                                
-                                                <div className="profile-edit-panel">
-                                                          <button  ><Link className="edit-btn" to={`http://localhost:3000/user/update/${id}`}>edit profile</Link></button>
-                                                </div>
+                                        {id==localStorage.getItem("id") ? (
+         <div className="profile-edit-panel">
+         <button  ><Link className="edit-btn" to={`http://localhost:3000/user/update/${id}`}>edit profile</Link></button>
+</div>
+      ) : (
+        <div></div>
+      )}
+                                              
                                     </div>
                                 </div>
                             </div>
