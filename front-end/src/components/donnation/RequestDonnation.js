@@ -147,13 +147,16 @@ function estNumeroTelephoneValide(telephone) {
                 axios
                     .post(`http://localhost:8000/donnation/requestDonnation/${id}`, data)
                     .then((response) => {
-                      socket.current.emit('requestDonnation', data);
-                      console.log(response);
+                      const donationId = response.data.donationId ; 
+                      const datawithId = {related_donation:donationId}
+                      console.log(datawithId)
+                      socket.current.emit('newNotification', datawithId);
                       toast.info("Donnation have been created"); 
 
                     // Ajouter la notification
                     axios.post(`http://localhost:8000/notifications/addNotifications/${response.data.donationId}`)
                     .then((response) => {
+                     // socket.current.emit('requestDonnation', datawithId);
 
                     }).catch((error) => {
                       console.error(error);
@@ -181,21 +184,27 @@ function estNumeroTelephoneValide(telephone) {
                 axios
                   .post(
                     `http://localhost:8000/donnation/requestDonnation/${id}`,
-                    data
-                  )
+                    data)
                   .then((response) => {
-                    console.log(response);
-                    socket.current.emit('requestDonnation', data);
+                    const donationId = response.data.donationId ; 
+                    const datawithId = {related_donation:donationId}
+                    console.log(datawithId)
+                    socket.current.emit('newNotification', datawithId);
                    
                     toast.info("Donnation have been created");
+                    fetch(`http://localhost:8000/notifications/addNotifications/${response.data.donationId}`, {
+                      method: 'POST'
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                      // Envoi de l'événement de notification vers le serveur Socket.io
+                  })
+                    .catch(error => {
+                      console.error(error);
+                    });
 
-                     // Ajouter la notification
-                     axios.post(`http://localhost:8000/notifications/addNotifications/${response.data.donationId}`)
-                     .then((response) => {
 
-                     }).catch((error) => {
-                       console.error(error);
-                     });
+                     
                   })
                   .catch((error) => {
                     console.error(error);

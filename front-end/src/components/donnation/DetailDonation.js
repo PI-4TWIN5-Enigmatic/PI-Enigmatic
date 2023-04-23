@@ -34,6 +34,9 @@ import { toast } from "react-toastify";
               await fetch(`http://localhost:8000/association/addDonationToUserAssociation/${idd}/${entities.related_donation._id}`, {
                 method: 'POST'
               });
+              await fetch(`http://localhost:8000/notifications/deleteNotification/${entities._id}`, {
+                  method: 'DELETE'
+                });
               toast.info("Donation associated with successfully "); 
               navigate(`/donnation/request/${idd}`)
               
@@ -43,17 +46,28 @@ import { toast } from "react-toastify";
            
           };
 
-        
           const handleReject = async () => {
             try {
+              // Vérifier si l'utilisateur actuel correspond à l'utilisateur qui a créé la donation
+              if (idd === entities.related_donation.requester) {
+                await fetch(`http://localhost:8000/donnation/deleteDonnation/${entities.related_donation._id}`, {
+                  method: 'DELETE'
+                });
                 await fetch(`http://localhost:8000/notifications/deleteNotification/${entities._id}`, {
                   method: 'DELETE'
                 });
-                navigate.navigate('/notifications');
-              } catch (error) {
-                console.error(error);
+                toast.info("Donation deleted successfully ");
+                navigate(`/donnation/request/${idd}`);
+              } else {
+                toast.error("You can only delete your own donations");
               }
-            };
+            } catch (error) {
+              console.error(error);
+            }
+          };
+
+        
+          
     return (
 
         <>
@@ -176,7 +190,7 @@ import { toast } from "react-toastify";
                         cursor: 'pointer',
                     }}
                     onClick={()=>{handleReject(entities._id)}}>
-                    Refuser
+                    Supprimer
                 </button>
                 <button
                     className="post-meta-like"

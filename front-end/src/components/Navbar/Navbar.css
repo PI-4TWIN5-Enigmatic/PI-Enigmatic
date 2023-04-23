@@ -23,3 +23,37 @@
       size: 20px;
     }
 
+    .notification-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 10px;
+      border-bottom: 1px solid #ccc;
+    }
+    
+    .notification-info {
+      display: flex;
+      flex-direction: column;
+    }
+    
+    .notification-type {
+      font-weight: bold;
+    }
+    
+    .notification-location {
+      font-size: 0.8rem;
+    }
+    
+    .notification-sector {
+      font-size: 0.8rem;
+      color: #666;
+    }
+    
+    .notification-details-btn {
+      background-color: #ccc;
+      color: #fff;
+      border: none;
+      border-radius: 5px;
+      padding: 5px 10px;
+      cursor: pointer;
+    }

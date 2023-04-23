@@ -33,7 +33,7 @@ const Users = () => {
 
     const [data, setData] = useState(null);
   useEffect(() => {
-    axios.get("http://127.0.0.1:8000/api/users/getAll").then((response) => {
+    axios.get("http://localhost:8000/api/users/getAll").then((response) => {
       setUsers(response.data);
     });
   }, []);
@@ -73,7 +73,7 @@ const handleUnban = async (userID) => {
 
 return (
   <>
-  
+
   <MDBCol md="6">
       <div className="input-group md-form form-sm form-1 pl-0">
         <div className="input-group-prepend">
@@ -89,12 +89,12 @@ return (
         />
       </div>
     </MDBCol>
-     
+
    <br></br>
        <CCard className="text-center">
   <CCardHeader  > <CCardTitle>User Management</CCardTitle></CCardHeader>
   <CCardBody>
-   
+
   <CTable hover>
  <CTableHead>
    <CTableRow>
@@ -136,13 +136,13 @@ return (
    </CTableBody>
    </CTable>
    </CCardBody>
-  
+
   </CCard>
         </>
-            
+
     )
-    
- 
+
+
 }
 
 export default Users;

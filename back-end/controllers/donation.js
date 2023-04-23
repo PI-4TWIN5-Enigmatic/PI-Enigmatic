@@ -1,4 +1,5 @@
 const Donation = require('../models/donation')
+const Notification = require('../models/notifications')
 const User = require('../models/user')
 require('dotenv').config()
 const stripe = require("stripe")(process.env.STRIPE_KEY);
@@ -51,6 +52,9 @@ exports.RequestDonnation = async (req, res) => {
         const donation = await Donation.create({...req.body,requester:requester.id}).then((doc) => {
         id = doc._id
         })
+
+        
+
         res.status(201).json({
         sucess: true,
         donationId: id
@@ -82,11 +86,20 @@ exports.UpdateDonation = async (req, res) => {
 }
 exports.getAllDonnation = async (req, res) => {
     try {
-        const data = await Donation.find()
+        const data = await Donation.find({ isVerified: true })
         res.status(200).json(data);
     } catch (error) {
         res.status(500).json({message: error.message});
     }
+}
+
+exports.getAllDonnations = async (req, res) => {
+  try {
+      const data = await Donation.find()
+      res.status(200).json(data);
+  } catch (error) {
+      res.status(500).json({message: error.message});
+  }
 }
 
 exports.getDonnation = async (req, res) => {
