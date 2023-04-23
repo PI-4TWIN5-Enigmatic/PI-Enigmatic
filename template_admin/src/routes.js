@@ -8,6 +8,7 @@ const associationDetails = React.lazy(()=> import('./views/Associations/Associat
 const Events = React.lazy(() => import('./views/Events/Events'))
 const Statistics = React.lazy(() => import('./views/Events/Statistics'))
 const Donation = React.lazy(() => import('./views/Donation/Donation'))
+const Calendar = React.lazy(() => import('./views/Events/Calendar'))
 
 
 
@@ -16,6 +17,7 @@ const routes = [
   { path: '/users', name: 'users management', element: Users },
   { path: '/events', name: 'Event Management' , element: Events},
   { path: '/statistics', name: 'Event Statistics Management' , element: Statistics},
+  { path: '/calendar', name: 'Events calendar managment', element: Calendar },
   { path: '/donation', name: 'donation management' , element: Donation},
   { path: '/association/:id', name: 'assotiation details', element: associationDetails },
   { path: '/associations', name: 'associations managment', element: Associations },

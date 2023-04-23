@@ -13,6 +13,7 @@ import {
   import { Bar } from '@ant-design/plots';
   import { Gauge } from '@ant-design/plots';
   import { Rose } from '@ant-design/plots';
+  import { useNavigate } from 'react-router-dom';
 
 const Statistics = () => {
     const [cookies,setCookies] = useCookies(["access_token"]);
@@ -27,6 +28,7 @@ const Statistics = () => {
     const [variantU, setVariantU] = useState("");
     const [variantA, setVariantA] = useState("ghost");
     const [P, setP] = useState("");
+    const navigate=useNavigate();
 
 
    const onClickUsers=()=>{
@@ -44,7 +46,9 @@ const Statistics = () => {
 
 
    
- 
+    const goBack=()=>{
+      navigate(-1)
+    }
 
 
       function populateDataP(data) {
@@ -454,7 +458,11 @@ const Statistics = () => {
         </div>
       </div>
     </MDBCol>
-     
+    <div className='d-flex justify-content-end'>
+    <CButton className='mr-2' color="secondary" onClick={goBack}>Go Back</CButton> 
+
+    </div>
+
    <br></br>
        <CCard className="text-center">
   <CCardHeader  > <CCardTitle style={{color:"#3622e8"}}>Events Statistics Management<hr /> </CCardTitle></CCardHeader>
