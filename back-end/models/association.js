@@ -1,5 +1,6 @@
 const mongoose = require('mongoose')
 const bcrypt = require('bcrypt');
+const User = require('./user');
 const user = require('./user');
 const { ObjectId } = mongoose.Schema.Types
 const saltRounds = 10;
@@ -71,7 +72,7 @@ const associationSchema = new mongoose.Schema(
             trim: true,
         },
         founder: { 
-           type: mongoose.Schema.Types.ObjectId, ref: 'user' ,
+           type: mongoose.Schema.Types.ObjectId, ref: 'User' 
         },
 
         followedProfil: [{ type: mongoose.Types.ObjectId, ref:"User" }],

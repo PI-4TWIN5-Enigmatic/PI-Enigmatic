@@ -102,7 +102,10 @@ exports.getAssociation = async (req, res ) =>{
 //get list association
 exports.getListAssociation = async (req, res,next) => {
     try {
-      const users = await Association.find();
+      const users = await Association.find().populate({
+        path: "founder",
+        select: "firstName lastName profilePicture",
+      });
       res.status(200).json(users);
     }catch(error) {
        res.status(404).json({message: error.message});

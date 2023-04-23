@@ -73,28 +73,39 @@ const goStatistic=()=>{
   navigate('/statistics')
 }
 
+const goCalendar=()=>{
+  navigate('/calendar')
+}
+
 
 
 return (
   <>
-  
-  <MDBCol md="6">
-      <div className="input-group md-form form-sm form-1 pl-0">
-        <div className="input-group-prepend">
-          <span className="input-group-text purple lighten-3" id="basic-text1">
-          </span>
-        </div>
-        <input
-          className="form-control my-0 py-1"
-          type="text"
-          placeholder="Search"
-          aria-label="Search"
-          onChange={(e)=>setQuery(e.target.value)}
-        />
-              {/* <CButton  className='d-flex justify-content-end' color="primary"  onClick={goStatistic}>View Statistics</CButton>  */}
 
-      </div>
-    </MDBCol>
+
+<MDBCol md="6">
+  <div className="input-group md-form form-sm form-1 pl-0">
+    <div className="input-group-prepend">
+      <span className="input-group-text purple lighten-3" id="basic-text1">
+      </span>
+    </div>
+    <input
+      className="form-control my-0 py-1"
+      type="text"
+      placeholder="Search"
+      aria-label="Search"
+      onChange={(e) => setQuery(e.target.value)}
+    />
+    <div className="ml-auto d-flex align-items-center"> 
+      {/* <CButton className='mr-2' color="primary" onClick={goStatistic}>View Statistics</CButton> 
+      <CButton className='mr-2' color="primary" onClick={goCalendar}>View Calendar</CButton>  */}
+    </div>
+  </div>
+</MDBCol>
+
+
+
+
      
    <br></br>
        <CCard className="text-center">
