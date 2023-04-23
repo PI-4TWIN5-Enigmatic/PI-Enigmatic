@@ -49,6 +49,14 @@ const _nav = [
 
   },
 
+  {
+    component: CNavItem,
+    name: 'Posts Management',
+    to: '/posts',
+    icon: <CIcon icon={cilBuilding} customClassName="nav-icon" />,
+
+  },
+
 
 ]
 

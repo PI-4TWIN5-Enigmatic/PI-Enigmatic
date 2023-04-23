@@ -1,6 +1,6 @@
 const express = require('express')
 const router = express.Router()
-const {signup,UpdateUser,activateAccount,getListUser,forgetPassword,emailSend,changerPass ,tokendata, getUser, loginuser,banUser,unbanUser, uploads, deactivateAccount,confirmationemail, getUsersByIds, followUser, unfollowUser, getFollowedProfiles, getFollowingProfiles} = require("../controllers/user")
+const {signup,UpdateUser,activateAccount,getListUser,forgetPassword,emailSend,changerPass ,tokendata, getUser, loginuser,banUser,unbanUser, uploads, deactivateAccount,confirmationemail, getUsersByIds, followUser, unfollowUser, getFollowedProfiles, getFollowingProfiles, getFollowingAssociation} = require("../controllers/user")
 const{verifyToken}=require ("../middleware/auth")
 const {admin}=require ("../middleware/isadmin")
 const {uploadProfil} =require("../controllers/upload")
@@ -61,6 +61,7 @@ router.post('/users/:userId/unfollow',unfollowUser);
 
 router.get("/:userId/followedProfiles", getFollowedProfiles);
 router.get("/:userId/followingProfiles", getFollowingProfiles);
+router.get("/:userId/followingAssociations", getFollowingAssociation);
 
 
 

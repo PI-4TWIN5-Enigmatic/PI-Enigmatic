@@ -9,6 +9,10 @@ import { Divider } from "@mui/material";
 import LeafletGeoCoder from "../Events/LeafletGeoCoder";
 import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
 import L from "leaflet";
+import { BeatLoader } from "react-spinners";
+import SwiperCore, { Navigation, Pagination } from 'swiper';
+import { Swiper, SwiperSlide } from 'swiper/react';
+import 'swiper/swiper-bundle.css';
 
 import {
   FaPhotoVideo,
@@ -33,7 +37,7 @@ import { Cookies, useCookies } from "react-cookie";
 const Share = () => {
   const [association, setAssociation] = useState(null);
   const currentUser = JSON.parse(localStorage.getItem("user"));
-  const [isDisabled, setIsDisabled] = useState(true);
+  const [loading, setLoading] = useState(false);
 
   const { id } = useParams();
   const [showModal, setShow] = useState(false);
@@ -42,14 +46,25 @@ const Share = () => {
   const handleShoww = () => setShoww(true);
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
-  const [isVisible, setIsVisible] = useState(false);
-  const toggleVisibility = (e) => {
-    setIsVisible(e === isVisible ? null : e);
-  };
+ 
   const [location, setLocationEvent] = useState("");
   const [isupdated, setisupdated] = useState(false);
   const [isupdatedd, setisupdatedd] = useState(false);
 
+  const [isVisible, setIsVisible] = useState(false);
+  const toggleVisibility = (e) => {
+    setIsVisible(e === isVisible ? null : e);
+  };
+  const [isImageUploading, setIsImageUploading] = useState(false);
+  const [isVideoUploading, setIsVideoUploading] = useState(false);
+
+  const [fileUrl, setFileUrl] = useState("");
+
+
+  const [videourl, setvideourl] = useState("");
+
+  const [updatedText, setUpdatedText] = useState("");
+  const [isDisabled, setIsDisabled] = useState(true);
 
   const [cookies, _] = useCookies(["access_token"]);
 
@@ -87,6 +102,16 @@ const Share = () => {
   const [firstName, setfirstname] = useState("");
 
 
+    //show more/less 
+    const [showFullMessage, setShowFullMessage] = useState(false);
+
+    const toggleShowFullMessage = () => {
+      setShowFullMessage(!showFullMessage);
+    };
+
+
+
+
   const getUser = async () => {
     const response = await fetch(`http://localhost:8000/api/getuser/${id}`, {
       method: "GET",
@@ -108,10 +133,123 @@ const Share = () => {
     getUser();
   }, []);
 
-  const handleImageClick =()=> {
-    setIsDisabled(false);
+ 
+  //disabled button handle imagechange/video change
+  function handleImageClick(e) {
+    setFileUrl("");
+    setLoading(true);
+    setIsImageUploading(true);
+  
+    const file = e.target.files[0];
+  
+    if (file) {
+      setIsSubmitting(true);
+      setIsDisabled(false);
+      const form = new FormData();
+      form.append("file", file);
+      form.append("upload_preset", "siwarse");
+      axios
+        .post("https://api.cloudinary.com/v1_1/dxououehj/upload", form)
+        .then((result) => {
+          setFileUrl(result.data.secure_url);
+          setIsImageUploading(false);
+          setIsVideoUploading(false); // Set isVideoUploading to false after the request is successful
+          setLoading(false);
+        })
+        .catch((error) => {
+          console.error(error);
+          setIsImageUploading(false);
+          setIsVideoUploading(false); // Set isVideoUploading to false after the request is successful
+        });
+    } else {
+      setIsSubmitting(false);
+      setIsDisabled(true);
+    }
   }
   
+  const handleVideoChange = (event) => {
+    setLoading(true);
+    setIsSubmitting(true);
+
+  const selectedVideo = event.target.files[0];
+  setVideoFile(selectedVideo);
+  setIsDisabled(!file && !selectedVideo && !message);
+  setIsVideoUploading(true); // Set isVideoUploading to true before sending the request
+
+  const form = new FormData();
+  form.append("file", selectedVideo);
+  form.append("upload_preset", "siwarse");
+  axios
+    .post("https://api.cloudinary.com/v1_1/dxououehj/upload", form)
+    .then((result) => {
+      setvideourl(result.data.secure_url);       
+
+      setIsImageUploading(false);
+      setIsVideoUploading(false); // Set isVideoUploading to false after the request is successful
+       setLoading(false);
+
+    })
+    .catch((error) => {
+      console.error(error);
+      setIsImageUploading(false);
+      setIsVideoUploading(false); // Set isVideoUploading to false after the request failed
+
+    });
+}
+  
+//input change with disabled button
+function handleInputChange(event) {
+  setLoading(false);
+  setIsSubmitting(false);
+
+  setInputValue(event.target.value);
+  setIsDisabled(!videoFile && !file && !event.target.value );
+}
+
+
+//show close modal
+const [isClosing, setIsClosing] = useState(false);
+const [isSubmitting, setIsSubmitting] = useState(false);
+
+
+function handleCloseModal() {
+  
+  if (isSubmitting) {
+    setIsClosing(true);
+    
+
+  } else {
+    setShoww(false);
+    setIsClosing(false);
+    
+
+ 
+
+    
+  }
+}
+
+function handleDeletePost() {
+  setIsDisabled(true);
+
+  setFileUrl("");
+  setLoading(false);
+  setLocationEvent("");
+
+  setmessage('');
+  setVideoFile('');
+  setIsClosing(false);
+  setIsSubmitting(false);
+  // TODO: Implement logic to delete post
+  setShoww(false);
+}
+
+
+
+useEffect(() => {
+  setIsDisabled(!fileUrl || (!messagee || !messagee.current?.value) && isImageUploading);
+}, [fileUrl, messagee, isImageUploading]);
+
 
   const getpostbyid = async () => {
     const response = await fetch(
@@ -123,6 +261,7 @@ const Share = () => {
         },
       }
     );
+    
 
     const data = await response.json();
     setData(data);
@@ -150,10 +289,6 @@ const Share = () => {
   });
   L.Marker.prototype.options.icon = DefaultIcon;
 
-
-  const handleVideoChange = (e) => {
-    setVideoFile(e.target.files[0]);
-  };
 
   const handlecomment = (text, e) => {
     // Send a POST request to the backend API
@@ -184,64 +319,48 @@ const Share = () => {
       });
   
   };
-
   const submitHandeler = (e) => {
+    setIsClosing(false);
+    setIsDisabled(true);
     e.preventDefault();
+  
+    
+    const newPost = {
+      posterId: association?._id,
+      message: messagee.current?.value,
+      img: fileUrl,
+      video: videourl,
 
-    const form = new FormData();
-
-    if (videoFile && file) {
-        form.append("file", videoFile);
-        form.append("file", file);
-      } else if (videoFile) {
-        form.append("file", videoFile);
-      } else if (file) {
-        form.append("file", file);
-      }
-     
-      
-    form.append("upload_preset", "siwarse");
+      location,
+      likers: [],
+      comments: [],
+    };
+  
+    // Send a POST request to the backend API
     axios
-      .post("https://api.cloudinary.com/v1_1/dxououehj/upload", form)
-      .then((result) => {
-        const newPost = {
-          posterId: association?._id,
-          message: messagee.current.value,
-          location,
-          likers: [],
-          comments: [],
-        };
+      .post("http://localhost:8000/api/post", newPost)
+      .then((response) => {
+        console.log(response);
+        setChange(true);
+        setShowMap(false);
+        setVideoFile("");
+        setLocationEvent("");
+        setLoading(false);
+        handleDeletePost();
+        setFileUrl(""); // reset fileUrl to null after posting
+        setvideourl(""); // reset fileUrl to null after posting
+        setVideoFile("");
+        setLocationEvent("");
 
-        // Check if video or image file was uploaded and add to newPost accordingly
-        if (videoFile && file) {
-          newPost.video = result.data.secure_url;
-          newPost.img = result.data.secure_url;
-        } else if (videoFile) {
-          newPost.video = result.data.secure_url;
-        } else if (file) {
-          newPost.img = result.data.secure_url;
-        }
-        
-        // Send a POST request to the backend API
-        axios
-          .post("http://localhost:8000/api/post", newPost)
-          .then((response) => {
-            console.log(response);
-            setChange(true);
-            setfile(null);
-            setVideoFile(null);
-            setLocationEvent(null);
-            setShowMap(!showMap);
+        setIsSubmitting(false);
+        setIsDisabled(true); // Disable the button again after the post is submitted
 
-            // Handle success response
-          })
-          .catch((error) => {
-            console.error(error);
-            // Handle error response
-          });
+      })
+      .catch((error) => {
+        console.error(error);
       });
   };
-
+  
   const uploadimage = () => {
     //dxououehj
     //siwarse
@@ -368,6 +487,7 @@ const Share = () => {
         console.error(error);
       });
   };
+  const [alpha,setAlpha]= useState(null);
 
   const getAssociation = async () => {
     const response = await fetch(
@@ -375,12 +495,24 @@ const Share = () => {
       {
         method: "GET",
       }
-    );
+    )
 
-    const data = await response.json();
-    setAssociation(data);
-    console.log(data);
-  };
+    .then(response => response.json())
+           .then(data => {
+             console.log(data);
+             setAssociation(data);
+             
+             if (data && data.hasOwnProperty('founder')) {
+                 console.log("association.founder:", data.founder);
+                 const alphaa = data.founder.toString() === idCurrentUser.toString();
+                 setAlpha(alphaa);
+             } else {
+                 console.log("association is null or does not have a founder property");
+             }
+         })
+           .catch(error => console.error(error));
+        }
+  
   useEffect(() => {
     getAssociation();
   }, []);
@@ -388,10 +520,6 @@ const Share = () => {
   if (!association) return null;
 
   const { logoPicture, name, _id } = association;
-
-  const handleInputChange = (event) => {
-    setInputValue(event.target.value);
-  };
 
   const isButtonDisabled = inputValue === "";
 
@@ -424,7 +552,7 @@ const Share = () => {
               </form>
             </div>
 
-            {cookies.access_token && (
+            {cookies.access_token && alpha &&  (
               <Modal
                 class="modal fade"
                 id="textbox"
@@ -468,8 +596,8 @@ const Share = () => {
                             center={position}
                             zoom={13}
                             scrollWheelZoom={false}
-                            style={{ width: "700px", height: "300px" }}
-                          >
+                            style={{ width: "700px", height: "200px" }}
+                            >
                             <TileLayer
                               attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
                               url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
@@ -479,6 +607,46 @@ const Share = () => {
                         </div>
                       )}
                     </div>
+                    {fileUrl && !isDisabled &&   <img src={fileUrl} style={{marginLeft:"160px",width:"300px"}}></img> }
+                    {loading && (
+                    <div
+                      style={{
+                        display: "flex",
+                        justifyContent: "center",
+                        alignItems: "center",
+                        position: "absolute",
+                        top: 0,
+                        bottom: 0,
+                        left: 0,
+                        right: 0,
+                        backgroundColor: "rgba(255, 255, 255, 0.8)",
+                        zIndex: "9999",
+                      }}
+                    >
+                      <div
+                        style={{
+                          display: "flex",
+                          flexDirection: "column",
+                          alignItems: "center",
+                        }}
+                      >
+                        <p
+                          style={{
+                            marginTop: "20px",
+                            marginBottom: "20px",
+                            fontfamily: "Arial",
+                            textalign: "center",
+                            color: "#081b3778",
+                            fontsize: "100px",
+                          }}
+                        >
+                          Loading...
+                        </p>
+                        <BeatLoader size={30} color="#bde2ec" />
+                      </div>
+                    </div>
+                  )} 
+
                   </Modal.Body>
 
                   <Modal.Footer class="modal-footer">
@@ -493,14 +661,14 @@ const Share = () => {
                             type="file"
                             id="file"
                             accept=".png,.jpg,.jpeg"
-                            onChange={(e) => setfile(e.target.files[0])}
-                            onClick={handleImageClick}
+                            onChange={handleImageClick}
+
                           />
                         </label>
                         <button
-                          className="iconn-wrapper"
-                          onClick={handleButtonClick}
-                          disabled={isDisabled}
+                           className="iconn-wrapperr"
+                           onClick={handleButtonClick}
+                           disabled={isDisabled}
 
                         >
                           <ImLocation className="icon-bluee" />
@@ -515,10 +683,12 @@ const Share = () => {
                             id="file"
                             accept="video/*"
                             onChange={handleVideoChange}
-                          />
+                            />
                         </label>
-                        <button onClick={submitHandeler} class="post-share-btn">
-                          upload
+                        <button  onClick={submitHandeler}
+                        disabled={isDisabled || isVideoUploading}
+                        className="postbutton"  >
+                          Post
                         </button>
                       </div>{" "}
                     </div>
@@ -611,14 +781,14 @@ const Share = () => {
                   </span>)}
                 <span className="date">{moment(e.createdAt).fromNow()}</span>
               </div>
-
-              <div className="post-settings-bar">
+{alpha &&               <div className="post-settings-bar">
                 <span></span>
                 <span></span>
                 <span></span>
                 <div className="post-settings arrow-shape">
                   <ul>
                     <li>
+
                     <button
                           onClick={() => {
                             
@@ -665,12 +835,22 @@ const Share = () => {
                     </li>
                   </ul>
                 </div>
-              </div>
+              </div>}
             </div>
 
            <div className="post-content">
-              {isupdated === false && <p className="post-desc">{e.message}</p>}
-              {isupdated === e._id ? (
+           {isupdated === false && <div className="post-desc">
+    
+    {e.message.split(" ").length <= 20 ? (
+      <p>{e.message}</p>
+    ) : (
+      <>
+        <p>{showFullMessage ? e.message : `${e.message.split(" ").slice(0, 15).join(" ")}....`}
+      <button onClick={toggleShowFullMessage} style={{color:"rgb(10, 68, 93)"}}>{showFullMessage ? "  Show less" : "Show more" }</button></p>
+      </>
+    )}
+      </div>}
+                    {isupdated === e._id ? (
                 <div className="update-post">
                   <button
                     type="button"
@@ -686,16 +866,35 @@ const Share = () => {
                     onChange={(e) => setmessage(e.target.value)}
                     multiple
                   />
-                  {e.img && <img src={e.img} style={{ marginLeft: "3px" }} />}
-                  {e.video && (
-                    <video controls style={{ width: "500px", height: "400px" }}>
-                      <source src={e.video} type="video/mp4" />
-                      Your browser does not support the video tag.
-                    </video>
-                  )}
+  {e.img && (
+          <Swiper navigation pagination style={{ width: "500px", height: "330px", marginLeft:"20px" }}>
+            <SwiperSlide>
+              <img src={e.img} alt="post image"  style={{ width: "500px", height: "280px" }} />
+            </SwiperSlide>
+            {e.video && (
+              <SwiperSlide>
+                <video controls                          style={{ width: "500px", height: "300px" }}
+>
+                  <source src={e.video} type="video/mp4" />
+                  Your browser does not support the video tag.
+                </video>
+              </SwiperSlide>
+            )}
+          </Swiper>
+        )}                  {!e.img && e.video && (
+          <video controls                         style={{ width: "500px", height: "300px" }}
+          >
+            <source src={e.video} type="video/mp4" />
+            Your browser does not support the video tag.
+          </video>
+        )}
 
-                  <div className="button-container">
-                    <button className="btn" onClick={() => handleupdate(e._id)}>
+
+<div className="button-container">
+                    <button
+                      class="buttonfootere"
+                      onClick={() => handleupdate(e._id)}
+                    >
                       valider modification
                     </button>
                   </div>
@@ -853,7 +1052,7 @@ const Share = () => {
                             {moment(record.createdAt).fromNow()}
                           </span>
                         </div>
-
+                        {alpha &&
                         <div class="post-settings-bar">
                           <span></span>
                           <span></span>
@@ -881,7 +1080,7 @@ const Share = () => {
                                 </button>                              </li>
                             </ul>
                           </div>
-                        </div>
+                        </div>}
                       </div>
                       <div class="post-content">
                       {isupdatedd === false && (

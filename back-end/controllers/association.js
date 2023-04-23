@@ -13,7 +13,8 @@ const transport = nodemailer.createTransport({
 
 const bcrypt = require('bcrypt');
 
-const jwt=require("jsonwebtoken")
+const jwt=require("jsonwebtoken");
+const User = require("../models/user");
 
 
 exports.signupAssociation = async (req,res,next) =>{
@@ -193,6 +194,63 @@ exports.getAssociationsByIds = async (req, res) => {
   }
 }
 
+
+
+
+exports.followAssociation = async (req, res) => {
+  const userId = req.params.userId;
+  const targetAssociationId = req.body.targetAssociationId;
+
+  try {
+    const user = await User.findById(userId);
+    const targetAssociation = await Association.findById(targetAssociationId) ;
+   
+    if (!user.followingAssociation.includes(targetAssociation._id)) {
+      user.followingAssociation.push(targetAssociation._id);
+      await user.save();
+
+      targetAssociation.followedProfil.push(user._id);
+      await targetAssociation.save();
+
+      return res.send(`${user.firstName} is now following ${targetAssociation.name}`);
+    } else {
+      return res.send(`${user.firstName} is already following ${targetAssociation.name}`); 
+    }
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: err });
+  }
+};
+
+
+
+
+exports.unfollowAssociation = async (req, res) => {
+  const userId = req.params.userId;
+  const targetAssociationId = req.body.targetAssociationId;
+
+  try {
+    const user = await User.findById(userId);
+    const targetAssociation = await Association.findById(targetAssociationId) ;
+    
+    if (user.followingAssociation.includes(targetAssociation._id)) {
+    
+      user.followingAssociation.pull(targetAssociation._id);
+      await user.save();
+
+      targetAssociation.followedProfil.pull(user._id);
+      await targetAssociation.save();
+
+       return res.send(`${user.firstName} has unfollowed ${targetAssociation.name}` );
+    } else {
+     return  res.send( `${user.firstName} is not following ${targetAssociation.name}`);
+    }
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: err });
+  }
+};
+
 exports.addDonationToUserAssociation = async (req, res) => {
     try {
       const { idFounder, idDonation } = req.params;
@@ -217,3 +275,15 @@ exports.addDonationToUserAssociation = async (req, res) => {
       return { error: err.message };
     }
   };
+
+
+  exports.getFollowedProfiles = async (req, res) => {
+    try {
+      const association= await Association.findById(req.params.associationId).populate("followedProfil");
+      res.json(association.followedProfil);
+    } catch (err) {
+      console.log(err);
+      res.status(500).json({ error: "Server error" });
+    }
+  };
+

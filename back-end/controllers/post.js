@@ -27,7 +27,7 @@ module.exports.readPost = (req, res) => {
   postModel.find((err, docs) => {
     if (!err) res.send(docs);
     else console.log("Error to get data : " + err);
-  }).sort({ createdAt: -1 });
+  }).populate({path:"posterId",select :"firstName lastName profilePicture"}).sort({ createdAt: -1 });
 };
 
 
