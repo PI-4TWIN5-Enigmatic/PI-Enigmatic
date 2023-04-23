@@ -500,5 +500,15 @@ exports.getFollowingProfiles = async (req, res) => {
   }
 };
 
+exports.getFollowingAssociation = async (req, res) => {
+  try {
+    const user = await User.findById(req.params.userId).populate("followingAssociation");
+    res.json(user.followingAssociation);
+  } catch (err) {
+    console.log(err);
+    res.status(500).json({ error: "Server error" });
+  }
+};
+
 
 

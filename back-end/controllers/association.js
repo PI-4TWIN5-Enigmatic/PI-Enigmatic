@@ -270,3 +270,14 @@ exports.addDonationToUserAssociation = async (req, res) => {
     }
   };
 
+
+  exports.getFollowedProfiles = async (req, res) => {
+    try {
+      const association= await Association.findById(req.params.associationId).populate("followedProfil");
+      res.json(association.followedProfil);
+    } catch (err) {
+      console.log(err);
+      res.status(500).json({ error: "Server error" });
+    }
+  };
+
