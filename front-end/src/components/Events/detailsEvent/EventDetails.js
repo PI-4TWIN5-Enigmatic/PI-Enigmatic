@@ -133,11 +133,12 @@ const navigate = useNavigate();
 
               },
               body: JSON.stringify({ reviewerId: reviewIdd }),
-        });}
+        });} 
       };
 
         const handleRatingChange = (event, newValue) => {
           setValue(newValue);
+
       };
 
 
@@ -387,17 +388,17 @@ const navigate = useNavigate();
                                 {/* <!-- profile picture end --> */}
                                 <div className="profile-thumb">
                                         <figure className="profile-thumb-middle">
-                                            <img src={a.reviewerId.profilePicture} alt="picture" />
+                                            <img src={a.reviewerId?.profilePicture} alt="picture" />
                                         </figure>
                                 </div>
                                 {/* <!-- profile picture end --> */}
 
                                 <div className="posted-author">
-                                    <h6 className="author"><Link to={`/profile/${a.reviewerId._id}`}>{a.reviewerId.firstName} {a.reviewerId.lastName}</Link></h6>
+                                    <h6 className="author"><Link to={`/profile/${a.reviewerId?._id}`}>{a.reviewerId?.firstName} {a.reviewerId?.lastName}</Link></h6>
                                     <span class="post-time">{new Date(a.timestamp).toString().substring(0, 24)}</span>
 
                                 </div >
-                                { alpha || (a.reviewerId._id === user) ? (
+                                { alpha || (a.reviewerId?._id === user) ? (
 
                                 <div className="post-settings-bar" >
                                     <span></span>

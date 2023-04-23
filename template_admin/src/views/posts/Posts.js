@@ -93,7 +93,7 @@ const Posts = () => {
         <CCardHeader>
           {" "}
           <CCardTitle style={{ color: "#3622e8" }}>
-            Event Management
+            Posts Management
             <hr />{" "}
           </CCardTitle>
         </CCardHeader>
