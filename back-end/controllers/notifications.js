@@ -33,7 +33,7 @@ exports.addNotifications = async (req, res) => {
 
 exports.getAllNotifications = async (req, res) => {
     try {
-      const association = await Association.findOne({ founder: req.params.id });
+      const association = await Association.findOne({ founder: req.params.id , isVerified: true});
       if (!association) {
         return res.status(400).json({ message: "L'utilisateur n'a pas d'association" });
       }
