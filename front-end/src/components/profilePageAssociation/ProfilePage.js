@@ -140,7 +140,7 @@ const ProfilePage = () => {
   
                        <RecentNotifications />
                         <Advertissement />
-                        <Friends />
+
                       
                   </aside>
               </div>

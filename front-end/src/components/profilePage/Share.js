@@ -670,7 +670,7 @@ function handleImageClick(e) {
                 ></InputEmoji>
               </form>
             </div> 
-            {isClosing ? (  <Modal
+              {cookies.access_token && isClosing ? (  <Modal
               class="modal fade"
               id="textbox"
               aria-labelledby="textbox"
@@ -694,7 +694,6 @@ function handleImageClick(e) {
                 </Modal.Footer>
             </Modal>
           ) : (
-
               <Modal
                 class="modal fade"
                 id="textbox"
