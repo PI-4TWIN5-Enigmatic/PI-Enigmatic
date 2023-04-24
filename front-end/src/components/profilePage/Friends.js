@@ -38,7 +38,7 @@ useEffect(()=>{
 
 setOnlineFriends(friends.filter((f)=> onlineUsers.includes(f._id)));
 
-},[friends,onlineFriends])
+},[friends,onlineUsers])
 
 
   return (

@@ -82,6 +82,8 @@ const ProfilePage = () => {
     <>
 
         <Navbar />
+        <div class="main-wrapper pt-80"  style={{backgroundColor:'#bcbcbc42'}}  >
+
     
       {association && association.isVerified ? (
         <main >
@@ -138,7 +140,7 @@ const ProfilePage = () => {
   
                        <RecentNotifications />
                         <Advertissement />
-                        <Friends />
+
                       
                   </aside>
               </div>
@@ -154,7 +156,7 @@ const ProfilePage = () => {
 </main>
       ) : <></>}
        
-    
+    </div>
 
     
     

@@ -23,6 +23,7 @@ module.exports.all = async (req, res) => {
 
 
 
+
 module.exports.readPost = (req, res) => {
   postModel.find((err, docs) => {
     if (!err) res.send(docs);

@@ -24,12 +24,9 @@ const Donation = () => {
   const [users, setUsers] = useState([]);
   const [currentPage, setCurrentPage] = useState(0);
   const [itemsPerPage, setItemsPerPage] = useState(3);
-  const [cookies, _]=useCookies(['access_token'])
-
+  const [cookies, _]=useCookies(['token'])
 
   const  [Donation,setDonation]=useState([]);
-
-
 
   const[query,setQuery]=useState('')
 
