@@ -162,7 +162,7 @@ const handlePhotoSelection = (event) => {
         
                               <RecentNotifications />
                               <Advertissement />
-                              <Friends onlineUsers={onlineUsers} />
+                              <Friends/>
                             
                         </aside>
                     </div>
