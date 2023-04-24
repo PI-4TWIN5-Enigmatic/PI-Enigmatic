@@ -35,7 +35,7 @@ exports.getAllNotifications = async (req, res) => {
     try {
       const association = await Association.findOne({ founder: req.params.id , isVerified: true});
       if (!association) {
-        return res.status(400).json({ message: "L'utilisateur n'a pas d'association" });
+        return res.status(200).json([]);
       }
         const data = await notifications.find().populate('related_donation');
         res.status(200).json(data);
