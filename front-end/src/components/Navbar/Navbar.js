@@ -45,7 +45,9 @@ const Navbar = ( props ) => {
   const [notifications, setNotifications] = useState([]);
   const [newNotification, setNewNotification] = useState(null);
 
+
   const idd = useGetUserID();
+
 
 
   useEffect(() => {
@@ -55,16 +57,31 @@ const Navbar = ( props ) => {
     });
   }, []);
     
-  useEffect(() => {
-    
-    // Récupération des notifications depuis l'API, en incluant les données de la relation related_donation
-    fetch(`http://localhost:8000/notifications/getAllNotifications/${idd}?populate=related_donation`)
-      .then(response => response.json())
-      .then(data => setNotifications(data));
-  });
-
   
 
+ 
+
+  
+  useEffect(() => {
+    fetch(`http://localhost:8000/notifications/getAllNotifications/${idd}?populate=related_donation`)
+      .then(response => {
+        if (!response.ok) {
+          throw new Error('Erreur lors de la récupération des notifications');
+        }
+        return response.json();
+      })
+      .then(data => {
+        // Vérifier si la réponse contient un message d'erreur
+        if (data.message === "L'utilisateur n'a pas d'association") {
+          // Si oui, ne pas mettre à jour l'état des notifications
+          return;
+        }
+        // Sinon, mettre à jour l'état des notifications avec les données de la réponse
+        setNotifications(data);
+      })
+      .catch(error => console.error(error));
+  }, []);
+  
  
 
 
