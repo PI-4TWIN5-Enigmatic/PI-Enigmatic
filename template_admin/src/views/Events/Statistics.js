@@ -90,30 +90,30 @@ const Statistics = () => {
 
       
       function populateDataTLocation(data) {
-        const typeNabeul = data.filter((e)=>e.locationEvent.split(", Gouvernorat ")[1].split(",")[0]==="Nabeul").length
-        const typeSousse = data.filter((e)=>e.locationEvent.split(", Gouvernorat ")[1].split(",")[0]==="Sousse").length
-        const typeAriana = data.filter((e)=>e.locationEvent.split(", Gouvernorat ")[1].split(",")[0]==="Ariana").length
-        const typeBeja = data.filter((e)=>e.locationEvent.split(", Gouvernorat ")[1].split(",")[0]==="Beja").length
-        const typeBenArous = data.filter((e)=>e.locationEvent.split(", Gouvernorat ")[1].split(",")[0]==="Ben Arous").length
-        const typeBizerte = data.filter((e)=>e.locationEvent.split(", Gouvernorat ")[1].split(",")[0]==="Bizerte").length
-        const typeGabes = data.filter((e)=>e.locationEvent.split(", Gouvernorat ")[1].split(",")[0]==="Gabes").length
-        const typeGafsa = data.filter((e)=>e.locationEvent.split(", Gouvernorat ")[1].split(",")[0]==="Gafsa").length
-        const typeJendouba = data.filter((e)=>e.locationEvent.split(", Gouvernorat ")[1].split(",")[0]==="Jendouba").length
-        const typeKairouan = data.filter((e)=>e.locationEvent.split(", Gouvernorat ")[1].split(",")[0]==="Kairouan").length
-        const typeKasserine = data.filter((e)=>e.locationEvent.split(", Gouvernorat ")[1].split(",")[0]==="Kasserine").length
-        const typeKebili = data.filter((e)=>e.locationEvent.split(", Gouvernorat ")[1].split(",")[0]==="Kebili").length
-        const typeKef = data.filter((e)=>e.locationEvent.split(", Gouvernorat ")[1].split(",")[0]==="Kef").length
-        const typeMahdia = data.filter((e)=>e.locationEvent.split(", Gouvernorat ")[1].split(",")[0]==="Mahdia").length
-        const typeManouba= data.filter((e)=>e.locationEvent.split(", Gouvernorat ")[1].split(",")[0]==="Manouba").length
-        const typeMednine = data.filter((e)=>e.locationEvent.split(", Gouvernorat ")[1].split(",")[0]==="Mednine").length
-        const typeMonastir = data.filter((e)=>e.locationEvent.split(", Gouvernorat ")[1].split(",")[0]==="Monastir").length
-        const typeSfax = data.filter((e)=>e.locationEvent.split(", Gouvernorat ")[1].split(",")[0]==="Sfax").length
-        const typeSidiBouzid = data.filter((e)=>e.locationEvent.split(", Gouvernorat ")[1].split(",")[0]==="Sidi Bouzid").length
-        const typeSiliana = data.filter((e)=>e.locationEvent.split(", Gouvernorat ")[1].split(",")[0]==="Siliana").length
-        const typeTataouine= data.filter((e)=>e.locationEvent.split(", Gouvernorat ")[1].split(",")[0]==="Tataouine").length
-        const typeTozeur= data.filter((e)=>e.locationEvent.split(", Gouvernorat ")[1].split(",")[0]==="Tozeur").length
-        const typeTunis= data.filter((e)=>e.locationEvent.split(", Gouvernorat ")[1].split(",")[0]==="Tunis").length
-        const typeZaghouan= data.filter((e)=>e.locationEvent.split(", Gouvernorat ")[1].split(",")[0]==="Zaghouan").length
+        const typeNabeul =  data.filter((e) => e.locationEvent?.split(", Gouvernorat ")[1]?.split(",")[0] === "Nabeul").length
+        const typeSousse = data.filter((e)=>e.locationEvent?.split(", Gouvernorat ")[1]?.split(",")[0]==="Sousse").length
+        const typeAriana = data.filter((e)=>e.locationEvent?.split(", Gouvernorat ")[1]?.split(",")[0]==="Ariana").length
+        const typeBeja = data.filter((e)=>e.locationEvent?.split(", Gouvernorat ")[1]?.split(",")[0]==="Beja").length
+        const typeBenArous = data.filter((e)=>e.locationEvent?.split(", Gouvernorat ")[1]?.split(",")[0]==="Ben Arous").length
+        const typeBizerte = data.filter((e)=>e.locationEvent?.split(", Gouvernorat ")[1]?.split(",")[0]==="Bizerte").length
+        const typeGabes = data.filter((e)=>e.locationEvent?.split(", Gouvernorat ")[1]?.split(",")[0]==="Gabes").length
+        const typeGafsa = data.filter((e)=>e.locationEvent?.split(", Gouvernorat ")[1]?.split(",")[0]==="Gafsa").length
+        const typeJendouba = data.filter((e)=>e.locationEvent?.split(", Gouvernorat ")[1]?.split(",")[0]==="Jendouba").length
+        const typeKairouan = data.filter((e)=>e.locationEvent?.split(", Gouvernorat ")[1]?.split(",")[0]==="Kairouan").length
+        const typeKasserine = data.filter((e)=>e.locationEvent?.split(", Gouvernorat ")[1]?.split(",")[0]==="Kasserine").length
+        const typeKebili = data.filter((e)=>e.locationEvent?.split(", Gouvernorat ")[1]?.split(",")[0]==="Kebili").length
+        const typeKef = data.filter((e)=>e.locationEvent?.split(", Gouvernorat ")[1]?.split(",")[0]==="Kef").length
+        const typeMahdia = data.filter((e)=>e.locationEvent?.split(", Gouvernorat ")[1]?.split(",")[0]==="Mahdia").length
+        const typeManouba= data.filter((e)=>e.locationEvent?.split(", Gouvernorat ")[1]?.split(",")[0]==="Manouba").length
+        const typeMednine = data.filter((e)=>e.locationEvent?.split(", Gouvernorat ")[1]?.split(",")[0]==="Mednine").length
+        const typeMonastir = data.filter((e)=>e.locationEvent?.split(", Gouvernorat ")[1]?.split(",")[0]==="Monastir").length
+        const typeSfax = data.filter((e)=>e.locationEvent?.split(", Gouvernorat ")[1]?.split(",")[0]==="Sfax").length
+        const typeSidiBouzid = data.filter((e)=>e.locationEvent?.split(", Gouvernorat ")[1]?.split(",")[0]==="Sidi Bouzid").length
+        const typeSiliana = data.filter((e)=>e.locationEvent?.split(", Gouvernorat ")[1]?.split(",")[0]==="Siliana").length
+        const typeTataouine= data.filter((e)=>e.locationEvent?.split(", Gouvernorat ")[1]?.split(",")[0]==="Tataouine").length
+        const typeTozeur= data.filter((e)=>e.locationEvent?.split(", Gouvernorat ")[1]?.split(",")[0]==="Tozeur").length
+        const typeTunis= data.filter((e)=>e.locationEvent?.split(", Gouvernorat ")[1]?.split(",")[0]==="Tunis").length
+        const typeZaghouan= data.filter((e)=>e.locationEvent?.split(", Gouvernorat ")[1]?.split(",")[0]==="Zaghouan").length
 
 
 

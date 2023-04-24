@@ -12,7 +12,7 @@ import {
   CTableHeaderCell,
   CTableRow,
 } from "@coreui/react";
-import "./Event.css";
+import "../Events/Event.css";
 
 import { MDBCol } from "mdbreact";
 import axios from "axios";

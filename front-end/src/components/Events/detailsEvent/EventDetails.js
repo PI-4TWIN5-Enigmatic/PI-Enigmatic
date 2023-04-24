@@ -133,12 +133,17 @@ const navigate = useNavigate();
 
               },
               body: JSON.stringify({ reviewerId: reviewIdd }),
-        });}
+        });
+        setChange(true)
+      toast.info("Review has been deleted ");   
+      }
       };
 
         const handleRatingChange = (event, newValue) => {
           setValue(newValue);
-      };
+      }
+ 
+      
 
 
 
