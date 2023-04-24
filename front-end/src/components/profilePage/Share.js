@@ -695,7 +695,8 @@ function handleImageClick(e) {
             </Modal>
           ) : (
 
-              <Modal
+            
+             cookies.access_token && ( <Modal
                 class="modal fade"
                 id="textbox"
                 aria-labelledby="textbox"
@@ -840,7 +841,7 @@ function handleImageClick(e) {
                   </Modal.Footer>
                 </div>{" "}
               </Modal>
-            )}
+           ) )}
 
             <Modal show={showModal} onHide={handleClose}>
               <Modal.Header className="modelheader" closeButton></Modal.Header>
@@ -1095,11 +1096,12 @@ function handleImageClick(e) {
                       }}
                     ></i>
                   )}
-                  <span> {e.likers.length} </span>
+                                                {cookies.access_token && (
+   <span> {e.likers.length} </span>)}
                 </button>
               ) : (
                 <button class="post-meta-like" style={{ color: "red" }}>
-                  {cookies.access_token && (
+                
                     <i
                       class="bi bi-heart-beat"
                       style={{ color: "red" }}
@@ -1107,8 +1109,8 @@ function handleImageClick(e) {
                         unlikePost(e._id);
                       }}
                     ></i>
-                  )}
-                  {cookies.access_token && <span> {e.likers.length} </span>}
+                  
+                  <span> {e.likers.length} </span>
                 </button>
               )}
 

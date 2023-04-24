@@ -12,7 +12,7 @@ import {
   CTableHeaderCell,
   CTableRow,
 } from "@coreui/react";
-import "./Event.css";
+import "../Events/Event.css";
 
 import { MDBCol } from "mdbreact";
 import axios from "axios";
@@ -24,7 +24,7 @@ import { useNavigate } from "react-router-dom";
 const Posts = () => {
   const [currentPage, setCurrentPage] = useState(0);
   const [itemsPerPage, setItemsPerPage] = useState(3);
-  const [cookies, _] = useCookies(["access_token"]);
+  const [cookies, _]=useCookies(['token'])
 
   const [posts, setData] = useState([]);
   const navigate = useNavigate();
@@ -109,7 +109,7 @@ const Posts = () => {
               </CTableRow>
             </CTableHead>
             <CTableBody>
-              {cookies.access_token &&
+            {    cookies.token &&
                 posts
                   .filter((e) => e.message.toLowerCase().includes(query))
                   .slice(

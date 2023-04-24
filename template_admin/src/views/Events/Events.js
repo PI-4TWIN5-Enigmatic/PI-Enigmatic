@@ -23,7 +23,7 @@ import { useNavigate } from 'react-router-dom';
 const Events = () => {
   const [currentPage, setCurrentPage] = useState(0);
   const [itemsPerPage, setItemsPerPage] = useState(3);
-  const [cookies, _]=useCookies(['access_token'])
+  const [cookies, _]=useCookies(['token'])
 
   const [banDate, setBanDate] = useState("");
 
@@ -39,7 +39,7 @@ const Events = () => {
 
     const handleDelete = (id) => {
       if (window.confirm(`Are you sure you want to delete this event?`)){
-      axios.delete(`http://localhost:8000/event/deleteEvent/${id}`, {headers:{Authorization:cookies.access_token}})
+      axios.delete(`http://localhost:8000/event/deleteEvent/${id}`, {headers:{Authorization:cookies.token}})
         .then(response => {
           console.log('Item deleted successfully');
 
@@ -50,7 +50,7 @@ const Events = () => {
     };
 
     useEffect(() => {
-      axios.get("http://127.0.0.1:8000/event/getAllEvent", {headers:{Authorization:cookies.access_token}}).then((response) => {
+      axios.get("http://127.0.0.1:8000/event/getAllEvent", {headers:{Authorization:cookies.token}}).then((response) => {
           setEvents(response.data);
       });
     }, [handleDelete]);
@@ -129,7 +129,7 @@ return (
         </CTableRow>
  </CTableHead>
  <CTableBody >
-      {cookies.access_token &&
+ {    cookies.token &&
         Events.filter((e)=>e.nameEvent.toLowerCase().includes(query))
         .slice(currentPage * itemsPerPage, (currentPage + 1) * itemsPerPage)
         .map((e) => (
