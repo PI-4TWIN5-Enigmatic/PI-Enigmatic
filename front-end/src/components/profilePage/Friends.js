@@ -18,7 +18,7 @@ useEffect(() => {
     socket.current = io("ws://localhost:8900");
     socket.current.emit("addUser", user?._id);
     socket.current.on("getUsers", users => {
-        console.log(users)
+      
       setOnlineUsers(user.followingProfil.filter(f => users.some(u=> u.userId === f)))
      
     })
@@ -35,10 +35,9 @@ getFriends()
 )
 
 useEffect(()=>{
-
-setOnlineFriends(friends.filter((f)=> onlineUsers.includes(f._id)));
-
+  setOnlineFriends(friends.filter((f)=> onlineUsers.includes(f._id)));
 },[friends,onlineUsers])
+
 
 
   return (
