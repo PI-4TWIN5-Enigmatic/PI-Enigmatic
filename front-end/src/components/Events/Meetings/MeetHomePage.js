@@ -1,16 +1,27 @@
-import React from 'react'
+import React ,{useEffect}from 'react'
 import { BsCamera , BsCalendarCheck } from "react-icons/bs";
 import { SiGooglemeet } from "react-icons/si";
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 import { useState } from 'react'
+import {  useCookies } from "react-cookie";
 
 const MeetHomePage = () => {
+    const{id}=useParams();
     const [roomcode,setRoomcode]=useState('')
+    const [date,setDate]=useState('')
     const navigate = useNavigate();
     const submit=(ev)=>{
         ev.preventDefault();
-        navigate(`/meetRoom/${roomcode}`)
-}
+        window.location.replace(roomcode);}
+        const [cookies, _]=useCookies(['access_token'])
+
+        useEffect(() => {
+            
+            fetch(`http://localhost:8000/event/getEventById/${id}`, {headers:{Authorization:cookies.access_token}})
+              .then(response => response.json())
+              .then(data => {
+                setRoomcode(data.eventLink)})
+            })
   return (
     <>
 
@@ -77,11 +88,11 @@ const MeetHomePage = () => {
                             <h2> Now available and free for every non-profit organisation</h2>                    
                             <p> Communicate, Collaborate and Celebrate the good times wherever you are with GiveBack Meet </p>                    
                         <div className="col">
+              
+                        
                         <form onSubmit={submit}> 
-
-                        <button className='btn btn-danger' > New Meeting</button>
-                        <input type="text"  className="form-control form-control-lg"  placeholder='Enter code or link here ' value={roomcode} onChange={(e)=>setRoomcode(e.target.value)}/>
-                        <button className='btn btn-light' type='submit' > Join</button>
+                        <input type="text"  className="form-control form-control-lg"  placeholder={roomcode} value={roomcode} onChange={(e)=>setRoomcode(e.target.value)}/>
+                        <button className='btn btn-danger' type='submit' > Join Meet </button>
                         
                         </form> 
 

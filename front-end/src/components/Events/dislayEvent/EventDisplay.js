@@ -26,7 +26,7 @@ const EventDisplay = () => {
     const[change,setChange]=useState(false)
     const [isCardVisible , setIsCardVisible]=useState(true)
     const [data, setData] = useState([]);
-    console.log("🚀 ~ file: EventDisplay.js:26 ~ EventDisplay ~ data:", data)
+    console.log("🚀 ~ file: EventDisplay.js:29 ~ EventDisplay ~ data:", data)
 
 
 
@@ -53,19 +53,20 @@ const EventDisplay = () => {
     const position = [36.81897,  10.16579]
 
     const fetchData = async (e) => {
+      if (e.locationEvent === "From All Over The World") {
+        return [];
+            }
+     else {
       const url = `https://nominatim.openstreetmap.org/search?q=${e.locationEvent}&format=json`;
-
       try {
         const response = await fetch(url);
         const data = await response.json();
 
-        if (data.length === 0) {
-          throw new Error('No results found');
-        }
+   
         const { lat, lon } = data[0];
 
 
-        const newData=[
+        const  newData=[
                [parseFloat(lat), parseFloat(lon)]
 
         ]
@@ -76,14 +77,15 @@ const EventDisplay = () => {
         catch (error) {
           console.error(error);
         }
-      };
-
+      }
+      }
+    
 
           function populateDataM(data) {
           const promises = data.map((e) =>
-          fetchData(e)      );
+          fetchData(e)  );
           Promise.all(promises).then((newDataArray) => {
-            const newData = newDataArray.flat();
+            const newData = newDataArray.filter(arr => arr.length > 0).flat();
             setData(newData)
 
           })
@@ -200,6 +202,7 @@ const EventDisplay = () => {
                             <button onClick={()=>{
                               setIsCardVisible(!isCardVisible)
                             }}> Show/Hide Map Events </button>
+
 
                             </div>
         

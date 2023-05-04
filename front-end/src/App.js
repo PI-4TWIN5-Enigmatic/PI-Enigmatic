@@ -74,7 +74,7 @@ function App() {
     <Route path="/presenceList/:id" element={<PresenceList />}></Route>
     <Route path="/partners/:id" element={<Partners/>}></Route>
     <Route path="/partnershipConfirmed" element={<PartnershipConfirmed />}></Route>
-    <Route path="/meetHomePage" element={<MeetHomePage/>}></Route>
+    <Route path="/meetHomePage/:id" element={<MeetHomePage/>}></Route>
     <Route path="/meetRoom/:roomID" element={<MeetRoom/>}></Route>
 
     
