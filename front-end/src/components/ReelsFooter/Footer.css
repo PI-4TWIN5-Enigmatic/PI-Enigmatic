@@ -1,0 +1,27 @@
+.video-text {
+    position: absolute;
+    bottom: 13%;
+    color: #fff;
+    display: flex;
+    margin-bottom: 20px;
+}
+
+.video-text>h6 {
+    margin-left: 150px;
+}
+
+.footer-buttons {
+    position: absolute;
+    bottom: 5%;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    margin-left: 40px;
+    width: 80%;
+}
+
+.flex-box {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+}
