@@ -21,6 +21,7 @@ const getUser = (userId) => {
 };
 
 io.on("connection", (socket) => { 
+  socket.emit("me",socket.id);
   //when ceonnect
   console.log("a user connected.");
 
@@ -28,6 +29,15 @@ io.on("connection", (socket) => {
     console.log('donation requested:', donation);
     io.emit('donation', donation);
   });
+
+  socket.on("callUser", ({ userToCall, signalData, from, name }) => {
+		io.to(userToCall).emit("callUser", { signal: signalData, from, name });
+    console.log('call')
+	});
+
+	socket.on("answerCall", (data) => {
+		io.to(data.to).emit("callAccepted", data.signal)
+	});
 
   // const notificationChangeStream = Notification.watch();
   // notificationChangeStream.on('change', (change) => {
@@ -40,6 +50,19 @@ io.on("connection", (socket) => {
     console.log('Nouvelle notification reçue:', notification);
   });
 
+
+  socket.on("typing", ({ senderId, receiverId }) => {
+    const user = getUser(receiverId);
+    io.to(user.socketId).emit("isTyping", senderId);
+    console.log("typing")
+  });
+
+  socket.on("stopTyping", ({ senderId, receiverId }) => {
+    const user = getUser(receiverId);
+    io.to(user.socketId).emit("notTyping", senderId);
+    console.log("stop typing")
+  });
+
   
 
   //take userId and socketId from user
@@ -48,6 +71,8 @@ io.on("connection", (socket) => {
     io.emit("getUsers", users)  ;
   });
 
+  
+
   //send and get message
   socket.on("sendMessage", ({ senderId, receiverId, text }) => {
     const user = getUser(receiverId);
@@ -55,6 +80,15 @@ io.on("connection", (socket) => {
       senderId,
       text,
     });
+
+    const notification = {
+      type: 'message',
+      senderId,
+      message: text,
+      createdAt: new Date(),
+    };
+    io.to(user.socketId).emit("newMsgNotification", notification);
+ 
     
   });
 

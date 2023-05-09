@@ -1,9 +1,10 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 
-const Conversation = ({conversation , currentUser}) => {
+const Conversation = ({conversation , currentUser,newMessage}) => {
 
     const [user , setUser] = useState(null);
+    const [lastMessage , setLastMessage] = useState(null)
     useEffect(()=>
     {
         const friendId = conversation.members.find((m)=> m !== currentUser._id);
@@ -20,6 +21,20 @@ const Conversation = ({conversation , currentUser}) => {
     },[currentUser,conversation]
     )
 
+
+    useEffect(()=>{
+    const getLastMessage = async() =>{
+            try{
+        const res = await axios.get("http://127.0.0.1:8000/message/lastMessage/"+conversation._id)
+        setLastMessage(res.data)
+            }catch(err){
+                console.log(err)
+            }
+    }
+    getLastMessage()
+},[newMessage]
+    )
+
     return (
 
         <li className="msg-list-item d-flex flex-container">
@@ -32,7 +47,9 @@ const Conversation = ({conversation , currentUser}) => {
         </div>
 
         <div className="msg-content ">
-        {user?      <h6 className="author " style={{ marginTop: '15px' }} >{user.lastName} {user.firstName}</h6>: null}
+        {user?      <h6 className="author " style={{ marginTop: '5px' }} >{user.lastName} {user.firstName}</h6>  : null}
+        <h6>Last Message :{lastMessage?.text}</h6>
+       
           
         </div>
       

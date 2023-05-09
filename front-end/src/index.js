@@ -6,11 +6,14 @@ import reportWebVitals from './reportWebVitals';
 import { Provider } from 'react-redux';
 import { Store } from './Store';
 
+import { ContextProvider } from './Context';
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
+     <ContextProvider>
    <Provider store={Store}>
     <App /></Provider>
+    </ContextProvider>
   </React.StrictMode>
 );
 

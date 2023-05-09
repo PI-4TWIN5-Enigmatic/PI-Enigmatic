@@ -16,6 +16,7 @@ import { Cookies, useCookies } from "react-cookie";
 import { useSelector } from 'react-redux';
 import NotFound from '../NotFound'
 import { io } from "socket.io-client"
+import VideoPlayer from '../video/VideoPlayer'
 
 
 const ProfilePage = () => {
@@ -147,7 +148,8 @@ const handlePhotoSelection = (event) => {
                                 <UserWidget  /> 
         
                                  <Memories />
-
+                                
+                                 
                                  <LikedPages />
 
                          </aside>

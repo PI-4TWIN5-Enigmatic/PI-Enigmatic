@@ -23,3 +23,16 @@ exports.fetchMessage = async (req,res) =>{
         res.status(500).json(err)
      }
 }
+
+exports.fetchLastMessage = async (req, res) => {
+   try {
+     const lastMessage = await Message.findOne({
+       conversationId: req.params.conversationId,
+     })
+       .sort({ createdAt: -1 })
+       .limit(1);
+     res.status(200).json(lastMessage);
+   } catch (err) {
+     res.status(500).json(err);
+   }
+ };
