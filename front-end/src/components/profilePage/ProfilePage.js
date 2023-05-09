@@ -162,7 +162,6 @@ const handlePhotoSelection = (event) => {
                      <div className ="col-lg-3 order-3">
                         <aside className ="widget-area">
         
-                              <RecentNotifications />
                               <Advertissement />
                               <Friends/>
                             

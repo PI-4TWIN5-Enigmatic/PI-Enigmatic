@@ -26,6 +26,7 @@ import {
   ImLink,
   ImImage,
   ImLocation,
+  ImVideoCamera,
 } from "react-icons/im";
 
 import { Modal } from "react-bootstrap";
@@ -33,6 +34,8 @@ import "./share.css";
 import { toast } from "react-toastify";
 import axios from "axios";
 import { Cookies, useCookies } from "react-cookie";
+import UploadReel from "../UploadReel/UploadReel";
+
 
 const Share = () => {
   const currentUser = JSON.parse(localStorage.getItem("user"));
@@ -60,11 +63,16 @@ const Share = () => {
   const [user, setUser] = useState(null);
   const { id } = useParams();
   const [showModal, setShow] = useState(false);
+
   const [showModall, setShoww] = useState(false);
   const handleClosee = () => setShoww(false);
   const handleShoww = () => setShoww(true);
+
   const handleClose = () => setShow(false);
+
+
   const handleShow = () => setShow(true);
+
 
   const [isVisible, setIsVisible] = useState(false);
   const toggleVisibility = (e) => {
@@ -94,6 +102,10 @@ const [isSubmitting, setIsSubmitting] = useState(false);
   const handleCloseme = () => setShowme(false);
   const handleshowme = () => setShowme(true);
 
+  
+  
+  
+  
 
   useEffect(() => {
     if (swiperRef.current) {
@@ -566,6 +578,8 @@ function handleImageClick(e) {
       });
   };
   
+ 
+
   const uploadimage = () => {
     //dxououehj
     //siwarse
@@ -669,179 +683,214 @@ function handleImageClick(e) {
                   id="email"
                 ></InputEmoji>
               </form>
-            </div> 
-            {isClosing ? (  <Modal
-              class="modal fade"
-              id="textbox"
-              aria-labelledby="textbox"
-              style={{ marginTop: "140px",marginBottom:"500px" }}
-              show={showModall}
-              onHide={handleCloseModal}
-            >
-                <Modal.Header class="modal-header" >
-                  <h5 class="modal-title">confirm  your delete</h5>
-                </Modal.Header>
-                <Modal.Body class="modal-body custom-scroll">
-            <div  style={{ margin: '15px 0' }}>
-              <p   className="modal-title" style={{ marginBottom: '2px', marginTop:'30px', marginLeft:"55px",fontSize:"19px", fontfamily:"arial"}}>Are you sure you want to drop this post?</p>
-              <Divider sx={{ margin: "1.2rem 0" }} />
-
-              <button  style={{ marginBottom: '10px', marginTop:'55px', marginLeft:"100px",marginRight:"40px"}} className="buttonfooter"onClick={handleDeletePost}>delete</button>
-              <button style={{ marginBottom: '10px',marginLeft:"2px" }} className="buttonfooter" onClick={() => setIsClosing(false)}>cancel</button>
-            </div> </Modal.Body>
-            <Modal.Footer class="modal-footer">
-                     
-                </Modal.Footer>
-            </Modal>
-          ) : (
-
-            
-             cookies.access_token && ( <Modal
+            </div>
+            {isClosing ? (
+              <Modal
                 class="modal fade"
                 id="textbox"
                 aria-labelledby="textbox"
-                style={{ width: "1900px", marginTop: "150px" }}
+                style={{ marginTop: "140px", marginBottom: "500px" }}
                 show={showModall}
-                onHide={handleCloseModal} 
+                onHide={handleCloseModal}
               >
-                <div
-                  class="modal-content"
-                  style={{
-                    height: "150%",
-                    width: "150%",
-                  }}
-                >
-                  <Modal.Header class="modal-header" closeButton     >
-                    <h5 class="modal-title">Share a Post</h5>
-                  </Modal.Header>
-                  <Modal.Body class="modal-body custom-scroll">
-                    <div className='class="share-creation-state__member-info'>
-                      <div className="profile-thumb">
-                        <a href="#">
-                          <figure className="profile-thumb-middle">
-                            <img
-                              src={currentUser?.profilePicture}
-                              alt="profile picture"
-                            />
-                          </figure>
-                        </a>
-                      </div>
-
-                      <textarea
-                        className="share-field-big custom-scroll"
-                        
-                        placeholder="what do you want to discuss ?"
-                        onChange={handleInputChange}
-                        data-target="#textbox"
-                        id="email"
-                        ref={messagee}
-                        multiple
-                      ></textarea>
-
-                      {showMap && (
-                        <div className="form-outline mb-4">
-                          <MapContainer
-                            center={position}
-                            zoom={13}
-                            scrollWheelZoom={false}
-                            style={{ width: "700px", height: "200px" }}
-                            >
-                            <TileLayer
-                              attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-                              url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-                            />
-                            <LeafletGeoCoder onData={handleDataFromChild} />
-                          </MapContainer>
-                        </div>
-                      )}
-                    </div>
-                    {fileUrl &&  <img src={fileUrl} style={{marginLeft:"160px",width:"300px"}}></img> } 
-                 
-                 {loading && (
-                    <div
+                <Modal.Header class="modal-header">
+                  <h5 class="modal-title">confirm your delete</h5>
+                </Modal.Header>
+                <Modal.Body class="modal-body custom-scroll">
+                  <div style={{ margin: "15px 0" }}>
+                    <p
+                      className="modal-title"
                       style={{
-                        display: "flex",
-                        justifyContent: "center",
-                        alignItems: "center",
-                        position: "absolute",
-                        top: 0,
-                        bottom: 0,
-                        left: 0,
-                        right: 0,
-                        backgroundColor: "rgba(255, 255, 255, 0.8)",
-                        zIndex: "9999",
+                        marginBottom: "2px",
+                        marginTop: "30px",
+                        marginLeft: "55px",
+                        fontSize: "19px",
+                        fontfamily: "arial",
                       }}
                     >
-                      <div
-                        style={{
-                          display: "flex",
-                          flexDirection: "column",
-                          alignItems: "center",
-                        }}
-                      >
-                        <p
+                      Are you sure you want to drop this post?
+                    </p>
+                    <Divider sx={{ margin: "1.2rem 0" }} />
+
+                    <button
+                      style={{
+                        marginBottom: "10px",
+                        marginTop: "55px",
+                        marginLeft: "100px",
+                        marginRight: "40px",
+                      }}
+                      className="buttonfooter"
+                      onClick={handleDeletePost}
+                    >
+                      delete
+                    </button>
+                    <button
+                      style={{ marginBottom: "10px", marginLeft: "2px" }}
+                      className="buttonfooter"
+                      onClick={() => setIsClosing(false)}
+                    >
+                      cancel
+                    </button>
+                  </div>{" "}
+                </Modal.Body>
+                <Modal.Footer class="modal-footer"></Modal.Footer>
+              </Modal>
+            ) : (
+              cookies.access_token && (
+                <Modal
+                  class="modal fade"
+                  id="textbox"
+                  aria-labelledby="textbox"
+                  style={{ width: "1900px", marginTop: "150px" }}
+                  show={showModall}
+                  onHide={handleCloseModal}
+                >
+                  <div
+                    class="modal-content"
+                    style={{
+                      height: "150%",
+                      width: "150%",
+                    }}
+                  >
+                    <Modal.Header class="modal-header" closeButton>
+                      <h5 class="modal-title">Share a Post</h5>
+                    </Modal.Header>
+                    <Modal.Body class="modal-body custom-scroll">
+                      <div className='class="share-creation-state__member-info'>
+                        <div className="profile-thumb">
+                          <a href="#">
+                            <figure className="profile-thumb-middle">
+                              <img
+                                src={currentUser?.profilePicture}
+                                alt="profile picture"
+                              />
+                            </figure>
+                          </a>
+                        </div>
+
+                        <textarea
+                          className="share-field-big custom-scroll"
+                          placeholder="what do you want to discuss ?"
+                          onChange={handleInputChange}
+                          data-target="#textbox"
+                          id="email"
+                          ref={messagee}
+                          multiple
+                        ></textarea>
+
+                        {showMap && (
+                          <div className="form-outline mb-4">
+                            <MapContainer
+                              center={position}
+                              zoom={13}
+                              scrollWheelZoom={false}
+                              style={{ width: "700px", height: "200px" }}
+                            >
+                              <TileLayer
+                                attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+                                url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+                              />
+                              <LeafletGeoCoder onData={handleDataFromChild} />
+                            </MapContainer>
+                          </div>
+                        )}
+                      </div>
+                      {fileUrl && (
+                        <img
+                          src={fileUrl}
+                          style={{ marginLeft: "160px", width: "300px" }}
+                        ></img>
+                      )}
+
+                      {loading && (
+                        <div
                           style={{
-                            marginTop: "20px",
-                            marginBottom: "20px",
-                            fontfamily: "Arial",
-                            textalign: "center",
-                            color: "#081b3778",
-                            fontsize: "100px",
+                            display: "flex",
+                            justifyContent: "center",
+                            alignItems: "center",
+                            position: "absolute",
+                            top: 0,
+                            bottom: 0,
+                            left: 0,
+                            right: 0,
+                            backgroundColor: "rgba(255, 255, 255, 0.8)",
+                            zIndex: "9999",
                           }}
                         >
-                          Loading...
-                        </p>
-                        <BeatLoader size={30} color="#bde2ec" />
+                          <div
+                            style={{
+                              display: "flex",
+                              flexDirection: "column",
+                              alignItems: "center",
+                            }}
+                          >
+                            <p
+                              style={{
+                                marginTop: "20px",
+                                marginBottom: "20px",
+                                fontfamily: "Arial",
+                                textalign: "center",
+                                color: "#081b3778",
+                                fontsize: "100px",
+                              }}
+                            >
+                              Loading...
+                            </p>
+                            <BeatLoader size={30} color="#bde2ec" />
+                          </div>
+                        </div>
+                      )}
+                    </Modal.Body>
+
+                    <Modal.Footer class="modal-footer">
+                      <div className="margin">
+                        <div className="icon-containerr">
+                          <label className="iconn-wrapper">
+                            <FaPhotoVideo className="icon-bluee" />
+
+                            <span className="label">Photo </span>
+                            <input
+                              style={{ display: "none" }}
+                              type="file"
+                              id="file"
+                              accept=".png,.jpg,.jpeg"
+                              onChange={handleImageClick}
+                            />
+                          </label>
+                          <button
+                            className="iconn-wrapperr"
+                            onClick={handleButtonClick}
+                            disabled={isDisabled}
+                          >
+                          
+                            <ImLocation className="icon-bluee" />
+                            <span className="label">Localisation</span>
+                            </button>
+                            <label className="iconn-wrapper">
+                            <ImPlay className="icon-bluee" />
+                            <span className="label">video</span>
+                            <input
+                              style={{ display: "none" }}
+                              type="file"
+                              id="file"
+                              accept="video/*"
+                              onChange={handleVideoChange}
+                            />
+                            </label>
+                          <button
+                            onClick={submitHandeler}
+                            disabled={isDisabled || isVideoUploading}
+                            className="postbutton"
+                          >
+                            Post
+                          </button>
+                        </div>{" "}
                       </div>
-                    </div>
-                  )}
-                  </Modal.Body>
-
-                  <Modal.Footer class="modal-footer">
-                    <div className="margin">
-                      <div className="icon-containerr">
-                        <label className="iconn-wrapper">
-                          <FaPhotoVideo className="icon-bluee" />
-
-                          <span className="label">Photo </span>
-                          <input
-                            style={{ display: "none" }}
-                            type="file"
-                            id="file"
-                            accept=".png,.jpg,.jpeg"
-                            onChange={handleImageClick}
-                            />
-                        </label>
-                        <button
-                          className="iconn-wrapperr"
-                          onClick={handleButtonClick}
-                          disabled={isDisabled}
-                        >
-                          <ImLocation className="icon-bluee" />
-                          <span className="label">Localisation</span>
-                        </button>
-                        <label className="iconn-wrapper">
-                          <ImPlay className="icon-bluee" />
-                          <span className="label">video</span>
-                          <input
-                            style={{ display: "none" }}
-                            type="file"
-                            id="file"
-                            accept="video/*"
-                            onChange={handleVideoChange}
-                            />
-                        </label>
-                        <button  onClick={submitHandeler}
-                        disabled={isDisabled || isVideoUploading}
-                        className="postbutton"  >
-                          Post
-                        </button>
-                      </div>{" "}
-                    </div>
-                  </Modal.Footer>
-                </div>{" "}
-              </Modal>
-           ) )}
+                    </Modal.Footer>
+                  </div>{" "}
+                </Modal>
+              )
+            )}
 
             <Modal show={showModal} onHide={handleClose}>
               <Modal.Header className="modelheader" closeButton></Modal.Header>
@@ -867,6 +916,8 @@ function handleImageClick(e) {
                 </button>
               </Modal.Footer>
             </Modal>
+
+            
           </div>
           <Divider sx={{ margin: "0.90rem 0" }} />
 
@@ -886,6 +937,8 @@ function handleImageClick(e) {
                   multiple
                 />
               </button>
+           
+                <UploadReel/>
               <button className="icon-wrapper" onClick={handleShow}>
                 <ImStatsBars className="icon-green" />
                 <span className="label" style={{ marginLeft: "8px" }}>
@@ -937,21 +990,18 @@ function handleImageClick(e) {
                   <span></span>
                   <span></span>
                   <div className="post-settings arrow-shape">
-                    <ul>                 
-                    {currentUser?._id === e.posterId && (
-
-                      <li>
-                        <button
-                          onClick={() => {
-                         
+                    <ul>
+                      {currentUser?._id === e.posterId && (
+                        <li>
+                          <button
+                            onClick={() => {
                               setisupdated(e._id);
-                            
-                          }}
-                        >
-                          edit post
-                        </button>
-                      </li>
-                    )}
+                            }}
+                          >
+                            edit post
+                          </button>
+                        </li>
+                      )}
                       {currentUser?._id == user?._id && (
                         <li>
                           <button onClick={() => handleDelete(e._id)}>
@@ -965,17 +1015,30 @@ function handleImageClick(e) {
               )}{" "}
             </div>
             <div className="post-content">
-              {isupdated === false && <div className="post-desc">
-    
-    {e.message.split(" ").length <= 20 ? (
-      <p>{e.message}</p>
-    ) : (
-      <>
-        <p>{showFullMessage ? e.message : `${e.message.split(" ").slice(0, 15).join(" ")}....`}
-      <button onClick={toggleShowFullMessage} style={{color:"rgb(10, 68, 93)"}}>{showFullMessage ? "  Show less" : "Show more" }</button></p>
-      </>
-    )}
-      </div>}
+              {isupdated === false && (
+                <div className="post-desc">
+                  {e.message.split(" ").length <= 20 ? (
+                    <p>{e.message}</p>
+                  ) : (
+                    <>
+                      <p>
+                        {showFullMessage
+                          ? e.message
+                          : `${e.message
+                              .split(" ")
+                              .slice(0, 15)
+                              .join(" ")}....`}
+                        <button
+                          onClick={toggleShowFullMessage}
+                          style={{ color: "rgb(10, 68, 93)" }}
+                        >
+                          {showFullMessage ? "  Show less" : "Show more"}
+                        </button>
+                      </p>
+                    </>
+                  )}
+                </div>
+              )}
               {isupdated === e._id ? (
                 <div className="update-post">
                   <button
@@ -988,35 +1051,46 @@ function handleImageClick(e) {
                   </button>
                   <textarea
                     className="textareaaaa"
-
                     defaultValue={e.message}
                     onChange={(e) => setmessage(e.target?.value)}
                     multiple
                   />
-              {e.img && (
-          <Swiper navigation pagination style={{ width: "500px", height: "330px", marginLeft:"30px" }}>
-            <SwiperSlide>
-              <img src={e.img} alt="post image"  style={{ width: "500px", height: "280px" }} />
-            </SwiperSlide>
-            {e.video && (
-              <SwiperSlide>
-                <video controls                          style={{ width: "500px", height: "300px" }}
->
-                  <source src={e.video} type="video/mp4" />
-                  Your browser does not support the video tag.
-                </video>
-              </SwiperSlide>
-            )}
-          </Swiper>
-        )}
-  {!e.img && e.video && (
-          <video controls                         style={{ width: "500px", height: "300px" }}
->
-            <source src={e.video} type="video/mp4" />
-            Your browser does not support the video tag.
-          </video>
-        )}
-
+                  {e.img && (
+                    <Swiper
+                      navigation
+                      pagination
+                      style={{
+                        width: "500px",
+                        height: "330px",
+                        marginLeft: "30px",
+                      }}
+                    >
+                      <SwiperSlide>
+                        <img
+                          src={e.img}
+                          alt="post image"
+                          style={{ width: "500px", height: "280px" }}
+                        />
+                      </SwiperSlide>
+                      {e.video && (
+                        <SwiperSlide>
+                          <video
+                            controls
+                            style={{ width: "500px", height: "300px" }}
+                          >
+                            <source src={e.video} type="video/mp4" />
+                            Your browser does not support the video tag.
+                          </video>
+                        </SwiperSlide>
+                      )}
+                    </Swiper>
+                  )}
+                  {!e.img && e.video && (
+                    <video controls style={{ width: "500px", height: "300px" }}>
+                      <source src={e.video} type="video/mp4" />
+                      Your browser does not support the video tag.
+                    </video>
+                  )}
 
                   <div className="buttonfootere">
                     <button className="btn" onClick={() => handleupdate(e._id)}>
@@ -1027,7 +1101,7 @@ function handleImageClick(e) {
               ) : (
                 <div className="post-content">
                   {isupdated && <p className="post-desc">{e.message}</p>}
-                  
+
                   {e.img && isupdated && (
                     <img src={e.img} style={{ display: "none" }} />
                   )}
@@ -1041,45 +1115,47 @@ function handleImageClick(e) {
                 </div>
               )}
 
-
-
-
-
-
-
               <div className="post-thumb-gallery img-gallery">
                 <div className="row no-gutters">
                   <div className="col-8">
-                    
-                 {e.img && !isupdated &&  (
-          <Swiper  navigation pagination style={{ width: "500px", height: "330px", marginLeft:"30px" }}>
-            <SwiperSlide >
-            <img src={e.img}            style={{ width: "500px", height: "280px" }}
- />
-            </SwiperSlide>
-            {e.video && !isupdated && (
-              <SwiperSlide  >
-                <video
+                    {e.img && !isupdated && (
+                      <Swiper
+                        navigation
+                        pagination
+                        style={{
+                          width: "500px",
+                          height: "330px",
+                          marginLeft: "30px",
+                        }}
+                      >
+                        <SwiperSlide>
+                          <img
+                            src={e.img}
+                            style={{ width: "500px", height: "280px" }}
+                          />
+                        </SwiperSlide>
+                        {e.video && !isupdated && (
+                          <SwiperSlide>
+                            <video
+                              controls
+                              style={{ width: "500px", height: "300px" }}
+                            >
+                              <source src={e.video} type="video/mp4" />
+                              Your browser does not support the video tag.
+                            </video>
+                          </SwiperSlide>
+                        )}
+                      </Swiper>
+                    )}
+                    {!e.img && e.video && !isupdated && (
+                      <video
                         controls
                         style={{ width: "500px", height: "300px" }}
                       >
                         <source src={e.video} type="video/mp4" />
                         Your browser does not support the video tag.
                       </video>
-              </SwiperSlide>
-            )}
-          </Swiper>
-        )}
-  {!e.img && e.video && !isupdated && (
-           <video
-           controls
-           style={{ width: "500px", height: "300px" }}
-         >
-           <source src={e.video} type="video/mp4" />
-           Your browser does not support the video tag.
-         </video>
-        )}
-
+                    )}
                   </div>
                 </div>
               </div>
@@ -1096,20 +1172,18 @@ function handleImageClick(e) {
                       }}
                     ></i>
                   )}
-                                                {cookies.access_token && (
-   <span> {e.likers.length} </span>)}
+                  {cookies.access_token && <span> {e.likers.length} </span>}
                 </button>
               ) : (
                 <button class="post-meta-like" style={{ color: "red" }}>
-                
-                    <i
-                      class="bi bi-heart-beat"
-                      style={{ color: "red" }}
-                      onClick={() => {
-                        unlikePost(e._id);
-                      }}
-                    ></i>
-                  
+                  <i
+                    class="bi bi-heart-beat"
+                    style={{ color: "red" }}
+                    onClick={() => {
+                      unlikePost(e._id);
+                    }}
+                  ></i>
+
                   <span> {e.likers.length} </span>
                 </button>
               )}
@@ -1195,42 +1269,43 @@ function handleImageClick(e) {
                             {record.commenterid.lastName}
                           </h6>
                         </div>
-{currentUser?._id == record.commenterid._id &&  ( 
-                        <div class="post-settings-bar">
-                          <span></span>
-                          <span></span>
-                          <span></span>
-                          <div class="post-settings arrow-shape">
-                            <ul>
-                              
-                                  
-                                 <li> 
-                                 {currentUser?._id == record.commenterid._id && (
-
-                                  <button
-                                    onClick={() => {
-                                     
+                        {currentUser?._id == record.commenterid._id && (
+                          <div class="post-settings-bar">
+                            <span></span>
+                            <span></span>
+                            <span></span>
+                            <div class="post-settings arrow-shape">
+                              <ul>
+                                <li>
+                                  {currentUser?._id ==
+                                    record.commenterid._id && (
+                                    <button
+                                      onClick={() => {
                                         setisupdatedd(record._id);
-                                      
-                                    }}
-                                  >
-                                    edit comment
-                                  </button>
-                                  )} </li>
-                              
-                              <li>                                  {currentUser?._id == record.commenterid._id &&  ( 
+                                      }}
+                                    >
+                                      edit comment
+                                    </button>
+                                  )}{" "}
+                                </li>
 
-                                <button
-                                  onClick={() => {
-                                    deletecomment(e._id, record._id);
-                                  }}
-                                >
-                                  delete commment
-                                </button>
-                               )} </li>
-                            </ul>
+                                <li>
+                                  {" "}
+                                  {currentUser?._id ==
+                                    record.commenterid._id && (
+                                    <button
+                                      onClick={() => {
+                                        deletecomment(e._id, record._id);
+                                      }}
+                                    >
+                                      delete commment
+                                    </button>
+                                  )}{" "}
+                                </li>
+                              </ul>
+                            </div>
                           </div>
-                        </div>)}
+                        )}
                       </div>
                       <div class="post-content">
                         {isupdatedd === false && (
@@ -1238,28 +1313,36 @@ function handleImageClick(e) {
                         )}
 
                         {isupdatedd === record._id ? (
-                                                    <div className="updatepostt">
-
-                          <div class="post-content">
-                           <button type="button" class="btnclose"   onClick={() => setisupdatedd(false)}> X
-</button>
-                            <form
-                              onSubmit={(event) => {
-                                event.preventDefault();
-                                handleupdatecomment(e._id, record._id);
-                              }}
-                            >
-                              <input
-                              className="t"
-                                type="text"
-                                defaultValue={record.text}
-                                onChange={(event) =>
-                                  settext(event.target.value)
-                                }
-                              />
-                              <button  className="button-39" type="submit">Update Comment</button>
-                            </form>
-                          </div></div>
+                          <div className="updatepostt">
+                            <div class="post-content">
+                              <button
+                                type="button"
+                                class="btnclose"
+                                onClick={() => setisupdatedd(false)}
+                              >
+                                {" "}
+                                X
+                              </button>
+                              <form
+                                onSubmit={(event) => {
+                                  event.preventDefault();
+                                  handleupdatecomment(e._id, record._id);
+                                }}
+                              >
+                                <input
+                                  className="t"
+                                  type="text"
+                                  defaultValue={record.text}
+                                  onChange={(event) =>
+                                    settext(event.target.value)
+                                  }
+                                />
+                                <button className="button-39" type="submit">
+                                  Update Comment
+                                </button>
+                              </form>
+                            </div>
+                          </div>
                         ) : (
                           <div class="post-content">
                             {isupdatedd && (
