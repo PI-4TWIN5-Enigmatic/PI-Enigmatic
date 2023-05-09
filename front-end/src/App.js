@@ -37,6 +37,7 @@ import MeetHomePage from './components/Events/Meetings/MeetHomePage';
 import MeetRoom from './components/Events/Meetings/MeetRoom';
 import Notifications from './components/Notifications/Notifications';
 import DetailDonation from './components/donnation/DetailDonation';
+import VideoPlayer from './components/video/VideoPlayer';
 function App() {
   const [cookies, setCookies] = useCookies(["access_token"]);
   
@@ -95,9 +96,10 @@ function App() {
   
 
     </Routes>
+    
    </BrowserRouter>
    <ToastContainer />
- 
+   
    </>
   );
 }
