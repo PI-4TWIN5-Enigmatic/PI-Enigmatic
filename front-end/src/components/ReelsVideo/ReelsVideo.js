@@ -36,13 +36,9 @@ export default function ReelsVideo({ channel, song, url, likes, comment, shares 
   return (
     <div className="video-cards">
       <Header />
-      <video
-        onClick={onVideoClick}
-        className="video-player"
-        ref={vidRef}
-        src={url}
-        loop
-      />
+      <video onClick={onVideoClick} className="video-player" ref={vidRef} loop>
+        <source src={url} type="video/mp4" />
+      </video>
       <Footer
         channel={channel}
         song={song}
