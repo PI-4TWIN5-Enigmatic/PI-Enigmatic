@@ -12,6 +12,7 @@ import { Cookies, useCookies } from "react-cookie";
 import { Alert } from "react-bootstrap";
 import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
 import { toast } from 'react-toastify';
+import { v1 as uuid } from "uuid";
 
 const CreateEvent = () => {
 
@@ -26,12 +27,12 @@ const CreateEvent = () => {
 
     const [nameEvent, setNameEvent] = useState('');
     const [dateEvent, setDateEvent] = useState('');
-    const [locationEvent, setLocationEvent] = useState('');
+    const [locationEvent, setLocationEvent] = useState('From All Over The World');
     const [descriptionEvent, setDescriptionEvent] = useState('');
     const [typeEvent, setTypeEvent] = useState('');
     const [eventPicture, seteventPicture] = useState('');
-    const [priceEvent, setPriceEvent] = useState('');
-
+    const [priceEvent, setPriceEvent] = useState(0);
+    const [eventLink, setEventLink] = useState('');
 
     const [errors,setErrors] = useState(
         {
@@ -112,6 +113,7 @@ const CreateEvent = () => {
                 descriptionEvent,
                 typeEvent,
                 priceEvent,
+                eventLink,
                 eventPicture:result.data.secure_url,
             };
             console.log("data:", data)
@@ -159,6 +161,7 @@ const CreateEvent = () => {
       const goBack=()=>{
         navigate(`/association/${id}`)
       }
+
 
 
   return (
@@ -231,9 +234,12 @@ const CreateEvent = () => {
                                 <AttachMoneyIcon />
                                 </div>
                                 <div style={{ display: "inline-block" ,  verticalAlign: "middle" }}>
-                                <select className="nice-select" name="sort" style={{ width: "490px" }} onChange={(e) => setTypeEvent(e.target.value)} value={typeEvent}>
+                                <select className="nice-select" name="sort" style={{ width: "490px" }} onChange={(e) => {setTypeEvent(e.target.value);
+                                                                                                                         setEventLink(`http://localhost:3000/meetRoom/${uuid()}`)}} 
+                                                                                                                         value={typeEvent}>
                                     <option value="" disabled="true" >Type Event</option>
                                     <option value="Free Event">Free Event</option>
+                                    <option value="Online Event" >Online Event</option>
                                     <option value="Paid Event">Paid Event</option>
                                 </select>
                                 </div>         
@@ -243,11 +249,22 @@ const CreateEvent = () => {
 
                             
                                     <br/>
-                            <div className="form-outline mb-4">
-                            <label className="form-label">If it's a paid event, please enter the price of the tickets here (DT)  :  </label>
-                            <input type="number" id="form3Example97" className="form-control form-control-lg" value={priceEvent} onChange={(e) => setPriceEvent(e.target.value)}  />
-                            {errors.priceEvent !== "" ? <Alert key="danger" variant="danger">{errors.priceEvent} </Alert> : ''}
-                            </div>
+                                    {(typeEvent==="Online Event") ? (
+                                          <div className="form-outline mb-4">
+                                          <label className="form-label">Meeting Link  </label>
+                                          <label className="form-control form-control-lg" value={eventLink}  >{eventLink} </label>
+
+                                          </div>
+
+                                    ):( 
+                                        <div className="form-outline mb-4">
+                                        <label className="form-label">If it's a paid event, please enter the price of the tickets here (DT)  :  </label>
+                                        <input type="number" id="form3Example97" className="form-control form-control-lg" value={priceEvent} onChange={(e) => setPriceEvent(e.target.value)}  />
+                                        {errors.priceEvent !== "" ? <Alert key="danger" variant="danger">{errors.priceEvent} </Alert> : ''}
+                                        </div>                            
+                                                )
+                                              }
+                           
 
 
 

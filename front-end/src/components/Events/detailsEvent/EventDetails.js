@@ -60,6 +60,8 @@ const navigate = useNavigate();
 
 
       const fetchData = async (data) => {
+        if (data ==='Online Event'){<></>}
+        else{
         const url = `https://nominatim.openstreetmap.org/search?q=${data}&format=json`;
   
         try {
@@ -67,14 +69,14 @@ const navigate = useNavigate();
           const data = await response.json();
   
           if (data.length === 0) {
-            throw new Error('No results found');
+            setLatLng(['', '']);
           }
           const { lat, lon } = data[0];
           setLatLng([parseFloat(lat), parseFloat(lon)]);
         } catch (error) {
           console.error(error);
         }
-      };
+      };}
       
   
       //END_LEAFLET_MAP
@@ -489,10 +491,28 @@ const navigate = useNavigate();
                                 <h4 className="widget-title"><i className="bi bi-share" style={{paddingRight: "10px"}}></i>Details : </h4>
                                 <p ><b>Date :</b>{new Date(event.dateEvent).toString().substring(0, 24)}</p>
                                 <br />
-                                <p ><b>Type :</b>{event.typeEvent}</p>
-                                <br />
-                                <p ><b>Price :</b>{event.priceEvent} Dt</p>
-                              <br/>
+                                  {(event.typeEvent === "Online Event") ? (
+                                    <div>
+                                    <p ><b>Type :</b>{event.typeEvent}</p>
+                                    <br />
+                                    <p ><b>Meeting Link :</b>
+                                    <Link style={{ textDecoration: 'none', color: '#dc4734' }} to={`http://localhost:3000/meetHomePage/${id}`}> <b>  Click  Right Here ...</b> </Link>
+
+                                     </p>
+                                    <br/>
+                                    </div>
+
+                                  ):(
+                                    <div>
+                                         <p ><b>Type :</b>{event.typeEvent}</p>
+                                    <br />
+                                    <p ><b>Price :</b>{event.priceEvent} Dt</p>
+                                  <br/>
+                                    </div>
+                                 
+                                  )}
+
+                               
 
                               {alpha ? ( <></>
                                     
@@ -533,31 +553,37 @@ const navigate = useNavigate();
 
                   </div>
                   <br/> <br/>
+                  {(event.locationEvent==='') ? (
+                     <></>
+                  ) :(
+                    <div className="justify-content-center d-flex">
 
-                  <div className="justify-content-center d-flex">
+                     <div className ="card widget-item  justify-content-center d-flex " style={{width:"80%"}}>
 
-                        <div className ="card widget-item  justify-content-center d-flex " style={{width:"80%"}}>
+                             <div className="form-outline mb-4">
+                             <h4 className="widget-title"><i className="bi bi-location-pointer" style={{paddingRight: "10px"}}></i>Location : </h4>
+                             <p >{event.locationEvent}</p>
+                             {position &&  (
+                              <MapContainer center={position} zoom={13} scrollWheelZoom={false}>
+                              <TileLayer
+                                attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+                                url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+                              />
+                              <Marker position={position}>
+                                <Popup>
+                                  A pretty CSS3 popup. <br /> Easily customizable.
+                                </Popup>
+                              </Marker>
+                            </MapContainer>
+                             
+                             )}
+                             </div>
+                             </div>
+                             </div>
 
-                                <div className="form-outline mb-4">
-                                <h4 className="widget-title"><i className="bi bi-location-pointer" style={{paddingRight: "10px"}}></i>Location : </h4>
-                                <p >{event.locationEvent}</p>
-                                {position && (
-                                 <MapContainer center={position} zoom={13} scrollWheelZoom={false}>
-                                 <TileLayer
-                                   attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-                                   url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-                                 />
-                                 <Marker position={position}>
-                                   <Popup>
-                                     A pretty CSS3 popup. <br /> Easily customizable.
-                                   </Popup>
-                                 </Marker>
-                               </MapContainer>
-                                
-                                )}
-                                </div>
-                                </div>
-                  </div>
+                  )}
+
+                 
                   </div>
 
                   
@@ -592,9 +618,9 @@ const navigate = useNavigate();
                           <Link style={{ textDecoration: 'none', color: 'white' }} to={`http://localhost:3000/updateEvent/${id}`}>  Update Event </Link>
                               </button>
 
-                              {/* <button className="btn btn-danger btn-lg" style={{marginRight: "20px"}} >
-                          <Link style={{ textDecoration: 'none', color: 'white' }} to={`http://localhost:3000/meeting/${id}`}>  Meeting Room </Link>
-                              </button> */}
+                              <button className="btn btn-danger btn-lg" style={{marginRight: "20px"}} >
+                          <Link style={{ textDecoration: 'none', color: 'white' }} to={`http://localhost:3000/meetHomePage`}>  Meeting Room </Link>
+                              </button>
 
                           </div>
 
@@ -603,6 +629,7 @@ const navigate = useNavigate();
 
 
           ):(
+            <>
           <Container className="mt-10 p-4">
                <Col md={4} lg={4} sm={4}>
 
@@ -642,8 +669,24 @@ const navigate = useNavigate();
 
                 </Container >
 
+          <Container className="mt-10 p-4">
+          <Col md={4} lg={4} sm={4}>
 
-                        )}
+          <h2>GiveBack Meeting</h2>
+            <hr />
+
+            <button className="btn btn-danger btn-lg" style={{marginRight: "20px"}} >
+                          <Link style={{ textDecoration: 'none', color: 'white' }} to={`http://localhost:3000/meetHomePage`}>  Meeting Room </Link>
+                              </button>
+            
+          </Col>
+          
+
+
+          </Container >
+
+
+          </>         )}
           </div>
       </div>
       </section>

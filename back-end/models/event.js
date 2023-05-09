@@ -28,6 +28,9 @@ const eventSchema = new mongoose.Schema(
             type: Date,
           },
 
+          eventLink: {
+            type: String,
+          },
           descriptionEvent: {
             type: String,
             trim: true,
@@ -76,7 +79,7 @@ const eventSchema = new mongoose.Schema(
     typeEvent: {
       type: String,
       default: "Free Event",
-      enum: ["Free Event", "Paid Event"]
+      enum: ["Free Event", "Paid Event" ,"Online Event"]
     },    
 
 
