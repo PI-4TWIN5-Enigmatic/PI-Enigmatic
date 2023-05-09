@@ -13,7 +13,7 @@ import { useParams } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import './profilepage.css'
 import { useGetUserID } from '../../hooks/useGetUserID'
-
+import Events from './Events'
 const ProfilePageUser = () => {
 
   const [user, setUser] = useState(null);
@@ -117,7 +117,7 @@ const{
 
 <div class="col-lg-3 order-3">
     <aside class="widget-area">
-
+    <Events/>
 
     <div class="card widget-item">
                                 <h4 class="widget-title">Recent Notifications</h4>

@@ -1,5 +1,5 @@
 import React , { useState } from 'react'
-import {MapContainer , TileLayer , Marker , Popup } from 'react-leaflet'
+import {MapContainer , TileLayer } from 'react-leaflet'
 import './CreateEvent.css'
 import L from "leaflet";
 import "leaflet-control-geocoder/dist/Control.Geocoder.css";
@@ -87,7 +87,6 @@ const CreateEvent = () => {
          } 
        
          setErrors(localError)
-        //  console.log(localError)
          return etat ; 
           
 
@@ -118,17 +117,15 @@ const CreateEvent = () => {
             };
             console.log("data:", data)
 
-            // Send a POST request to the backend API
              axios.post(`http://localhost:8000/event/${id}/createEvent`, data, {headers:{Authorization:cookies.access_token}})
                 .then(response => {
                     console.log(response);
-                    toast.info("Event has been created ")                    // Handle success response
+                    toast.info("Event has been created ")                    
 
                 })
                 navigate(`/EventDisplay/${id}`)
                 .catch(error => {
                     console.error(error);
-                    // Handle error response
                 });
 
 

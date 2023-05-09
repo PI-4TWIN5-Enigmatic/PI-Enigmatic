@@ -10,14 +10,23 @@ import { AiOutlineSend, AiOutlineClose } from "react-icons/ai";
 import { io } from "socket.io-client"
 import About from '../profilePage/About';
 
+
 import { BsFillHouseDoorFill,BsFillChatSquareDotsFill,BsBellFill } from "react-icons/bs";
 import "./Navbar.css"
 import picker from "emoji-picker-react";
-import { BsEmojiSmileFill } from 'react-icons/bs';
+import { BsEmojiSmileFill,BiConversation } from 'react-icons/bs';
 import EmojiPicker from 'emoji-picker-react';
 
 import {  useLocation } from 'react-router-dom';
 import { useGetUserID } from '../../hooks/useGetUserID';
+import Lottie, {} from 'react-lottie'
+import * as animationData from '../../animation/typing.json'
+import { BiMessageRoundedDetail, BiPhoneCall } from 'react-icons/bi';
+import { Button, Modal } from 'react-bootstrap';
+import VideoPlayer from '../video/VideoPlayer';
+import { ContextProvider } from '../../Context';
+import Sidebar from '../video/SideBar';
+import Notifications from '../video/Notification';
 
 
 
@@ -28,6 +37,7 @@ const Navbar = ( props ) => {
   const [linkText, setLinkText] = useState('Home');
   const [isDropDown, setIsDropDown] = useState(false);
   const [isDropDownN, setIsDropDownN] = useState(false);
+  const [isDropDownNMsg, setIsDropDownNMsg] = useState(false);
   const navigate = useNavigate();
   const user = JSON.parse(localStorage.getItem('user'))
   const [conversations, setConversation] = useState([]);
@@ -44,8 +54,23 @@ const Navbar = ( props ) => {
 
   const [notifications, setNotifications] = useState([]);
   const [newNotification, setNewNotification] = useState(null);
+  const [isTyping, setIsTyping] = useState(false);
+  const [isNotTyping, setIsNotTyping] = useState(true);
+  const [msgNotification, setMsgNotification] = useState(null);
+  const [msgNotification1, setMsgNotification1] = useState(null);
+  const [show, setShow] = useState(false);
+  const handleClose = () => setShow(false);
+  const handleShow = () => setShow(true);
 
   const idd = useGetUserID();
+  const defaultOptions = {
+    loop: true,
+    autoplay: true, 
+    animationData: animationData,
+    rendererSettings: {
+      preserveAspectRatio: 'xMidYMid slice'
+    }
+  };
 
 
   useEffect(() => {
@@ -54,6 +79,8 @@ const Navbar = ( props ) => {
       setNewNotification(notification);
     });
   }, []);
+
+ 
     
   useEffect(() => {
     
@@ -94,12 +121,34 @@ const Navbar = ( props ) => {
 
   useEffect(() => {
     socket.current = io("ws://localhost:8900");
+  
     socket.current.on("getMessage", (data) => {
       setArrivalMessage({
         sender: data.senderId,
         text: data.text,
         createdAt: Date.now(),
       });
+      console.log(arrivalMessage)
+    });
+  
+    socket.current.on("newMsgNotification", (notification) => {
+
+      
+    
+        setMsgNotification((prev) => [...(prev || []), notification]);
+     
+   
+
+    });
+  
+    socket.current.on("isTyping", () => {
+      setIsTyping(true);
+      setIsNotTyping(false);
+    });
+  
+    socket.current.on("notTyping", () => {
+      setIsTyping(false);
+      setIsNotTyping(true);
     });
   }, []);
 
@@ -108,6 +157,19 @@ const Navbar = ( props ) => {
       currentChat?.members.includes(arrivalMessage.sender) &&
       setMessages((prev) => [...prev, arrivalMessage]);
   }, [arrivalMessage, currentChat]);
+
+
+
+  useEffect(() => {
+    msgNotification &&
+      
+      setMsgNotification1(msgNotification);
+
+      
+      console.log(msgNotification1)
+  }, [msgNotification]);
+
+  
 
 
   useEffect(() => {
@@ -142,7 +204,7 @@ const Navbar = ( props ) => {
   useEffect(() => {
     scrollRef.current?.scrollIntoView({ behavior: "smooth" })
 
-  }, [messages])
+  }, [messages,isTyping,isNotTyping])
 
 
 
@@ -169,6 +231,11 @@ setNewMessage(message)
 
   }
 
+  const markAsRead = () => {
+    setMsgNotification([])
+    setIsDropDownNMsg(false)
+  }
+
 
 
 
@@ -190,13 +257,41 @@ setNewMessage(message)
       text: newMessage,
     });
 
+
+
     try {
       const res = await axios.post("http://127.0.0.1:8000/message", message);
       setMessages([...messages, res.data]);
       setNewMessage("");
+      setIsTyping(false);
+      setIsNotTyping(true);
     } catch (err) {
       console.log(err);
     }
+  };
+
+
+  const sendTyping = () => {
+    const receiverId = currentChat.members.find(
+      (member) => member !== user?._id
+    );
+    const senderId = user._id;
+    socket.current.emit("typing", {
+      senderId,
+      receiverId,
+    });
+  };
+
+
+  const sendStopTyping = () => {
+    const receiverId = currentChat.members.find(
+      (member) => member !== user?._id
+    );
+    const senderId = user._id;
+    socket.current.emit("stopTyping", {
+      senderId,
+      receiverId,
+    });
   };
 
   const handleDropDown = () => {
@@ -207,19 +302,24 @@ setNewMessage(message)
     setIsDropDownN(!isDropDownN);
   };
 
+  const handleDropDownMsgNotification = () => {
+    setIsDropDownNMsg(!isDropDownNMsg);
+  };
+
   const style = isDropDown ? { display: 'block'} : {display: 'none' };
   const styleN = isDropDownN ? { display: 'block'} : {display: 'none' };
+  const styleNMsg = isDropDownNMsg ? { display: 'block'} : {display: 'none' };
 
-  useEffect(() => {
-    socket.current = io("ws://localhost:8900");
-    socket.current.on("getMessage", (data) => {
-      setArrivalMessage({
-        sender: data.senderId,
-        text: data.text,
-        createdAt: Date.now(),
-      });
-    });
-  }, []);
+  // useEffect(() => {
+  //   socket.current = io("ws://localhost:8900");
+  //   socket.current.on("getMessage", (data) => {
+  //     setArrivalMessage({
+  //       sender: data.senderId,
+  //       text: data.text,
+  //       createdAt: Date.now(),
+  //     });
+  //   });
+  // }, []);
 
 
   useEffect(() => {
@@ -271,7 +371,7 @@ setNewMessage(message)
                   <div className="header-top-navigation">
                     <nav>
                       <ul>
-                        <li className="active">
+                        <li className="active" sstyle={{ marginRight: "40px" }}>
                           <a
                             className="msg-trigger-btn"
                             href={`/HomePage/${idCurrentUser}`}
@@ -280,12 +380,12 @@ setNewMessage(message)
                             {linkText}
                           </a>
                         </li>
-                        <li className="msg-trigger">
+                        <li className="msg-trigger" style={{ marginRight: "40px" }}>
                           <a
                             className="msg-trigger-btn"
                             onClick={handleDropDown}
                           >
-                            message
+                            Conversations
                           </a>
 
                           <div
@@ -307,6 +407,7 @@ setNewMessage(message)
                                     key={index}
                                     conversation={c}
                                     currentUser={user}
+                                    newMessage = {newMessage}
                                   />
                                 </div>
                               ))}
@@ -317,7 +418,65 @@ setNewMessage(message)
                             </div>
                           </div>
                         </li>
-                        <li className="">
+                        <li className="notification-trigger">
+                        <a
+                            className="msg-trigger-btn"
+                            onClick={handleDropDownMsgNotification}>
+                        < BiMessageRoundedDetail size={20} />
+                        {msgNotification1?.length > 0 && (
+                              <span className="notification-badge">
+                                {msgNotification1?.length}
+                              </span>
+                            )}
+                        </a>
+                        <div
+                            className="message-dropdown "
+                            style={styleNMsg}
+                            id="a"
+                          >
+                            <div className="dropdown-title">
+                              <p className="recent-msg">recent notifications</p>
+                              {/* <div className="message-btn-group">
+                            <button>New group</button>
+                            <button>New Message</button>
+                          </div> */}
+                            </div>
+                            {Array.isArray(msgNotification1) &&
+                            msgNotification1?.length > 0 ? (
+                              <ul className="dropdown-msg-list">
+                                {msgNotification1.map((notification) => (
+                                  <li
+                                    className="notification-item"
+                                  
+                                  >
+                                    <div className="notification-info">
+                                      <div className="notification-type">
+                                      <h6> {notification.senderId} has sent you a message : <h5>{notification.message}</h5> </h6>
+                                      </div>
+                                     
+                                    </div>
+                                   
+                                  </li >
+                                ))}
+
+<button
+                                      className="notification-details-btn"
+                                      onClick={markAsRead}
+                                    >
+                                      Mark all as read
+                                    </button>
+                              </ul>
+                            ) : (
+                              <p>No notifications</p>
+                            )}
+                           
+                          </div>{" "}
+
+
+                        </li >
+                       
+                        
+                        <li className="" style={{ marginRight: "40px" }}>
                           <a
                             className="msg-trigger-btn"
                             href={`http://localhost:3000/donnation/request/${idCurrentUser}`}
@@ -454,6 +613,8 @@ setNewMessage(message)
           <div className="container-fluid">
             <div className="row">
               <div className="col-12">
+              {currentChat ? (
+                          <>
                 <div className="footer-wrapper " style={{ height: "1px" }}>
                   <div className="footer-card position-relative ">
                     <div className="chat-output-box show">
@@ -476,6 +637,13 @@ setNewMessage(message)
                           <span className="active-pro">active now</span>
                         </div>
                         <div className="live-chat-settings ml-auto">
+                        <button
+                            className="close-btn"
+                            data-close="chat-output-box"
+                            onClick={handleShow}
+                          >
+                           <BiPhoneCall/>
+                          </button>
                           <button
                             className="close-btn"
                             data-close="chat-output-box"
@@ -486,8 +654,7 @@ setNewMessage(message)
                         </div>
                       </div>
                       <div className="message-list-inner">
-                        {currentChat ? (
-                          <>
+                       
                             <ul
                               className="message-list custom-scroll"
                               style={{
@@ -504,18 +671,19 @@ setNewMessage(message)
                                   />
                                 </div>
                               ))}
+                                {isTyping && (
+                                  <div style={{ width: "50px", height: "50px" }}>
+        <Lottie options={defaultOptions} />
+        </div>
+        )}
                             </ul>
-                          </>
-                        ) : (
-                          <span style={{ height: 300 }}>
-                            open a conversation
-                          </span>
-                        )}
-                        <div className="chat-text-field mob-text-box">
+                            <div className="chat-text-field mob-text-box">
                           <textarea
                             className="live-chat-field custom-scroll"
                             placeholder="Text Message"
                             onChange={(e) => setNewMessage(e.target.value)}
+                            onKeyDown={() => sendTyping()}
+                            onBlur={() => sendStopTyping()}
                             value={newMessage}
                           ></textarea>
                           <button
@@ -548,15 +716,43 @@ setNewMessage(message)
                             )}
                           </div>
                         </div>
+                    
+                        
                       </div>
                     </div>
                   </div>
                 </div>
+                </>
+                ) : (
+                  <></>
+                )}
               </div>
             </div>{" "}
           </div>
         </div>{" "}
       </div>
+
+     
+      <Modal show={show} onHide={handleClose}>
+        <Modal.Header closeButton>
+          <Modal.Title>Video Call</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+        <ContextProvider>
+        <VideoPlayer />
+      <Sidebar>
+        <Notifications />
+      </Sidebar>
+      
+      </ContextProvider>
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="danger" onClick={handleClose}>
+            Close
+          </Button>
+        
+        </Modal.Footer>
+      </Modal>
     </>
   );
                       }
