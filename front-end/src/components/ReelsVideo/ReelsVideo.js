@@ -3,12 +3,12 @@ import React, { useRef, useState, useEffect } from "react";
 // import components
 
 
-import "./Video.css";
+import "./ReelsVideo.css";
 import Header from "../ReelsHeader/Header";
 import Footer from "../ReelsFooter/Footer";
 
 
-export default function Video({ channel, song, url, likes, comment, shares }) {
+export default function ReelsVideo({ channel, song, url, likes, comment, shares }) {
   const [isVideoPlaying, setisVideoPlaying] = useState(false);
 
   const vidRef = useRef();

@@ -7,7 +7,7 @@ import Vid2 from "../../assets/reels/reel2.mp4";
 import Vid3 from "../../assets/reels/reel3.mp4";
 
 import "./Reels.css";
-import Video from "../video/Video";
+import Video from "../ReelsVideo/ReelsVideo";
 import Navbar from "../Navbar/Navbar";
 
 
