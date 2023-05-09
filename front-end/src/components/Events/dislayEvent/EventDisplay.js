@@ -14,6 +14,8 @@ import { MapContainer, TileLayer, Marker, Popup  } from "react-leaflet";
 import L from "leaflet";
 import "leaflet-control-geocoder/dist/Control.Geocoder.css";
 import "leaflet-control-geocoder/dist/Control.Geocoder.js";
+import AutoDeleteIcon from '@mui/icons-material/AutoDelete';
+import SettingsSuggestIcon from '@mui/icons-material/SettingsSuggest';
 const EventDisplay = () => {
     const [association,setAssociation]= useState(null);
     const[event,setEvent]=useState("");
@@ -151,8 +153,10 @@ const EventDisplay = () => {
      
       const handleFilterByTimePeriod = (event) => {
         const currentTime = moment().toISOString(); 
+        const tomorrowEnd = moment().add(1, 'day').endOf('day');
+        const todayStart = moment().startOf('day');
         const upcomingEvents = event.filter(e => moment(e.dateEvent).isAfter(currentTime));
-        const currentEvents = event.filter(e => moment(e.dateEvent).isSameOrBefore(currentTime) && moment(e.endTime).isAfter(currentTime)); 
+        const currentEvents = event.filter(e => moment(e.dateEvent).isSameOrAfter(todayStart) && moment(e.dateEvent).isBefore(tomorrowEnd));
         const pastEvents = event.filter(e => moment(e.dateEvent).isBefore(currentTime)); 
         console.log("timePeriod:", timePeriod);
         console.log("event:", event);
@@ -217,7 +221,7 @@ const EventDisplay = () => {
     
 
           <motion.div className="carousel" ref={carouselRef} >
-            <motion.div drag="x" dragConstraints={{right:0 , left:- width}} className="inner-carousel" >
+            <motion.div  drag="x" dragConstraints={{right:0 , left:- width}} className="inner-carousel" >
               
             {Array.isArray(event) &&
               handleFilterByTimePeriod(event)
@@ -239,15 +243,36 @@ const EventDisplay = () => {
                                    
                                       {alpha ? (
                                          <ul>
-                                        <li><button> <Link to={`http://localhost:3000/EventDetails/${e._id}`}> show more details </Link></button></li>
-                                        <li><button onClick={() => 
-                                          handleDelete(e._id)}>delete event</button></li> 
+                                        <li>
+                                        <div className='d-flex' style={{paddingRight:"13px"}}>
+
+                                        <SettingsSuggestIcon />
+                                          <button> <Link to={`http://localhost:3000/EventDetails/${e._id}`}>More details </Link></button>
+                                          </div>
+
+                                          </li>
+                                        <li>
+                                        <div className='d-flex' style={{paddingRight:"13px"}}>
+                                        <AutoDeleteIcon/>
+                                          <button onClick={() => 
+                                          handleDelete(e._id)}>Delete event</button>
+                                        </div>
+                                        </li> 
                                                               
                                         </ul>
                                         ):(
                                         <ul>
-                                        <li><button> <Link to={`http://localhost:3000/EventDetails/${e._id}`}> show more details </Link></button></li>
-                    
+
+                                        <li>
+                                        <div className='d-flex' style={{paddingRight:"13px"}}>
+
+                                          <SettingsSuggestIcon />
+                                          <button> 
+                                            <Link to={`http://localhost:3000/EventDetails/${e._id}`}> show more details </Link>
+                                            </button>
+                                         </div>
+                                            </li>
+
 
                                         </ul>
 

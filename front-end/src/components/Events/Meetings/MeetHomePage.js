@@ -89,12 +89,17 @@ const MeetHomePage = () => {
                             <p> Communicate, Collaborate and Celebrate the good times wherever you are with GiveBack Meet </p>                    
                         <div className="col">
               
-                        
                         <form onSubmit={submit}> 
                         <input type="text"  className="form-control form-control-lg"  placeholder={roomcode} value={roomcode} onChange={(e)=>setRoomcode(e.target.value)}/>
                         <button className='btn btn-danger' type='submit' > Join Meet </button>
                         
                         </form> 
+                        <div className='d-flex justify-content-end'>
+                        <button className='btn btn-dark' onClick={()=>{navigate(-1)}}  > Leave </button>
+
+                        </div>
+
+                       
 
                         </div>
 
