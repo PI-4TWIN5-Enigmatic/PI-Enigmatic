@@ -1,5 +1,5 @@
 const express = require('express')
-const { RequestDonnation, UpdateDonation, getAllDonnation, getDonnation, deleteDonnation, Payment, getAllDonnations, getDonationTypes  } = require('../controllers/donation')
+const { RequestDonnation, UpdateDonation, getAllDonnation, getDonnation, deleteDonnation, Payment, getAllDonnations, getDonationTypes, getDonationCountsBySector  } = require('../controllers/donation')
 const router = express.Router()
 
 
@@ -13,5 +13,7 @@ router.get('/getAllDonnations', getAllDonnations)
 router.get('/getDonnation/:id', getDonnation)
 router.delete('/deleteDonnation/:id',deleteDonnation)
 router.get('/stat-donation', getDonationTypes)
+router.get('/stat-bySector', getDonationCountsBySector)
+
 
 module.exports = router;

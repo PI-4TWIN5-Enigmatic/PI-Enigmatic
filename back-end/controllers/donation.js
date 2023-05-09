@@ -136,3 +136,17 @@ exports.getDonationTypes = async (req, res, next) => {
   }
 };
 
+exports.getDonationCountsBySector = async (req, res, next) => {
+  try {
+    const donations = await Donation.find();
+    const sectorCounts = donations.reduce((counts, donation) => {
+      const sector = donation.sector;
+      counts[sector] = counts[sector] ? counts[sector] + 1 : 1;
+      return counts;
+    }, {});
+    res.status(200).json(sectorCounts);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'Server error' });
+  }
+};

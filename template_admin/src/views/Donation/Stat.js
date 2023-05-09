@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import ReactDOM from 'react-dom';
-import { Pie } from '@ant-design/plots';
+import { Bar, Pie } from '@ant-design/plots';
 import { MDBCol } from 'mdbreact';
 import { CButton, CCard, CCardHeader, CCardTitle } from '@coreui/react';
 import { BsFillFileTextFill } from "react-icons/bs";
@@ -8,10 +8,19 @@ import { useNavigate } from 'react-router-dom';
 
 const Stat = () => {
   const [data, setData] = useState([]);
+  const [datas, setDatas] = useState([]);
+
   const navigate=useNavigate();
 
 
   function transformData(data) {
+    return Object.entries(data).map(([type, value]) => ({
+      type,
+      value
+    }));
+  }
+
+  function transformDatas(datas) {
     return Object.entries(data).map(([type, value]) => ({
       type,
       value
@@ -30,11 +39,22 @@ const Stat = () => {
     fetchDonationData();
   }, []);
 
+  useEffect(() => {
+    async function fetchDonationDatas() {
+      const response = await fetch('http://localhost:8000/donnation/stat-bySector');
+      const datas = await response.json();
+    const transformedDatas = transformData(datas);
+    setDatas(transformedDatas);
+    console.log(datas)
+    }
+    fetchDonationDatas();
+  }, []);
+
 
 
   const config = {
     appendPadding: 10,
-    data,
+    data:datas,
     angleField: 'value',
     colorField: 'type',
     radius: 0.8,
@@ -52,6 +72,25 @@ const Stat = () => {
     ],
   };
 
+
+  const config1 = {
+    data:datas,
+    xField: 'value',
+    yField: 'type',
+    seriesField: 'type',
+    color: ({ type }) => {
+      return type === '美容洗护' ? '#FAAD14' : '#5B8FF9';
+    },
+    legend: false,
+    meta: {
+      type: {
+        alias: '类别',
+      },
+      sales: {
+        alias: '销售额',
+      },
+    },
+  };
 
 
     const goBack=()=>{
@@ -86,6 +125,12 @@ const Stat = () => {
         </div>
         <br/>
         <h4> Donations by type <BsFillFileTextFill/>  </h4>
+        <hr/>
+        <div className='d-flex'>
+          <Bar {...config1} style={{width:"100%"}}/>
+        </div>
+        <br/>
+        <h4> Donations by sector <BsFillFileTextFill/>  </h4>
         <hr/>
       </CCard>
     </div>
