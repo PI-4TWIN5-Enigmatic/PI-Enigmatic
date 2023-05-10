@@ -1,12 +1,10 @@
-import React,{useState,useEffect , useCallback} from 'react'
+import React,{useState,useEffect , } from 'react'
 import { Cookies, useCookies } from "react-cookie";
-import SettingsSuggestIcon from '@mui/icons-material/SettingsSuggest';
 import { Link } from 'react-router-dom';
 import AccessTimeIcon from '@mui/icons-material/AccessTime';
 import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
-import StarBorderPurple500Icon from '@mui/icons-material/StarBorderPurple500';
-import LocationOnIcon from '@mui/icons-material/LocationOn';
-import EventIcon from '@mui/icons-material/Event';
+
+import DoneAllIcon from '@mui/icons-material/DoneAll';
 const Participation = () => {
     const [cookies,setCookies] = useCookies(["access_token"]);
     const[event,setEvent]=useState([]);
@@ -41,20 +39,18 @@ const Participation = () => {
           <div className="card card-registration my-4" >
             <h3><u>Discover Your Events</u></h3>
             <br/>
-            <div className='d-flex  '>
-            <button className='btn btn-light' style={{width:"20%"}}>
-              <LocationOnIcon/>
-              My Position
-              </button>
-
-              <button className='btn btn-light' style={{width:"20%"}}>
-              <EventIcon/>
-                Choose any Date
-              </button>
-            </div>
           
             <div className="justify-content-center d-flex">
                 <div className="row">
+                  
+                  {event.length === 0 ? (
+                      <img
+                      src={'../errorPart.png '}
+                      alt="Event picture"
+                      style={{ pointerEvents: "none" }}
+                    />
+                  ) :null}
+
                   {event.map((e) => (
                         
                     <div className="col-sm-4" key={e._id}>
@@ -84,17 +80,17 @@ const Participation = () => {
                               <p>
                                 <AttachMoneyIcon style={{paddingRight:"6px"}} />
                                 <b>{e.typeEvent}</b></p>
-                                <button className='btn btn-dark'> 
-                                <StarBorderPurple500Icon style={{paddingRight:"6px"}}/>
-                                <button>
+                                <button className='btn btn-dark ' style={{alignItems:'center'}}> 
+                                <button style={{paddingRight:"20px"}}>
                                       <Link
                                         to={`http://localhost:3000/EventDetails/${e._id}`}
                                         style={{ textDecoration: 'none', color: 'white' }}
                                       >
                                         Participated 
                                       </Link>
+                                      <DoneAllIcon style={{color:'white' , paddingLeft:"7px" , fontSize:"30px"}}/>
+
                                     </button></button>
-                              
                           </div>
                         </div>
                       </li>

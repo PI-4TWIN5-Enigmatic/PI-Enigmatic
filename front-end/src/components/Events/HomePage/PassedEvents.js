@@ -1,33 +1,33 @@
-import React,{useState,useEffect , useCallback} from 'react'
+import React,{useState,useEffect } from 'react'
 import { Cookies, useCookies } from "react-cookie";
-import SettingsSuggestIcon from '@mui/icons-material/SettingsSuggest';
 import { Link } from 'react-router-dom';
 import AccessTimeIcon from '@mui/icons-material/AccessTime';
 import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
-import StarBorderPurple500Icon from '@mui/icons-material/StarBorderPurple500';
-import LocationOnIcon from '@mui/icons-material/LocationOn';
-import EventIcon from '@mui/icons-material/Event';
-const Organizer = () => {
+import DoneAllIcon from '@mui/icons-material/DoneAll';
+import moment from 'moment';
+import ArrowOutwardIcon from '@mui/icons-material/ArrowOutward';
+const PassedEvents = () => {
     const [cookies,setCookies] = useCookies(["access_token"]);
     const[event,setEvent]=useState([]);
-    console.log("organisateur", event)
+    console.log("participation", event)
     const user =localStorage.getItem('id')
 
-    useEffect(() => {
-      fetch(`http://localhost:8000/event/getFounder`, {
-        method: "POST",  headers: {
-          "Content-Type": "application/json"
-        },
-          body: JSON.stringify({ idUser: user}),
-    })
 
+    useEffect(() => {
+        fetch('http://localhost:8000/event/getAllEvent')
           .then(response => response.json())
           .then(data => {
             setEvent(data)
             })
           .catch(error => console.error(error));
       }, []);
-      
+
+      const handleFilterByTimePeriod = (event) => {
+        const currentTime = moment().toISOString(); 
+        const pastEvents = event.filter(e => moment(e.dateEvent).isBefore(currentTime)); 
+        console.log("pastEvents:", pastEvents);
+            return pastEvents;
+        }
 
 
   
@@ -40,27 +40,16 @@ const Organizer = () => {
           <div className="card card-registration my-4" >
             <h3><u>Discover Your Events</u></h3>
             <br/>
-            <div className='d-flex  '>
-            <button className='btn btn-light' style={{width:"20%"}}>
-              <LocationOnIcon/>
-              My Position
-              </button>
-
-              <button className='btn btn-light' style={{width:"20%"}}>
-              <EventIcon/>
-                Choose any Date
-              </button>
-            </div>
           
             <div className="justify-content-center d-flex">
                 <div className="row">
-                  {event.map((e) => (
+                  {handleFilterByTimePeriod(event).map((e) => (
                         
                     <div className="col-sm-4" key={e._id}>
                       <li className="unorder-list">
                         <div
                           className="card widget-item"
-                          style={{ width: "800px", margin: "20px" }}
+                          style={{ width: "500px", margin: "20px" }}
                         >
                           <h4 className="widget-title">{e.nameEvent} </h4>
     
@@ -83,15 +72,16 @@ const Organizer = () => {
                               <p>
                                 <AttachMoneyIcon style={{paddingRight:"6px"}} />
                                 <b>{e.typeEvent}</b></p>
-                                <button className='btn btn-dark'> 
-                                <StarBorderPurple500Icon style={{paddingRight:"6px"}}/>
-                                <button>
+                                <button className='btn btn-dark ' style={{alignItems:'center'}}> 
+                                <button style={{paddingRight:"20px"}}>
                                       <Link
                                         to={`http://localhost:3000/EventDetails/${e._id}`}
                                         style={{ textDecoration: 'none', color: 'white' }}
                                       >
-                                        Intrested yeeey
+                                        View Details  
                                       </Link>
+                                      <ArrowOutwardIcon style={{color:'white' , paddingLeft:"7px" , fontSize:"30px"}}/>
+
                                     </button></button>
                               
                           </div>
@@ -108,4 +98,4 @@ const Organizer = () => {
 )
 }
 
-export default Organizer
+export default PassedEvents
