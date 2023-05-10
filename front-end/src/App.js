@@ -38,8 +38,7 @@ import MeetRoom from './components/Events/Meetings/MeetRoom';
 import Notifications from './components/Notifications/Notifications';
 import DetailDonation from './components/donnation/DetailDonation';
 import EventsHomePage from './components/Events/HomePage/EventsHomePage'
-
-
+import Savedposts from './components/Acceuil/Savedposts'
 import Reels from "./components/Reels/Reels";
 
 
@@ -85,7 +84,8 @@ function App() {
     <Route path="/meetRoom/:roomID" element={<MeetRoom/>}></Route>
     <Route path="/EventsHomePage" element={<EventsHomePage/>}></Route>
 
-    
+    <Route path="/savedposts" element={<Savedposts />}></Route>
+
 
     <Route path="/HomePage/:id" element={<ProfilePageUser />}></Route>
     <Route path='/reels' element={<Reels />}></Route>

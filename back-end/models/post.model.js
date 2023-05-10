@@ -9,8 +9,21 @@ const PostSchema = new mongoose.Schema(
       trim: true,
       maxlength: 500,
     },
+    posterIdassociation: {type:ObjectId,ref:'Association'},
+
+   
 
 
+
+
+
+    reports: {
+      type: [{
+      reason: { type: String, required: true },
+      reportedBy: {type:ObjectId,ref:'User'},
+      createdAt: { type: Date, default: Date.now }, 
+    }],}
+    ,
     posterpseudo:{
       type:String,
     },
@@ -27,16 +40,62 @@ const PostSchema = new mongoose.Schema(
       type: String,
     },
 
+    // surveyQuestions: [{
+    //   id: { type: Number, required: true },
+    //   question: { type: String, required: true },
+    //   type: { type: String, required: true },
+    //   options: [{
+    //     id: { type: Number, required: true },
+    //     text: { type: String, required: true },
+    //   }]
+    // }],
+    surveyQuestions: [{
+      question: { type: String, required: true },
+      questionerid: { type: ObjectId, ref: 'User' },
+      options: [{
+        optiontext: { type: String, required: true },
+        votes: { type: Number, default: 0 },
+        voters: [{ type: ObjectId, ref: 'User' }],
+        votersass: [{ type: ObjectId, ref: 'Association' }],
+
+
+      }],
+
+    }],
+    
     img: {
       type: [String],
     },
+
+    
+    
+  
+
     video: {
       type: String,
     },
-    likers: {
-      type: [String],
-      required: true,
+    pdf: {
+      type: String,
+      validate: {
+        validator: function (value) {
+          return /.pdf$/.test(value);
+        },
+        message: "Uploaded file is not a PDF",
+      }},
+    likers:  {     
+       type: [
+        {
+          likerid:{type:ObjectId,ref:'User'},
+         
+        }
+      ],
     },
+
+    saved: {
+      type: Boolean,
+      default: false
+    }
+  ,
     comments: {
       type: [
         {
@@ -44,14 +103,31 @@ const PostSchema = new mongoose.Schema(
           commenterid:{type:ObjectId,ref:'User'},
           commenterpseudo:{type :String},
           commenterphoto:{type :String},
-        }
+          likerscomment:  {     
+            type: [
+             {
+               commentlikerid:{type:ObjectId,ref:'User'},
+              
+             }
+           ],
+      
+        }}
+        
       ],
+      
+      timestamps: true,
 
       
       required: true,
+      
+      
     },
+
+    
     
   },
+
+  
   
   {
     timestamps: true,

@@ -3,14 +3,18 @@ import axios from "axios";
 import { useGetUserID } from "../../hooks/useGetUserID";
 import { ImVideoCamera } from "react-icons/im";
 import { Modal } from "react-bootstrap";
+import {
+  
+  ImPlay
 
+} from "react-icons/im";
 function UploadReel() {
   const id = useGetUserID();
   const [selectedFile, setSelectedFile] = useState(null);
   const [isOpen, setIsOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
 
-
+  
   const handleOpenModal = () => setIsOpen(true);
   const handleCloseModal = () => setIsOpen(false);
 
@@ -65,7 +69,7 @@ function UploadReel() {
   return (
     <>
       <button className="icon-wrapper" onClick={handleOpenModal}>
-        <ImVideoCamera className="icon-red" />
+        <ImPlay className="icon-red" />
         <span className="label" style={{ marginLeft: "8px" }}>
           <strong>Reel </strong>
         </span>

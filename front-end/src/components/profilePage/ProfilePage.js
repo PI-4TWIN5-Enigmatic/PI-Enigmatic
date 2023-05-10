@@ -163,6 +163,7 @@ const handlePhotoSelection = (event) => {
                         <aside className ="widget-area">
         
                               <RecentNotifications />
+                              <Friends onlineUsers={onlineUsers} />
                               <Advertissement />
                               <Friends/>
                             
