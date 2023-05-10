@@ -2,19 +2,20 @@ import React from "react";
 
 import { Button } from "@material-ui/core";
 
-import { Favorite, Comment, Send } from "@material-ui/icons";
-
+import { Favorite, Comment } from "@material-ui/icons";
+import VisibilityIcon from '@mui/icons-material/Visibility';
+import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import "./Footer.css";
 
-export default function Footer({ likes, comment, shares }) {
+export default function Footer({ likes, comment, shares , onLike, isLiked}) {
   return (
     <div className="video-footer">
       <div className="video-text">
       </div>
       {/*  */}
       <div className="footer-buttons">
-        <div className="flex-box">
-          <Favorite />
+      <div className="flex-box" onClick={onLike}>
+          {isLiked ? <Favorite /> : <FavoriteBorderIcon />}
           {likes}
         </div>
         {/*  */}
@@ -24,7 +25,7 @@ export default function Footer({ likes, comment, shares }) {
         </div>
         {/*  */}
         <div className="flex-box">
-          <Send />
+          <VisibilityIcon />
           {shares}
         </div>
       </div>

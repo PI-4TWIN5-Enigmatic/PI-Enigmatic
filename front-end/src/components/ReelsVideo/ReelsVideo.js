@@ -8,18 +8,24 @@ import Header from "../ReelsHeader/Header";
 import Footer from "../ReelsFooter/Footer";
 
 
-export default function ReelsVideo({ channel, song, url, likes, comment, shares }) {
+export default function ReelsVideo({ channel, song, url, likes, comment, shares , IncrementVue,onLike,isLiked }) {
   const [isVideoPlaying, setisVideoPlaying] = useState(false);
-
-  const vidRef = useRef();
+  
+ 
+   const vidRef = useRef();
 
   const onVideoClick = () => {
+   
+    
     if (isVideoPlaying) {
       vidRef.current.pause();
       setisVideoPlaying(false);
     } else {
       vidRef.current.play();
       setisVideoPlaying(true);
+      if (typeof IncrementVue === "function") {
+        IncrementVue();
+      }
     }
   };
 
@@ -33,6 +39,8 @@ export default function ReelsVideo({ channel, song, url, likes, comment, shares 
     }
   }, []);
 
+ 
+
   return (
     <div className="video-cards">
       <Header />
@@ -45,7 +53,10 @@ export default function ReelsVideo({ channel, song, url, likes, comment, shares 
         likes={likes}
         comment={comment}
         shares={shares}
-      />
+        onLike={onLike}
+        isLiked={isLiked}
+        
+        />
     </div>
   );
 }
