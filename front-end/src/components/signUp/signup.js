@@ -510,7 +510,7 @@ function Signup() {
                       style={{ width: "80px" , borderRadius: "50%" }}
                     />            GiveBack 
           </a> */}
-          <div className="login-container" style={{  top: 0, right: 0 }}>
+          <div className="login-container" style={{  top: 0, right: 0 , alignItems:"center"}} >
 
 <div className='d-flex  justify-content-between ' style={{ paddingLeft:"30px" , alignItems:"center"}}>
 
@@ -518,7 +518,7 @@ function Signup() {
             
             <div className="d-flex flex-wrap align-items-center justify-content-between">
 
-                <div className="d-flex align-items-center ">
+                <div className="d-flex align-items-center " >
                 <div className="form-outline d-flex justify-content-between align-items-center  ">
                     <EmailIcon style={{ opacity: 0.69 }} />
                     <input type="email" class="form-control form-control-lg" value={emaill}  onChange={(event) => setEmaill(event.target.value)}  placeholder="Enter a valid email address" style={{  width: "90%" }} />

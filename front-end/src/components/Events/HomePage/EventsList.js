@@ -1,6 +1,5 @@
-import React,{useState,useEffect , useCallback} from 'react'
+import React,{useState,useEffect } from 'react'
 import { Cookies, useCookies } from "react-cookie";
-import SettingsSuggestIcon from '@mui/icons-material/SettingsSuggest';
 import { Link } from 'react-router-dom';
 import AccessTimeIcon from '@mui/icons-material/AccessTime';
 import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
@@ -11,12 +10,10 @@ import ViewAgendaIcon from '@mui/icons-material/ViewAgenda';
 import moment from 'moment';
 import CloseIcon from '@mui/icons-material/Close';
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
-import ArrowDropUpIcon from '@mui/icons-material/ArrowDropUp';
 import AutoAwesomeIcon from '@mui/icons-material/AutoAwesome';
 const EventsList = () => {
     const [cookies,setCookies] = useCookies(["access_token"]);
     const[event,setEvent]=useState([]);
-    console.log("🚀 ~ file: EventsList.js:7 ~ EventsList ~ event:", event)
     const user =localStorage.getItem('id')
     const [isDropDown, setIsDropDown] = useState(false);
     const [isDropDownn, setIsDropDownn] = useState(false);
@@ -25,20 +22,26 @@ const EventsList = () => {
     const [timePeriod, setTimePeriod] = useState('');
     const[query,setQuery]=useState('')
     const[type,setType]=useState('')
-    console.log("🚀 ~ file: EventsList.js:27 ~ EventsList ~ type:", type)
     const [globalRating,setGlobalRating]= useState(0);
+    console.log("🚀 ~ file: EventsList.js:26 ~ EventsList ~ globalRating:", globalRating)
+    const [namePosition,setNamePosition]=useState('My Position')
+    const [nameDate,setNameDate]=useState('Choose any Date')
+    const [nameType,setNameType]=useState('Choose  Type')
+    const [colorp,setColorP]=useState(false)
+    const [colorD,setColorD]=useState(false)
+    const [colorT,setColorT]=useState(false)
+    const[data,setData]=useState('')
 
     const style = isDropDown ? { display: 'block' , width:"135px"  , position:'absolute' , zIndex: 1 } : {display: 'none' };
-    const stylee = isDropDownn ? { display: 'block' , position:'absolute' , zIndex: 1} : {display: 'none' };
-    const styleee = iisDropDownn ? { display: 'block' , position:'absolute' , zIndex: 1} : {display: 'none' };
-    const styyle = cool ? { display: 'block' } : {display: 'none' };
-
+    const stylee = isDropDownn ? { display: 'block' ,width:"135px"  ,  position:'absolute' , zIndex: 1} : {display: 'none' };
+    const styleee = iisDropDownn ? { display: 'block' ,width:"135px"  ,  position:'absolute' , zIndex: 1} : {display: 'none' };
 
     useEffect(() => {
         fetch('http://localhost:8000/event/getAllEvent')
           .then(response => response.json())
           .then(data => {
             setEvent(data)
+            // rating(data)
             })
           .catch(error => console.error(error));
       }, []);
@@ -68,6 +71,27 @@ const EventsList = () => {
             return event;
         }}
 
+        // function rating(event){
+        //   const newData = event.map((e) => ({
+        //     type: e._id,
+        //     value:fetch(`http://localhost:8000/event/getRating/${e._id}`)
+        //   .then(response => response.json())
+        //   .catch(error => console.error(error))
+        // }));
+        // setGlobalRating(newData);}
+
+         
+          
+
+        // function populateData(data) {
+        //   const newData = data.map((e) => ({
+        //     type: e._id,
+        //     value: rating(e._id),
+        //   }));
+        //   setGlobalRating(newData);
+        // }
+        
+
    
   
 
@@ -79,16 +103,20 @@ const EventsList = () => {
           <div className="card card-registration my-4" style={{position:'relative'}}>
             <h3><u>Discover Different Events</u></h3>
             <br/>
-            <div className='d-flex  '>
-            <ul className="event-trigger">
+            <div className='d-flex '>
+            <ul className="event-trigger" >
 
-            <button className='btn btn-light'  onClick={()=>{setIsDropDown(!isDropDown)}}>
-              <LocationOnIcon/>
-              My Position
-              <ArrowDropDownIcon/>
-              {/* <ArrowDropUpIcon/> */}
+            <button className={colorp?'btn btn-danger' : 'btn btn-light'}  >
+            <div style={{ display: 'flex', alignItems: 'center'}}>
+            <LocationOnIcon />
+                {namePosition}
+              <ArrowDropDownIcon style={{ display: colorp ? 'none' : 'block' }} onClick={()=>{setIsDropDown(!isDropDown)    }} />
+               <CloseIcon style={{ display: !colorp ? 'none' : 'block' }} onClick={()=>{setColorP(!colorp) 
+                                                                                        setNamePosition('My Position')
+                                                                                        setType('')
+                                                                                        }} /> 
+                </div>
               </button>
-              
               <div
                             className="card "
                             style={style}
@@ -96,19 +124,30 @@ const EventsList = () => {
 
                           >
                             <div className="dropdown-title">
-                              <input type='text' className="recherche" placeholder='Search...' style={{outline:'none' , width:'80px'}} onChange={(e) => setQuery(e.target.value)}  />
+                              <input type='text' className="recherche" placeholder='Search...' 
+                              style={{outline:'none' , width:'80px' ,border: 'none', backgroundColor: 'transparent'}} onChange={(e) => setQuery(e.target.value) }  />
                             </div>
-                            <button className="" onClick={()=>{setType('Online Event')}}>OnLine</button>
-
+                            <button className="" onClick={
+                              ()=>{setType('Online Event')
+                                  setNamePosition('Online Events')
+                                  setColorP(true)
+                                  setIsDropDown(!isDropDown)
+                                }}>OnLine</button>
                             </div>
               </ul>
               <ul className="event-trigger">
 
-            <button className='btn btn-light'  onClick={()=>{setIsDropDownn(!isDropDownn)}}>
+            <button className={colorD?'btn btn-danger' : 'btn btn-light'}  >
+            <div style={{ display: 'flex', alignItems: 'center'}}>
+
               <EventAvailableIcon/>
-              Choose any Date
-              <ArrowDropDownIcon/>
-              {/* <ArrowDropUpIcon/> */}
+                {nameDate}
+                <ArrowDropDownIcon  style={{ display: colorD ? 'none' : 'block' }} onClick={()=>{setIsDropDownn(!isDropDownn)}}/>
+               <CloseIcon  style={{ display: !colorD ? 'none' : 'block' }}  onClick={()=>{setColorD(!colorD) 
+                                                                                        setNameDate('Choose any Date')
+                                                                                        setTimePeriod('')
+                                                                                        }}/> 
+               </div>
               </button>
               
               <div
@@ -117,25 +156,46 @@ const EventsList = () => {
                             id="a"
                           >
                             <div className="dropdown-title">
-                              <button className="" onClick={(e) => setTimePeriod('today')}>Today </button>
+                              <button className="" onClick={() => {
+                                                              setTimePeriod('today')
+                                                              setNameDate('Today')
+                                                              setColorD(true)
+                                                              setIsDropDownn(!isDropDownn)
+                                                            }
+                                                           }
+                                                    >Today </button>
                             </div>
                             <div className="dropdown-title">
-                              <button className="" onClick={(e) => setTimePeriod('Tomorrow')}>Tomorrow </button>
+                              <button className="" onClick={() => {
+                                                              setTimePeriod('Tomorrow')
+                                                              setNameDate('Tomorrow')
+                                                              setColorD(true)
+                                                              setIsDropDownn(!isDropDownn)
+                                                            }
+                                
+                                }>Tomorrow </button>
                             </div>
-                            <div className="dropdown-title">
-                              <button className="" onClick={(e) => setTimePeriod('Upcoming')}>Upcoming </button>
-                            </div>
-                              <button className="" onClick={(e) => setTimePeriod('')}>All</button>
+                              <button className="" onClick={() => {setTimePeriod('Upcoming')
+                                                          setNameDate('Upcoming')
+                                                          setColorD(true)
+                                                          setIsDropDownn(!isDropDownn)}
+                            }>Upcoming </button>
                             </div>
               </ul>
 
               <ul className="event-trigger">
 
-              <button className='btn btn-light'  onClick={()=>{setIIsDropDownn(!iisDropDownn)}}>
+              <button className={colorT?'btn btn-danger' : 'btn btn-light'}  >
+              <div style={{ display: 'flex', alignItems: 'center'}}>
+
                 <ViewAgendaIcon/>
-                Choose  Type
-                <ArrowDropDownIcon/>
-                {/* <ArrowDropUpIcon/> */}
+                {nameType}
+                <ArrowDropDownIcon style={{ display: colorT ? 'none' : 'block' }} onClick={()=>{setIIsDropDownn(!iisDropDownn)}}/>
+                 <CloseIcon  style={{ display: !colorT ? 'none' : 'block' }} onClick={()=>{setColorT(!colorT) 
+                                                                                        setNameType('Choose  Type')
+                                                                                        setType('')
+                                                                                        }}/> 
+                                  </div>
                 </button>
                 
                 <div
@@ -144,10 +204,25 @@ const EventsList = () => {
                               id="a"
                             >
                               <div className="dropdown-title">
-                                <button className="" onClick={()=>{setType('Paid Event')}}>Paid Event </button>
+                                <button className="" onClick={()=>{
+                                                        setType('Paid Event') 
+                                                        setNameType('Paid Event')
+                                                        setColorT(true)
+                                                        setIIsDropDownn(!iisDropDownn)
+                                                      }
+                          
+                                                        }>Paid Event </button>
                               </div>
-                                <button className="" onClick={()=>{setType('Free Event')}}>Free Event</button>
-                              </div>
+                                <button className="" onClick={()=>{
+                                                        setType('Free Event')
+                                                        setNameType('Free Event')
+                                                        setColorT(true)
+                                                        setIIsDropDownn(!iisDropDownn)
+                                                      }
+                                                        }>Free Event</button>
+                            
+                            </div>
+                            
                 </ul>
                 <ul className="event-trigger">
 
@@ -162,15 +237,15 @@ const EventsList = () => {
             
             </div>
           
-            <div className="justify-content-center d-flex" >
-                <div className="row" >
-                  {event&&handleFilterByTimePeriod(event)
+            <div className="justify-content-center d-flex"  >
+                <div className="d-flex row"  style={{justifyContent : 'space-evenly'}}>
+                  {event && handleFilterByTimePeriod(event)
                   .filter( (e) =>e.locationEvent.toLowerCase().includes(query.toLowerCase()) &&
                   e.typeEvent.toLowerCase().includes(type.toLowerCase())) 
                    .map((e) => (
                         
-                    <div className="col-sm-4" key={e._id} >
-                      <li className="unorder-list">
+                    <div className=" d-flex  col-sm-4"  key={e._id} >
+                      <li className=" d-flex  unorder-list" >
                         <div
                           className="card widget-item"
                           style={{ width: "350px", margin: "20px" }}
@@ -193,6 +268,7 @@ const EventsList = () => {
                               <AccessTimeIcon style={{paddingRight:"6px"}} />
                               {new Date(e.dateEvent).toString().substring(0, 24)}
                               </p>
+                              {/* <p>{rating(e._id)}</p> */}
                               <p>
                                 <AttachMoneyIcon style={{paddingRight:"6px"}} />
                                 <b>{e.typeEvent}</b></p>

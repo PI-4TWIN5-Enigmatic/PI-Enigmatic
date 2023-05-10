@@ -39,20 +39,17 @@ const Intrested = () => {
           <div className="card card-registration my-4" >
             <h3><u>Discover Your Events</u></h3>
             <br/>
-            <div className='d-flex  '>
-            <button className='btn btn-light' style={{width:"20%"}}>
-              <LocationOnIcon/>
-              My Position
-              </button>
-
-              <button className='btn btn-light' style={{width:"20%"}}>
-              <EventIcon/>
-                Choose any Date
-              </button>
-            </div>
           
             <div className="justify-content-center d-flex">
                 <div className="row">
+                {event.length === 0 ? (
+                      <img
+                      src={'../interest.png '}
+                      alt="Event picture"
+                      style={{ pointerEvents: "none" }}
+                    />
+                  ) :null}
+
                   {event.map((e) => (
                         
                     <div className="col-sm-4" key={e._id}>
@@ -89,7 +86,7 @@ const Intrested = () => {
                                         to={`http://localhost:3000/EventDetails/${e._id}`}
                                         style={{ textDecoration: 'none', color: 'white' }}
                                       >
-                                        Intrested yeeey
+                                        Intrested
                                       </Link>
                                     </button></button>
                               
