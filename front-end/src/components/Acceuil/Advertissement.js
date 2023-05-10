@@ -4,15 +4,12 @@ const Advertissement = () => {
   return (
 <>
 <div className="card widget-item">
-                                <h4 className="widget-title">Advertizement</h4>
+                                <h4 className="widget-title">saved posts</h4>
                                 <div className="widget-body">
-                                    <div className="add-thumb">
-                                        <a href="#">
-                                            <img src="../assets/images/banner/advertise.jpg" alt="advertisement" />
-                                        </a>
+                                            <img src="../assets/images/Following-pana.png"  />
                                     </div>
                                 </div>
-                            </div>
+                            
 </>  )
 }
 

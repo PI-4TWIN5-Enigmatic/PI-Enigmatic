@@ -36,7 +36,7 @@ const EventsHomePage = () => {
 <Navbar/>
     <div className="d-flex flex-row justify-content-between align-items-start"  >
 
-    <aside className='lol'  >
+    <aside className='homeevent'  >
                 <p style={{fontSize:"40px"}}> Events </p>
                 <a href="javascript:void(0) " onClick={()=>{ 
                     setVisibility('block')

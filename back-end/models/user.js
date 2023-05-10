@@ -67,10 +67,14 @@ const userSchema = new mongoose.Schema(
 
 
     },
-    likes: {
-      type: [String],
-      required: true,
-    },
+    likes:  {     
+      type: [
+       {
+         likesid:{type:ObjectId,ref:'User'},
+        
+       }
+     ],
+   },
     sexe: { type: String, enum: ['Male', 'Female'] },
     phone: { type: String },
     isVerified: {

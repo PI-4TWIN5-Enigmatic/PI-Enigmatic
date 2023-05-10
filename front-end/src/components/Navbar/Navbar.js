@@ -371,7 +371,7 @@ setNewMessage(message)
                   <div className="header-top-navigation">
                     <nav>
                       <ul>
-                        <li className="active" sstyle={{ marginRight: "40px" }}>
+                        <li className="active" sstyle={{ marginRight: "0px" }}>
                           <a
                             className="msg-trigger-btn"
                             href={`/HomePage/${idCurrentUser}`}
@@ -380,7 +380,10 @@ setNewMessage(message)
                             {linkText}
                           </a>
                         </li>
-                        <li className="msg-trigger" style={{ marginRight: "40px" }}>
+                        <li
+                          className="msg-trigger"
+                          style={{ marginRight: "20px" }}
+                        >
                           <a
                             className="msg-trigger-btn"
                             onClick={handleDropDown}
@@ -407,7 +410,7 @@ setNewMessage(message)
                                     key={index}
                                     conversation={c}
                                     currentUser={user}
-                                    newMessage = {newMessage}
+                                    newMessage={newMessage}
                                   />
                                 </div>
                               ))}
@@ -418,18 +421,22 @@ setNewMessage(message)
                             </div>
                           </div>
                         </li>
-                        <li className="notification-trigger">
-                        <a
+                        <li
+                          className="notification-trigger"
+                          style={{ marginRight: "20px" }}
+                        >
+                          <a
                             className="msg-trigger-btn"
-                            onClick={handleDropDownMsgNotification}>
-                        < BiMessageRoundedDetail size={20} />
-                        {msgNotification1?.length > 0 && (
+                            onClick={handleDropDownMsgNotification}
+                          >
+                            <BiMessageRoundedDetail size={20} />
+                            {msgNotification1?.length > 0 && (
                               <span className="notification-badge">
                                 {msgNotification1?.length}
                               </span>
                             )}
-                        </a>
-                        <div
+                          </a>
+                          <div
                             className="message-dropdown "
                             style={styleNMsg}
                             id="a"
@@ -445,38 +452,34 @@ setNewMessage(message)
                             msgNotification1?.length > 0 ? (
                               <ul className="dropdown-msg-list">
                                 {msgNotification1.map((notification) => (
-                                  <li
-                                    className="notification-item"
-                                  
-                                  >
+                                  <li className="notification-item">
                                     <div className="notification-info">
                                       <div className="notification-type">
-                                      <h6> {notification.senderId} has sent you a message : <h5>{notification.message}</h5> </h6>
+                                        <h6>
+                                          {" "}
+                                          {notification.senderId} has sent you a
+                                          message :{" "}
+                                          <h5>{notification.message}</h5>{" "}
+                                        </h6>
                                       </div>
-                                     
                                     </div>
-                                   
-                                  </li >
+                                  </li>
                                 ))}
 
-<button
-                                      className="notification-details-btn"
-                                      onClick={markAsRead}
-                                    >
-                                      Mark all as read
-                                    </button>
+                                <button
+                                  className="notification-details-btn"
+                                  onClick={markAsRead}
+                                >
+                                  Mark all as read
+                                </button>
                               </ul>
                             ) : (
                               <p>No notifications</p>
                             )}
-                           
                           </div>{" "}
+                        </li>
 
-
-                        </li >
-                       
-                        
-                        <li className="" style={{ marginRight: "40px" }}>
+                        <li className="" style={{ marginRight: "20px" }}>
                           <a
                             className="msg-trigger-btn"
                             href={`http://localhost:3000/donnation/request/${idCurrentUser}`}
@@ -484,7 +487,18 @@ setNewMessage(message)
                             Donation
                           </a>
                         </li>
-                        <li class="notification-trigger">
+                        <li className="" style={{ marginRight: "20px" }}>
+                          <a
+                            className="msg-trigger-btn"
+                            href={`http://localhost:3000/reels`}
+                          >
+                            Reels
+                          </a>
+                        </li>
+                        <li
+                          class="notification-trigger"
+                          style={{ marginRight: "20px" }}
+                        >
                           <a
                             className="msg-trigger-btn"
                             onClick={handleDropDownNotification}
@@ -613,48 +627,50 @@ setNewMessage(message)
           <div className="container-fluid">
             <div className="row">
               <div className="col-12">
-              {currentChat ? (
-                          <>
-                <div className="footer-wrapper " style={{ height: "1px" }}>
-                  <div className="footer-card position-relative ">
-                    <div className="chat-output-box show">
-                      <div className="live-chat-title">
-                        <div className="profile-thumb active">
-                          <a href="#">
-                            <figure className="profile-thumb-small">
-                              <img
-                                src={friendUser?.profilePicture}
-                                alt="profile picture"
-                              />
-                            </figure>
-                          </a>
-                        </div>
+                {currentChat ? (
+                  <>
+                    <div className="footer-wrapper " style={{ height: "1px" }}>
+                      <div className="footer-card position-relative ">
+                        <div className="chat-output-box show">
+                          <div className="live-chat-title">
+                            <div
+                              className="profile-thumb active"
+                              style={{ marginRight: "20px" }}
+                            >
+                              <a href="#">
+                                <figure className="profile-thumb-small">
+                                  <img
+                                    src={friendUser?.profilePicture}
+                                    alt="profile picture"
+                                  />
+                                </figure>
+                              </a>
+                            </div>
 
-                        <div className="posted-author">
-                          <h6 className="author" style={{ color: "white" }}>
-                            {friendUser?.firstName} {friendUser?.lastName}
-                          </h6>
-                          <span className="active-pro">active now</span>
-                        </div>
-                        <div className="live-chat-settings ml-auto">
-                        <button
-                            className="close-btn"
-                            data-close="chat-output-box"
-                            onClick={handleShow}
-                          >
-                           <BiPhoneCall/>
-                          </button>
-                          <button
-                            className="close-btn"
-                            data-close="chat-output-box"
-                            onClick={() => setCurrentChat(null)}
-                          >
-                            <AiOutlineClose />
-                          </button>
-                        </div>
-                      </div>
-                      <div className="message-list-inner">
-                       
+                            <div className="posted-author">
+                              <h6 className="author" style={{ color: "white" }}>
+                                {friendUser?.firstName} {friendUser?.lastName}
+                              </h6>
+                              <span className="active-pro">active now</span>
+                            </div>
+                            <div className="live-chat-settings ml-auto">
+                              <button
+                                className="close-btn"
+                                data-close="chat-output-box"
+                                onClick={handleShow}
+                              >
+                                <BiPhoneCall />
+                              </button>
+                              <button
+                                className="close-btn"
+                                data-close="chat-output-box"
+                                onClick={() => setCurrentChat(null)}
+                              >
+                                <AiOutlineClose />
+                              </button>
+                            </div>
+                          </div>
+                          <div className="message-list-inner">
                             <ul
                               className="message-list custom-scroll"
                               style={{
@@ -671,58 +687,58 @@ setNewMessage(message)
                                   />
                                 </div>
                               ))}
-                                {isTyping && (
-                                  <div style={{ width: "50px", height: "50px" }}>
-        <Lottie options={defaultOptions} />
-        </div>
-        )}
+                              {isTyping && (
+                                <div style={{ width: "50px", height: "50px" }}>
+                                  <Lottie options={defaultOptions} />
+                                </div>
+                              )}
                             </ul>
                             <div className="chat-text-field mob-text-box">
-                          <textarea
-                            className="live-chat-field custom-scroll"
-                            placeholder="Text Message"
-                            onChange={(e) => setNewMessage(e.target.value)}
-                            onKeyDown={() => sendTyping()}
-                            onBlur={() => sendStopTyping()}
-                            value={newMessage}
-                          ></textarea>
-                          <button
-                            className="chat-message-send"
-                            type="submit"
-                            onClick={handleEmojiPickerHideShow}
-                          >
-                            <BsEmojiSmileFill />
-                          </button>
-
-                          <button
-                            className="chat-message-send"
-                            type="submit"
-                            onClick={handleSubmitChat}
-                          >
-                            <AiOutlineSend />
-                          </button>
-
-                          <div style={{ position: "relative" }}>
-                            {showEmojiPicker && (
-                              <div
-                                style={{
-                                  position: "absolute",
-                                  left: 30,
-                                  top: -379,
-                                }}
+                              <textarea
+                                className="live-chat-field custom-scroll"
+                                placeholder="Text Message"
+                                onChange={(e) => setNewMessage(e.target.value)}
+                                onKeyDown={() => sendTyping()}
+                                onBlur={() => sendStopTyping()}
+                                value={newMessage}
+                              ></textarea>
+                              <button
+                                className="chat-message-send"
+                                type="submit"
+                                onClick={handleEmojiPickerHideShow}
                               >
-                                <EmojiPicker onEmojiClick={handleEmojiClick} />
+                                <BsEmojiSmileFill />
+                              </button>
+
+                              <button
+                                className="chat-message-send"
+                                type="submit"
+                                onClick={handleSubmitChat}
+                              >
+                                <AiOutlineSend />
+                              </button>
+
+                              <div style={{ position: "relative" }}>
+                                {showEmojiPicker && (
+                                  <div
+                                    style={{
+                                      position: "absolute",
+                                      left: 30,
+                                      top: -379,
+                                    }}
+                                  >
+                                    <EmojiPicker
+                                      onEmojiClick={handleEmojiClick}
+                                    />
+                                  </div>
+                                )}
                               </div>
-                            )}
+                            </div>
                           </div>
                         </div>
-                    
-                        
                       </div>
                     </div>
-                  </div>
-                </div>
-                </>
+                  </>
                 ) : (
                   <></>
                 )}
@@ -732,25 +748,22 @@ setNewMessage(message)
         </div>{" "}
       </div>
 
-     
       <Modal show={show} onHide={handleClose}>
         <Modal.Header closeButton>
           <Modal.Title>Video Call</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-        <ContextProvider>
-        <VideoPlayer />
-      <Sidebar>
-        <Notifications />
-      </Sidebar>
-      
-      </ContextProvider>
+          <ContextProvider>
+            <VideoPlayer />
+            <Sidebar>
+              <Notifications />
+            </Sidebar>
+          </ContextProvider>
         </Modal.Body>
         <Modal.Footer>
           <Button variant="danger" onClick={handleClose}>
             Close
           </Button>
-        
         </Modal.Footer>
       </Modal>
     </>
