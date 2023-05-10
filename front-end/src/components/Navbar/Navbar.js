@@ -24,8 +24,8 @@ import { BiMessageRoundedDetail, BiPhoneCall } from 'react-icons/bi';
 import { Button, Modal } from 'react-bootstrap';
 import VideoPlayer from '../Video/VideoPlayer';
 import { ContextProvider } from '../../Context';
-import Sidebar from '../video/SideBar';
-import Notifications from '../video/Notification';
+import Sidebar from '../Video/SideBar';
+import Notifications from '../Video/Notification';
 import Search from '../Search/Search';
 
 
