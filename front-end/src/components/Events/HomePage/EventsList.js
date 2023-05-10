@@ -11,6 +11,8 @@ import moment from 'moment';
 import CloseIcon from '@mui/icons-material/Close';
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import AutoAwesomeIcon from '@mui/icons-material/AutoAwesome';
+import Rating from '@mui/material/Rating';
+
 const EventsList = () => {
     const [cookies,setCookies] = useCookies(["access_token"]);
     const[event,setEvent]=useState([]);
@@ -18,19 +20,18 @@ const EventsList = () => {
     const [isDropDown, setIsDropDown] = useState(false);
     const [isDropDownn, setIsDropDownn] = useState(false);
     const [iisDropDownn, setIIsDropDownn] = useState(false);
-    const [cool, setCool] = useState(false);
     const [timePeriod, setTimePeriod] = useState('');
     const[query,setQuery]=useState('')
     const[type,setType]=useState('')
-    const [globalRating,setGlobalRating]= useState(0);
-    console.log("🚀 ~ file: EventsList.js:26 ~ EventsList ~ globalRating:", globalRating)
+    const [globalRating,setGlobalRating]= useState([]);
     const [namePosition,setNamePosition]=useState('My Position')
     const [nameDate,setNameDate]=useState('Choose any Date')
     const [nameType,setNameType]=useState('Choose  Type')
     const [colorp,setColorP]=useState(false)
     const [colorD,setColorD]=useState(false)
     const [colorT,setColorT]=useState(false)
-    const[data,setData]=useState('')
+    const [colorR,setColorR]=useState(false)
+    const[data,setData]=useState([])
 
     const style = isDropDown ? { display: 'block' , width:"135px"  , position:'absolute' , zIndex: 1 } : {display: 'none' };
     const stylee = isDropDownn ? { display: 'block' ,width:"135px"  ,  position:'absolute' , zIndex: 1} : {display: 'none' };
@@ -41,7 +42,7 @@ const EventsList = () => {
           .then(response => response.json())
           .then(data => {
             setEvent(data)
-            // rating(data)
+            rating(data)
             })
           .catch(error => console.error(error));
       }, []);
@@ -71,25 +72,24 @@ const EventsList = () => {
             return event;
         }}
 
-        // function rating(event){
-        //   const newData = event.map((e) => ({
-        //     type: e._id,
-        //     value:fetch(`http://localhost:8000/event/getRating/${e._id}`)
-        //   .then(response => response.json())
-        //   .catch(error => console.error(error))
-        // }));
-        // setGlobalRating(newData);}
+        async function rating(event) {
+          const newData = await Promise.all(event.map(async (e) => {
+            const response = await fetch(`http://localhost:8000/event/getRating/${e._id}`);
+            const rating = await response.json();
+            return {
+              type: e,
+              value: rating
+            };
+          }));
+          setGlobalRating(newData); 
+          setData(newData.filter((data) => data.value >= 3.5));
 
+        }
+        
          
           
 
-        // function populateData(data) {
-        //   const newData = data.map((e) => ({
-        //     type: e._id,
-        //     value: rating(e._id),
-        //   }));
-        //   setGlobalRating(newData);
-        // }
+      
         
 
    
@@ -226,7 +226,10 @@ const EventsList = () => {
                 </ul>
                 <ul className="event-trigger">
 
-                <button className='btn btn-light' >
+                <button onClick={()=>{
+                  setColorR(!colorR)}} className={colorR?'btn btn-danger' : 'btn btn-light'} 
+                  
+                  >
                 <AutoAwesomeIcon/>
                   Top rated events
                 </button>
@@ -237,9 +240,9 @@ const EventsList = () => {
             
             </div>
           
-            <div className="justify-content-center d-flex"  >
-                <div className="d-flex row"  style={{justifyContent : 'space-evenly'}}>
-                  {event && handleFilterByTimePeriod(event)
+            <div className="justify-content-center d-flex"   >
+            <div className="d-flex row" style={{ justifyContent:  'space-evenly'}}>
+                  {event &&  handleFilterByTimePeriod(event) 
                   .filter( (e) =>e.locationEvent.toLowerCase().includes(query.toLowerCase()) &&
                   e.typeEvent.toLowerCase().includes(type.toLowerCase())) 
                    .map((e) => (
@@ -248,9 +251,29 @@ const EventsList = () => {
                       <li className=" d-flex  unorder-list" >
                         <div
                           className="card widget-item"
-                          style={{ width: "350px", margin: "20px" }}
+                          style={{ width: "350px", margin: "20px" ,display: colorR ? 'none' : 'block'}}
                         >
-                          <h4 className="widget-title">{e.nameEvent} </h4>
+                          <h4 className="widget-title"  >
+                            <div className='d-flex' style={{alignItems:'center' }}>
+
+                            {e.nameEvent}
+                            {globalRating
+                                          .filter((data) => data.type._id === e._id) 
+                                          .map((data) => (
+                                            <Rating
+                                                name="simple-controlled"
+                                                value={data.value}
+                                                precision={0.25}
+                                                size='medium'
+                                                readOnly
+                                                style={{marginLeft:'10px'}}
+                                              />
+                                          ))}
+
+                            </div>
+                                      
+                                       </h4>
+                          
     
                           <div className="d-flex justify-content-left"></div>
                           <div style={{ marginRight: "15px" }}></div>
@@ -282,12 +305,94 @@ const EventsList = () => {
                                         Are you intrested ?
                                       </Link>
                                     </button></button>
-                              
+
+                                                                  
                           </div>
                         </div>
                       </li>
                     </div>
                   ))}
+
+
+
+                </div>
+                </div>
+
+                <div className="justify-content-center d-flex"  >
+
+
+                <div className="d-flex row" style={{ justifyContent: 'space-evenly'  }}>
+                  {
+                   data.map((e) => (
+                        
+                    <div className=" d-flex  col-sm-4"  key={e.type._id}  >
+                      <li className=" d-flex  unorder-list"  >
+                        <div
+                          className="card widget-item"
+                          style={{ width: "350px", margin: "20px" ,display: colorR ? 'block' : 'none'  }}
+                        >
+                          <h4 className="widget-title"  >
+                            <div className='d-flex' style={{alignItems:'center' }}>
+
+                            {e.type.nameEvent}
+                            {globalRating
+                                          .filter((data) => data.type._id === e.type._id) 
+                                          .map((data) => (
+                                            <Rating
+                                                name="simple-controlled"
+                                                value={data.value}
+                                                precision={0.25}
+                                                size='medium'
+                                                readOnly
+                                                style={{marginLeft:'10px'}}
+                                              />
+                                          ))}
+
+                            </div>
+                                      
+                                       </h4>
+                          
+    
+                          <div className="d-flex justify-content-left"></div>
+                          <div style={{ marginRight: "15px" }}></div>
+                          <div className="widget-body"  >
+                            <div className="add-thumb">
+                              <a href="#">
+                                <img
+                                  src={e.type.eventPicture}
+                                  alt="Event picture"
+                                  style={{ pointerEvents: "none" }}
+                                />
+                              </a>
+                            </div>
+                            <p>
+                              <AccessTimeIcon style={{paddingRight:"6px"}} />
+                              {new Date(e.type.dateEvent).toString().substring(0, 24)}
+                              </p>
+                              {/* <p>{rating(e._id)}</p> */}
+                              <p>
+                                <AttachMoneyIcon style={{paddingRight:"6px"}} />
+                                <b>{e.type.typeEvent}</b></p>
+                                <button className='btn btn-dark'> 
+                                <StarBorderPurple500Icon style={{paddingRight:"6px"}}/>
+                                <button>
+                                      <Link
+                                        to={`http://localhost:3000/EventDetails/${e.type._id}`}
+                                        style={{ textDecoration: 'none', color: 'white' }}
+                                      >
+                                        Are you intrested ?
+                                      </Link>
+                                    </button></button>
+
+                                                                  
+                          </div>
+                        </div>
+                      </li>
+                    </div>
+                  ))}
+
+
+
                 </div>
               </div>
             </div>
