@@ -116,7 +116,7 @@ export default function Reels() {
                   song="Song"
                   url={reel.reelUrl}
                   likes={reelLikes[reel._id]}
-                  comment="55"
+                  comment="3"
                   shares={reelViews[reel._id]}
                   IncrementVue={() => handleIncrementViews(reel._id)}
                   onLike={() => handleLike(reel._id)}
