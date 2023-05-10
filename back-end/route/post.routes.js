@@ -1,11 +1,12 @@
 const express = require('express')
 const router = express.Router()
-const {createPost,getpostbyid,getassociationpost,get,all,reportPost,createSurvey,likeComment,markPostAsSaved,saved,markPostAsunsaved,incrementVote,dislikeComment,allassociation,
+const {createPost,getpostbyid,getassociationpost,get,all,reportPost,createSurvey,likeComment,markPostAsSaved,saved,markPostAsunsaved,incrementVote,dislikeComment,allassociation,getReportedPosts,
  gettimeline,   readPost,updatePost,getallposts,deletePost,likePost,unlikePost,commentPost,editCommentPost,deleteCommentPost} = require("../controllers/post");
 const { verifyToken } = require('../middleware/auth');
 
 router.get('/getpost', readPost);
 router.get('/get/:id', get);
+router.get('/getReportedPosts', getReportedPosts);
 
 
 //getpostsuser

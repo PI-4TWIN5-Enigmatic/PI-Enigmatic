@@ -275,12 +275,12 @@ const Share = () => {
   const [surveyQuestions, setsurveyquestions] = useState("");
 
   const handleOptionChange = (index, value) => {
-    const newOptions = [...options]; // create a new array with the same elements as the current options array
-    newOptions[index] = value; // replace the element at the specified index with the new value
-    setOptions(newOptions); // update the state of the options array
+    const newOptions = [...options];
+    newOptions[index] = value; 
+    setOptions(newOptions); 
   };
   const addOption = () => {
-    setOptions([...options, ""]); // create a new array with the same elements as the current options array, but with an additional empty string element at the end
+    setOptions([...options, ""]); 
   };
 
   const [voted, setVoted] = useState(false);

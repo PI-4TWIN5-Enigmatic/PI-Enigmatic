@@ -636,6 +636,23 @@ module.exports.getallposts = async (req, res) => {
 
 }
 
+module.exports.getReportedPosts = async (req, res) => {
+  try {
+    const reportedPosts = await PostModel.find({ reports: { $exists: true, $ne: [] } }).populate({
+      path: "likers.likerid",
+      select: "firstName lastName profilePicture",
+    }) .populate({
+      path: "comments.likerscomment.commentlikerid",
+      select: "firstName lastName profilePicture",
+    }).populate({
+      path: "comments.commenterid",
+      select: "firstName lastName profilePicture occupation",
+    }).sort({ createdAt: -1 });
+    res.status(200).json(reportedPosts);
+  } catch (err) {
+    res.status(500).json(err);
+  }
+}
 
 module.exports.get = async (req, res) => {
   try {
