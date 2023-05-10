@@ -71,7 +71,7 @@ const Birthdays = () => {
     
   
         <>
-          <div className="card card-registration my-4"  style={{backgroundImage:"url('../../balloons.png')" ,  backgroundRepeat: "no-repeat", backgroundSize: "cover" , backgroundPosition: "center"}}>
+          <div className="card card-registration my-4"  style={{backgroundImage:"url('../../r.png')" ,  backgroundRepeat: "no-repeat", backgroundSize: "cover" , backgroundPosition: "center"}}>
             <h3><u>Discover Your Events</u></h3>
             <br/>
               <div className="row g-0">

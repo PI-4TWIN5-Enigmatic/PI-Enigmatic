@@ -13,7 +13,6 @@ import About from '../profilePage/About';
 
 import { BsFillHouseDoorFill,BsFillChatSquareDotsFill,BsBellFill } from "react-icons/bs";
 import "./Navbar.css"
-import picker from "emoji-picker-react";
 import { BsEmojiSmileFill,BiConversation } from 'react-icons/bs';
 import EmojiPicker from 'emoji-picker-react';
 
@@ -23,10 +22,10 @@ import Lottie, {} from 'react-lottie'
 import * as animationData from '../../animation/typing.json'
 import { BiMessageRoundedDetail, BiPhoneCall } from 'react-icons/bi';
 import { Button, Modal } from 'react-bootstrap';
-import VideoPlayer from '../video/VideoPlayer';
+import VideoPlayer from '../Video/VideoPlayer';
 import { ContextProvider } from '../../Context';
-import Sidebar from '../video/SideBar';
-import Notifications from '../video/Notification';
+import Sidebar from '../Video/SideBar';
+import Notifications from '../Video/Notification';
 
 
 
