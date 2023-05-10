@@ -20,6 +20,7 @@ import {
   CiVideoOn,
   CiSquarePlus,
   CiHeart,
+  CiWarning
 } from "react-icons/ci";
 import { FiCheckCircle } from "react-icons/fi";
 import { FcLike } from "react-icons/fc";
@@ -58,6 +59,7 @@ const Share = () => {
   const [association, setAssociation] = useState(null);
   const currentUser = JSON.parse(localStorage.getItem("user"));
   const [loading, setLoading] = useState(false);
+  const [selectedOption, setSelectedOption] = useState(null);
 
   const { id } = useParams();
   const [showModal, setShow] = useState(false);
@@ -120,6 +122,53 @@ const Share = () => {
 
   const [profilePicture, setprofilepicture] = useState("");
   const [firstName, setfirstname] = useState("");
+
+
+ //show report modal
+ const close = () => setmodal(false);
+ const [modal, setmodal] = useState(false);
+ console.log(modal);
+ const handlemodal = () => setmodal(true);
+ const handleClosereport = () => {
+   setSelectedOption(null);
+   setmodal(false);
+ };
+  //report options
+  const [reasonOptions, setReasonOptions] = useState([
+    "Nudity",
+    "violence",
+    "Spam",
+    "misinformation",
+    " hate message",
+    "something else",
+  ]);
+  const [showOtherInput, setShowOtherInput] = useState(false);
+  const [otherReasonInput, setOtherReasonInput] = useState("");
+
+  //handlereport
+
+  const handlereport = (e) => {
+    let selectedReason = selectedOption;
+    if (selectedReason === "Other") {
+      selectedReason = otherReasonInput;
+    }
+
+    const newreport = {
+      reason: selectedReason,
+      reportedBy:association._id,
+    };
+
+    axios
+      .post(`http://localhost:8000/api/post/posts/report/${e}`, newreport)
+      .then((response) => {
+        console.log(response);
+        setChange(true);
+        toast.info("post has been reported");
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  };
 
   //show more/less
   const [showFullMessage, setShowFullMessage] = useState(false);
@@ -1114,14 +1163,14 @@ const Share = () => {
                 )}
                 <span className="date">{moment(e.createdAt).fromNow()}</span>
               </div>
-              {alpha && (
+            
                 <div className="post-settings-bar">
                   <span></span>
                   <span></span>
                   <span></span>
                   <div className="post-settings arrow-shape">
                     <ul>
-                      <li>
+                       {alpha && ( <li>
                         <button
                           onClick={() => {
                             setisupdated(e._id);
@@ -1130,7 +1179,7 @@ const Share = () => {
                          <CiEdit className="svg" />
                           edit post
                         </button>
-                      </li>
+                      </li>)}
                       <Modal
                         className="sharebox"
                         show={showModalme}
@@ -1160,17 +1209,180 @@ const Share = () => {
                         </Modal.Body>
                       </Modal>
 
+                      {alpha && ( <li>
                       <li>
-                        <li>
                         <button onClick={() => handleDelete(e?._id)}>
                           <CiTrash className="svg" /> Delete Post
                         </button>
                         </li>
+                      </li>)}
+                      {currentUser?._id != e.posterId?._id && (
+                      <li>
+                        <button
+                          onClick={() => setmodal(e?._id)}
+                          // onClick={(event) =>{handlereport(event.target[0].value, e._id)}}
+                        >
+                          <CiWarning className="svg" /> report post{" "}
+                        </button>
                       </li>
+                      
+ )}
                     </ul>
                   </div>
                 </div>
-              )}
+                <Modal
+              id="textbox"
+              aria-labelledby="textbox"
+              style={{
+                width: "500px",
+                marginTop: "150px",
+                position: "fixed",
+                top: "1%",
+                left: "35%",
+              }}
+              show={modal}
+              onHide={close}
+            >
+              <Modal.Header class="modal-header">
+                <h5 class="modal-title d-flex justify-content-between align-items-center">
+                  <span>Please select a problem to continue</span>
+                  <button
+                    type="button"
+                    className="btn-close"
+                    aria-label="Close"
+                    style={{ marginLeft: "70px" }}
+                    onClick={handleClosereport}
+                  ></button>
+                </h5>
+              </Modal.Header>
+
+              <Modal.Body class="modal-body custom-scroll">
+                <div style={{ margin: "15px 0" }}>
+                  <h6
+                    className="modal-title"
+                    style={{
+                      marginBottom: "2px",
+                      marginTop: "0px",
+                      fontsize: "25px",
+                    }}
+                  >
+                    {" "}
+                    <BiCommentError className="svggbutton"></BiCommentError> you
+                    can report a post after selecting a problem
+                  </h6>
+                  <br></br>
+                  {reasonOptions.map((option) => (
+                    <button
+                      key={option}
+                      style={{
+                        marginLeft: "14px",
+                        marginBottom: "15px",
+                        backgroundColor: "#E9E9E9",
+                        borderRadius: "12px",
+                        backgroundColor:
+                          option != selectedOption ? "#E9E9E9" : " #B9B6B6",
+                        height: "45px",
+                        width: "185px",
+                      }}
+                      name="reason"
+                      value={option}
+                      onClick={() => {
+                        setSelectedOption(option);
+                        setShowOtherInput(option === "Other");
+                      }}
+                      disabled={selectedOption && selectedOption !== option}
+                    >
+                      <label
+                        htmlFor={option}
+                        style={{
+                          fontSize: "18px",
+                          fontfamily: "arial",
+                          color: "#727272",
+                          fontWeight: "bold",
+                        }}
+                      >
+                        {option}
+                      </label>
+                      {selectedOption === option && (
+                        <BiCheck
+                          className="check"
+                          style={{ marginLeft: "15px" }}
+                        />
+                      )}
+                    </button>
+                  ))}
+                  {showOtherInput && (
+                    <div>
+                      <input
+                        style={{ marginTop: "5px" }}
+                        type="text"
+                        id="otherReason"
+                        name="otherReason"
+                        className="otherreason"
+                        placeholder="Please specify"
+                        value={otherReasonInput}
+                        onChange={(event) =>
+                          setOtherReasonInput(event.target.value)
+                        }
+                      />
+                    </div>
+                  )}
+                  <br />
+                  <br></br>
+                  <div
+                    className="border"
+                    style={{
+                      color: "lightgray",
+                      display: "flex",
+                      flexDirection: "column",
+                    }}
+                  >
+                    <div style={{ display: "flex", alignItems: "center" }}>
+                      <BiInfoCircle
+                        className="svgg"
+                        style={{ marginRight: "5px" }}
+                      />
+                      <h6
+                        style={{
+                          marginTop: "5px",
+                          marginLeft: "30px",
+                          color: "#8E8C8C",
+                        }}
+                      >
+                        If someone is in immediate danger,
+                      </h6>
+                    </div>
+                    <h6
+                      style={{
+                        marginTop: "5px",
+                        marginLeft: "60px",
+                        color: "#8E8C8C",
+                      }}
+                    >
+                      call local emergency services, don't wait
+                    </h6>
+                  </div>
+                </div>{" "}
+              </Modal.Body>
+              <Modal.Footer class="modal-footer">
+                <button
+                  style={{
+                    marginBottom: "10px",
+
+                    fontSize: "18px",
+                    fontfamily: "arial",
+                    fontWeight: "bold",
+
+                    width: "450px",
+                  }}
+                  className="sendbutton"
+                  onClick={() => handlereport(modal)}
+                >
+                  Send
+                </button>
+              </Modal.Footer>
+            </Modal>
+             
             </div>
             <div className="post-content">
               {isupdated === false && (

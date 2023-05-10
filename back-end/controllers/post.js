@@ -666,7 +666,10 @@ module.exports.getassociationpost = async (req, res) => {
   try {
     const { id } = req.params;
     const association = await Association.findById(id);
-    const posts = await PostModel.find({ posterId: association._id }).populate({
+    const posts = await PostModel.find({ posterId: association._id ,
+      reports: { $not: { $elemMatch: { reportedBy: id } } },
+    })
+    .populate({
       path: "likers.likerid",
       select: "firstName lastName profilePicture",
     }) .populate({
