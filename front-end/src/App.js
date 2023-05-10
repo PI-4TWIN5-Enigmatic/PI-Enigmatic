@@ -40,6 +40,7 @@ import DetailDonation from './components/donnation/DetailDonation';
 
 
 import Reels from "./components/Reels/Reels";
+import ListeFriends from './components/profilePage/ListeFriends';
 
 
 
@@ -82,6 +83,7 @@ function App() {
     <Route path="/partnershipConfirmed" element={<PartnershipConfirmed />}></Route>
     <Route path="/meetHomePage/:id" element={<MeetHomePage/>}></Route>
     <Route path="/meetRoom/:roomID" element={<MeetRoom/>}></Route>
+    <Route path="/friends/:id" element={<ListeFriends />}></Route>
 
     
     
