@@ -21,7 +21,7 @@ import { Link } from "react-router-dom";
 import ReactPaginate from "react-paginate";
 import { useNavigate } from "react-router-dom";
 
-const Posts = () => {
+const Reported = () => {
   const [currentPage, setCurrentPage] = useState(0);
   const [itemsPerPage, setItemsPerPage] = useState(3);
   const [cookies, _]=useCookies(['token'])
@@ -46,10 +46,12 @@ const Posts = () => {
   };
 
   useEffect(() => {
-    axios.get("http://localhost:8000/api/post/getpost").then((response) => {
+    axios.get("http://localhost:8000/api/post/getReportedPosts").then((response) => {
       setData(response.data);
     });
   }, [handleDelete]);
+
+
 
   
 
@@ -95,7 +97,7 @@ const Posts = () => {
         <CCardHeader>
           {" "}
           <CCardTitle style={{ color: "#3622e8" }}>
-            Posts Management
+            Reported Posts
             <hr />{" "}
           </CCardTitle>
         </CCardHeader>
@@ -192,4 +194,4 @@ const Posts = () => {
   );
 };
 
-export default Posts;
+export default Reported;

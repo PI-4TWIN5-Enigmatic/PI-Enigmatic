@@ -57,6 +57,13 @@ const _nav = [
 
   },
 
+  {
+    component: CNavItem,
+    name: 'Reported Posts',
+    to: '/Reported',
+    icon: <CIcon icon={cilBuilding} customClassName="nav-icon" />,
+
+  },
 
 ]
 
