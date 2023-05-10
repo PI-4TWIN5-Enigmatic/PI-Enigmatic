@@ -618,9 +618,6 @@ const navigate = useNavigate();
                           <Link style={{ textDecoration: 'none', color: 'white' }} to={`http://localhost:3000/updateEvent/${id}`}>  Update Event </Link>
                               </button>
 
-                              <button className="btn btn-danger btn-lg" style={{marginRight: "20px"}} >
-                          <Link style={{ textDecoration: 'none', color: 'white' }} to={`http://localhost:3000/meetHomePage`}>  Meeting Room </Link>
-                              </button>
 
                           </div>
 
