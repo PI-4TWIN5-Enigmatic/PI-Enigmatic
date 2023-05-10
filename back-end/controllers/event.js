@@ -283,7 +283,67 @@ exports.deleteEvent = (req, res) => {
           res.status(500).json({ error: err.message });
         }
       }
-    
+      exports.participation = async (req, res) => {
+        try {
+          const { idUser } = req.body
+          const events = await Event.find();
+          const s = [];
+      
+          for (const e of events) {
+            const isPart = e.participants.get(idUser);
+            if (isPart) {
+              s.push(e);
+            }
+          }
+      
+          res.status(200).json(s);
+        } catch (err) {
+          res.status(404).json({ error: err.message });
+        }
+      };
+      
+
+      exports.intresting = async (req, res) => {
+        try {
+          const { idUser } = req.body
+          const events = await Event.find();
+          const s = [];
+      
+          for (const e of events) {
+            const isPart = e.interested.get(idUser);
+            if (isPart) {
+              s.push(e);
+            }
+          }
+      
+          res.status(200).json(s);
+        } catch (err) {
+          res.status(404).json({ error: err.message });
+        }
+      };
+
+
+      exports.founder = async (req, res) => {
+        try {
+          const { idUser } = req.body;
+          const events = await Event.find();
+          const s = [];
+          
+          for (const e of events) {
+            console.log(e.organisateurEvent)
+            const isPart = e.organisateurEvent.includes(idUser);
+            if (isPart) {
+              s.push(e);
+            }
+          }
+          
+          res.status(200).json(s);
+          
+        } catch (err) {
+          res.status(404).json({ error: err.message });
+        }
+      };
+      
       
 
       exports.sendMailEvent=async(req,res)=>{

@@ -10,7 +10,7 @@ const MeetRoom = () => {
       // generate Kit Token
        const appID = 1247622317 ;
        const serverSecret = "89713d1e1ac411af134226d3c7e1038a";
-       const kitToken =  ZegoUIKitPrebuilt.generateKitTokenForTest(appID, serverSecret, roomID,  Date.now().toString() ,"add user name");
+       const kitToken =  ZegoUIKitPrebuilt.generateKitTokenForTest(appID, serverSecret, roomID,  Date.now().toString() ," /add user name/");
        const zp = ZegoUIKitPrebuilt.create(kitToken);
        zp.joinRoom({
           container: element,

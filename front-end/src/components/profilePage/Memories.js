@@ -36,19 +36,20 @@ const Memories = () => {
 
                             <div className="card widget-item" >
                                 <h4 className ="widget-title">Sweets Memories</h4>
+                                
                                 <div className ="widget-body">
                                     <div className ="sweet-galley img-gallery">
                                         <div className ="row row-5">
                                             <div className ="col-4">
-                                                <div className ="gallery-tem"  style={{display:"flex",flexWrap: "nowrap",width:"200px", "marginright": "50px"}}  >{Array.from(posts).map((e) => (
+                                                <div className ="gallery-tem"  style={{display:"flex",flexWrap: "nowrap",width:"200px", "marginright": "50px"}}  >
 
-                                                    <figure className ="post-thumb"key={e._id} style={{display:"inline-block",width:"800px", "marginright": "50px"}} >
+                                                    <figure className ="post-thumb" style={{display:"inline-block",width:"800px", "marginright": "50px"}} >
                                                         <a className ="gallery-selector" href="assets/images/gallery/gallery-1.jpg">
-                                                            <img src={e.img} alt="sweet memory" style={{display:"flex",overflow:"auto",width:"1000px",  "margin": "10px"
+                                                            <img src="../assets/Live collaboration-amico.png" alt="sweet memory" style={{display:"flex",overflow:"auto",width:"1000px",  marginLeft: "25px"
 }} />
-                                                        </a>
+                                                        </a> 
                                                     </figure>
-                                               ))}  </div>
+                                                </div>
                            </div></div></div></div></div>
                                         
                                            

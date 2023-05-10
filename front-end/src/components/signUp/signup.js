@@ -2,16 +2,21 @@ import React, { useState,useEffect } from 'react'
 import axios from 'axios'
 import ReCAPTCHA from 'react-google-recaptcha';
 import GoogleButton from 'react-google-button'
-import { useNavigate, useParams } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { Button, Form, Modal } from 'react-bootstrap';
 
 import { useLocation } from "react-router-dom";
 
 import { useCookies } from "react-cookie";
-
-
-
+import EmailIcon from '@mui/icons-material/Email';
+import KeyIcon from '@mui/icons-material/Key';
+import WcIcon from '@mui/icons-material/Wc';
+import WifiCalling3Icon from '@mui/icons-material/WifiCalling3';
+import WorkIcon from '@mui/icons-material/Work';
+import PhotoIcon from '@mui/icons-material/Photo';
+import BadgeIcon from '@mui/icons-material/Badge';
+import LockResetIcon from '@mui/icons-material/LockReset';
 function Signup() {
 
     const [_, setCookies] = useCookies(["access_token"]);
@@ -315,153 +320,352 @@ function Signup() {
   
 
   return (
-    <main>
-        <div className="main-wrapper pb-0 mb-0">
-            <div className="timeline-wrapper">
-                <div className="timeline-header">
-                    <div className="container-fluid p-0">
-                        <div className="row no-gutters align-items-center">
-                            <div className="col-lg-6">
-                                <div className="timeline-logo-area d-flex align-items-center">
-                                    <div className="timeline-logo">
-                                        <a href="index.html">
-                                            <img src="assets/images/logo/logoGive.jpg " style={{width : 100}} alt="timeline logo"/>
-                                        </a>
-                                    </div>
-                                    <div className="timeline-tagline">
-                                  
-                                        <h6 className="tagline">It’s helps you to connect and share with the people in your life</h6>
-                                    </div>
-                                </div>
-                            </div>
+//     <main style={{backgrounColor: "rgba(188, 188, 188, 0.26)"}}>
+//         <div className="main-wrapper pb-0 mb-0">
+//             <div className="timeline-wrapper">
+//                 <div className="timeline-header  " >
+                    
+//                     <div className="container-fluid p-0">
+//                     <div className="row no-gutters align-items-center">
+
+//                     <div className="col ">
 
 
-                            <div className="col-lg-6">
-                                <div className="login-area" >
-                                    <div className="row align-items-center">
-                                        <div className="col-12 col-sm">
-                                         <input onChange={(event) => setEmaill(event.target.value)}  type="email" className="single-field" placeholder="Email" value={emaill}/>
-                                        </div>
-                                        <div className="col-12 col-sm">
-                                       <input    onChange={(event) => setPasswordd(event.target.value)}  type="password" className="single-field" placeholder="Password" value={passwordd}/>
-                                        </div>
-                                        <div className="col-12 col-sm-auto">
-                                        <button  onClick={handleSubmitt} className="submit-btn" style={{borderRadius: 30}}>login</button>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+//                             <div className="col-lg-6 " >
+//                                 <div className="login-area " style={{backgroundColor:'transparent'}}>
+
+//                                     <div className="row align-items-center "  >
+//                                         <div className="col-12 col-sm"   >
+//                                          <input onChange={(event) => setEmaill(event.target.value)}  type="email" className="single-field" placeholder="Email" value={emaill} 
+//                                              style={{ color: '#dc4734', WebkitTextFillColor: '#dc4734', opacity: 0.5  ,  borderBottomColor: '#dc4734' }}
+//                                             />
+//                                         </div>
+//                                         <div className="col-12 col-sm">
+//                                        <input    onChange={(event) => setPasswordd(event.target.value)}  type="password" className="single-field" placeholder="Password" value={passwordd}
+//                                              style={{ color: '#dc4734', WebkitTextFillColor: '#dc4734', opacity: 0.5  ,  borderBottomColor: '#dc4734' }}
+
+//                                        />
+//                                         </div>
+//                                         <div className="col-12 col-sm-auto">
+//                                         <button  onClick={handleSubmitt} className="submit-btn" style={{borderRadius: 30 }}>login</button>
+//                                         </div>
+                                     
+
+//                                     </div>
+//                                 </div>
+                                
+//                                 </div>
+
+//                             </div>
+//                         </div>
+//                     </div>
+//                 </div>
 
 
-                <div className="timeline-page-wrapper">
-                    <div className="container-fluid p-0">
-                        <div className="row no-gutters">
-                            <div className="col-lg-6 order-2 order-lg-1">
-                                <div className="timeline-bg-content bg-img" data-bg="assets/images/timeline/adda-timeline.jpg">
-                                  
-                                <img src="assets/images/logo/logoGive.jpg " style={{width : 6000, height : 1000}} alt="timeline logo"/>
-                                    {/* <h3 className="timeline-bg-title" style={{color: "red"}}>Let’s see what’s happening to you and your world. Welcome in Give Back.</h3> */}
-                                </div>
-                            </div>
-                            <div className="col-lg-6 order-1 order-lg-2 d-flex align-items-center justify-content-center">
-                                <div className="signup-form-wrapper" >
-                                    <h1 className="create-acc text-center">Create An Account</h1>
-                                    <div className="signup-inner text-center" style={{borderRadius: 30}}>
-                                        <h3 className="title">Wellcome to Give Back</h3>
-                                        <form className="signup-inner--form">
-                                            <div className="row">
-                                                <div className="col-12">
-                                                    <input  value={email}
-                                                      onChange={(event) => setEmail(event.target.value)} type="email" className="single-field" placeholder="Email" />
-                                                    {errors.email !== " " ? <div style={{textAlign:'left' , paddingBottom:'10px', color: 'rgb(220,71,52)'}} >{errors.email} </div> : ''}
-                                                </div>
-                                                <div className="col-md-6">
-                                                    <input  onChange={(event) => setFirstName(event.target.value)}  type="text" className="single-field" placeholder="First Name" value={firstName}/>
-                                                    {errors.firstName !== " " ? <div style={{textAlign:'left' , paddingBottom:'10px' , color: 'rgb(220,71,52)'}} >{errors.firstName} </div> : ''}
-                                                </div>
-                                                <div className="col-md-6">
-                                                    <input   onChange={(event) => setLastName(event.target.value)}  type="text" className="single-field" placeholder="Last Name" value={lastName}/>
-                                                    {errors.lastName !== " " ? <div style={{textAlign:'left' , paddingBottom:'10px'  , color: 'rgb(220,71,52)'}} >{errors.lastName} </div> : ''}
+//                 <div className="timeline-page-wrapper">
+//                     <div className="container-fluid p-0">
+//                         <div className="row no-gutters">
+//                             <div className="col-lg-6 order-2 order-lg-1">
+//                                 <div className="timeline-bg-content bg-img" data-bg="assets/images/timeline/adda-timeline.jpg">
+//                                 <br/> <br/>
+//                                 <div className='main-wrapper'>
+//                                 <div className="signup-inner text-center" style={{borderRadius: 30 }}>
+//                                         <h3 className="title">Welcome to GiveBack</h3>
+//                                         <form className="signup-inner--form">
+//                                             <div className="row">
+//                                                 <div className="col-12 d-flex">
+//                                                     <EmailIcon style={{opacity: 0.69}}/>
+//                                                     <input  value={email}
+//                                                       onChange={(event) => setEmail(event.target.value)} type="email" className="single-field" placeholder="Email" />
+//                                                     {errors.email !== " " ? <div style={{textAlign:'left' , paddingBottom:'10px', color: 'rgb(220,71,52)'}} >{errors.email} </div> : ''}
+//                                                 </div>
+//                                                 <div className="col-md-6 d-flex">
+//                                                     <BadgeIcon style={{opacity: 0.69}}/>
+//                                                     <input  onChange={(event) => setFirstName(event.target.value)}  type="text" className="single-field" placeholder="First Name" value={firstName} style={{width:"165px"}}/>
+//                                                     {errors.firstName !== " " ? <div style={{textAlign:'left' , paddingBottom:'10px' , color: 'rgb(220,71,52)' , paddingRight:"20px" }} >{errors.firstName} </div> : ''}
+//                                                     <input   onChange={(event) => setLastName(event.target.value)}  type="text" className="single-field" placeholder="Last Name" value={lastName} style={{width:"165px"}}/>
+//                                                     {errors.lastName !== " " ? <div style={{textAlign:'left' , paddingBottom:'10px'  , color: 'rgb(220,71,52)'}} >{errors.lastName} </div> : ''}
 
-                                                </div>
-                                                <div className="col-12">
-                                                    <input  onChange={(event) => setPassword(event.target.value)} type="password" className="single-field" placeholder="Password" value={password}/>
-                                                    {errors.password !== " " ? <div style={{textAlign:'left', paddingBottom:'10px'  , color: 'rgb(220,71,52)'}} >{errors.password} </div> : ''}
+//                                                 </div>
+//                                                 <div className="col-12 d-flex">
+//                                                     <KeyIcon style={{opacity: 0.69}}/>
+//                                                     <input  onChange={(event) => setPassword(event.target.value)} type="password" className="single-field" placeholder="Password" value={password} />
+//                                                     {errors.password !== " " ? <div style={{textAlign:'left', paddingBottom:'10px'  , color: 'rgb(220,71,52)'}} >{errors.password} </div> : ''}
 
-                                                </div>
-                                                <div className="col-md-12">
-                                                    <select className="nice-select" onChange={(event) => setSexe(event.target.value)} value={sexe} name="sortby">
-                                                        <option value="">Gender</option>
-                                                        <option value="Male">Male</option>
-                                                        <option value="Female">Female</option>
-                                                    </select>
-                                                    {errors.sexe !== "" ? <div style={{textAlign:'left' , paddingBottom:'10px'  , color: 'rgb(220,71,52)'}} >{errors.sexe} </div> : ''}
+//                                                 </div>
+//                                                 <div className="col-md-12 d-flex">
+//                                                     <WcIcon style={{opacity: 0.69}}/>
+//                                                     <select className="nice-select" onChange={(event) => setSexe(event.target.value)} value={sexe} name="sortby">
+//                                                         <option value="">Gender</option>
+//                                                         <option value="Male">Male</option>
+//                                                         <option value="Female">Female</option>
+//                                                     </select>
+//                                                     {errors.sexe !== "" ? <div style={{textAlign:'left' , paddingBottom:'10px'  , color: 'rgb(220,71,52)'}} >{errors.sexe} </div> : ''}
 
-                                                </div>
-                                                <div className="col-12">
-                                                    <input  onChange={(event) => setPhone(event.target.value)}  type="text" className="single-field" placeholder="Phone number" value={phone} />
-                                                    {errors.phone !== " " ? <div style={{textAlign:'left' , paddingBottom:'10px'  , color: 'rgb(220,71,52)'}} >{errors.phone} </div> : ''}
+//                                                 </div>
+//                                                 <div className="col-12 d-flex">
+//                                                     <WifiCalling3Icon style={{opacity: 0.69}}/>
+//                                                     <input  onChange={(event) => setPhone(event.target.value)}  type="text" className="single-field" placeholder="Phone number" value={phone} />
+//                                                     {errors.phone !== " " ? <div style={{textAlign:'left' , paddingBottom:'10px'  , color: 'rgb(220,71,52)'}} >{errors.phone} </div> : ''}
 
-                                                </div>
-                                                <div className="col-12">
-                                                    <select className="nice-select"  onChange={(event) => setOccupation(event.target.value)} value={occupation} name="sortby">
-                                                        <option value="">Occupation</option>
-                                                        <option value="Student">Student</option>
-                                                        <option value="Employee">Employee</option>
-                                                    </select>
-                                                    {errors.occupation !== "" ? <div style={{textAlign:'left' , paddingBottom:'10px'  , color: 'rgb(220,71,52)'}} >{errors.occupation} </div> : ''}
+//                                                 </div>
+//                                                 <div className="col-12 d-flex">
+//                                                     <WorkIcon style={{opacity: 0.69}}/>
+//                                                     <select className="nice-select"  onChange={(event) => setOccupation(event.target.value)} value={occupation} name="sortby">
+//                                                         <option value="">Occupation</option>
+//                                                         <option value="Student">Student</option>
+//                                                         <option value="Employee">Employee</option>
+//                                                     </select>
+//                                                     {errors.occupation !== "" ? <div style={{textAlign:'left' , paddingBottom:'10px'  , color: 'rgb(220,71,52)'}} >{errors.occupation} </div> : ''}
 
-                                                </div>
-                                                <div className="col-12">
-                                                    <input   onChange={(event) => setProfilePicture(event.target.files[0])}    type="file" accept=".png, .jpg, .jpeg" name="photo" />
-                                                    {errors.profilePicture !== " " ? <div style={{textAlign:'left' , paddingBottom:'10px'  , color: 'rgb(220,71,52)'}} >{errors.profilePicture} </div> : ''}
+//                                                 </div>
+//                                                 <div className="col-12 d-flex">
+//                                                     <PhotoIcon style={{opacity: 0.69}}/>
+//                                                     <input   onChange={(event) => setProfilePicture(event.target.files[0])}    type="file" accept=".png, .jpg, .jpeg" name="photo" />
+//                                                     {errors.profilePicture !== " " ? <div style={{textAlign:'left' , paddingBottom:'10px'  , color: 'rgb(220,71,52)'}} >{errors.profilePicture} </div> : ''}
 
-                                                </div>
-                                                <div className="col-12">
-                                                    <ReCAPTCHA sitekey={SITE_KEY}
-                                                    onChange={onChange}
-                                                    />
-                                                {errors.recaptcha !== " " ? <div style={{textAlign:'left' , paddingBottom:'10px'  , color: 'rgb(220,71,52)'}} >{errors.recaptcha} </div> : ''}
+//                                                 </div>
+//                                                 <div className="col-12">
+//                                                     <br/>
+//                                                     <ReCAPTCHA sitekey={SITE_KEY}
+//                                                     onChange={onChange}
+//                                                     />
+//                                                 {errors.recaptcha !== " " ? <div style={{textAlign:'left' , paddingBottom:'10px'  , color: 'rgb(220,71,52)'}} >{errors.recaptcha} </div> : ''}
 
-                                                </div> 
-                                                <div className="col-12">
-                                                    <button  onClick={handleSubmit} className="submit-btn" style={{borderRadius: 30}}>Create Account</button>
+//                                                 </div> 
+//                                                 <div className="col-12">
+//                                                     <button  onClick={handleSubmit} className="submit-btn" style={{borderRadius: 30}}>Create Account</button>
                                                  
 
-                                                </div>
+//                                                 </div>
 
-                                                <div className="col-12 ">
-                                                    <div className="col-12 ">
-                                                         <p>Or</p> 
+//                                                 <div className="col-12 justify-content-center  ">
+//                                                     <div className="col-12 ">
+//                                                          <>Or</> 
 
-                                                            <div>
-                                                            <GoogleButton
-                                                                type="light" // can be light or dark
-                                                                onClick={ signInGoogle }
-                                                                />
+//                                                             <div>
+//                                                             <GoogleButton
+//                                                                 type="light" // can be light or dark
+//                                                                 onClick={ signInGoogle }
+//                                                                 />
                                                                          
-                                                            </div>
+//                                                             </div>
                     
-                                                            </div>       
+//                                                             </div>       
                                                     
-                                                    </div>
-                                                    <h6 className="terms-condition">Forget your password !? <a onClick={handleShow}>click here !</a></h6>
+//                                                     </div>
+//                                                     <h6 className="terms-condition" style={{paddingBottom:'10px' }}><LockResetIcon /> Forget your password !? <a onClick={handleShow}>click here !</a></h6>
 
-                                            </div>
-                                            <h6 className="terms-condition">I have read & accepted the <a href="#">terms of use</a></h6>
-                                        </form>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+//                                             </div>
+//                                             {/* <h6 className="terms-condition">I have read & accepted the <a href="#">terms of use</a></h6> */}
+//                                         </form>
+//                                     </div>                                </div>
+//                             </div>
+//                             </div>
+//                             <div className="col-lg-6 order-1 order-lg-1 d-flex align-items-center justify-content-center">
+
+//                             <img src="assets/loogin.png " style={{width : 60000, height : 1000 }} alt="timeline logo" />
+//                             </div>
+//                         </div>
+//                     </div>
+//                 </div>
+//             </div>
+//         </div>
+      //   <Modal show={show} onHide={handleClose}>
+      //   <Modal.Header closeButton>
+      //     <Modal.Title>Reset Password</Modal.Title>
+      //   </Modal.Header>
+      //   <Form onSubmit={handleVerif}>
+      //       <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
+      //         <Form.Label>Email address</Form.Label>
+      //         <Form.Control
+      //           type="email"
+      //           placeholder="name@example.com"
+      //           autoFocus
+      //           name='email'
+               
+      //           value={emailVerif}
+      //           onChange={(e) => setEmailVerif(e.target.value)}
+      //         />
+      //       </Form.Group>
+           
+      //     </Form>
+      //   <Modal.Footer>
+      //     <Button variant="secondary" onClick={handleClose}>
+      //       Close
+      //     </Button>
+      //     <Button variant="danger" type='submit' onClick={handleVerif}>
+      //       Save Changes
+      //     </Button>
+      //   </Modal.Footer>
+      // </Modal>
+// </main>
+<>
+
+ <section className="text-center text-lg-start" style={{backgroundImage:"url('../../baaack.jpg')" ,  backgroundRepeat: "no-repeat", backgroundSize: "cover"}}>
+          {/* <a className="navbar-brand" >
+          <img
+                      src="../../assets/enigmatic.jpg"
+                      alt="brand logo"
+                      style={{ width: "80px" , borderRadius: "50%" }}
+                    />            GiveBack 
+          </a> */}
+          <div className="login-container" style={{  top: 0, right: 0 , alignItems:"center"}} >
+
+<div className='d-flex  justify-content-between ' style={{ paddingLeft:"30px" , alignItems:"center"}}>
+
+        <div className="form-group justify-content-end ">
+            
+            <div className="d-flex flex-wrap align-items-center justify-content-between">
+
+                <div className="d-flex align-items-center " >
+                <div className="form-outline d-flex justify-content-between align-items-center  ">
+                    <EmailIcon style={{ opacity: 0.69 }} />
+                    <input type="email" class="form-control form-control-lg" value={emaill}  onChange={(event) => setEmaill(event.target.value)}  placeholder="Enter a valid email address" style={{  width: "90%" }} />
+
                 </div>
+                <div className="form-outline d-flex justify-content-between align-items-center ">
+                    <KeyIcon style={{ opacity: 0.69 }} />
+                    <input type="password" class="form-control form-control-lg" placeholder="Enter password" onChange={(event) => setPasswordd(event.target.value)}  value={passwordd}  style={{ width: "90%" }}/>
+                </div>
+
+                <button onClick={handleSubmitt} className="submit-btn " style={{ borderRadius: 30, width: "10%"  }}>login</button>
+                </div>
+
             </div>
-        </div>
-        <Modal show={show} onHide={handleClose}>
+            </div>
+
+            </div>
+            </div>
+
+
+         
+
+
+
+
+
+
+  <div className="container py-4" >
+    <div className="row g-0 align-items-center">
+      <div className="col-lg-6 mb-5 mb-lg-0">
+      <div className='d-flex align-items-center ' style={{paddingLeft:"70px"}} >
+
+            <h1>Welcome To our community </h1>
+            
+            </div>
+      <img src="assets/loogin.png" className="w-100 rounded-4 shadow-4"
+          alt="" />
+      </div>
+
+      <div className="col-lg-6 mb-5 mb-lg-0">
+        
+     
+          <div className="card cascading-right" >
+
+          <div className="card-body p-5 shadow-5 text-center">
+                    
+          <h2 className="fw-bold mb-5">Sign up now</h2>
+              
+                     <form onSubmit={handleSubmit}>
+              <div className="row">
+                <div className="col-md-6 mb-4">
+                  <div className="form-outline">
+                    <input type="text"  className="form-control"  onChange={(event) => setFirstName(event.target.value)}   value={firstName}  />
+                    <label className="form-label"  >First name</label>
+                      {errors.firstName !== " " ? <div style={{textAlign:'left' , paddingBottom:'10px' , color: 'rgb(220,71,52)' , paddingRight:"20px" }} >{errors.firstName} </div> : ''}
+
+                  </div>
+                </div>
+                <div className="col-md-6 mb-4">
+                  <div className="form-outline">
+                    <input type="text"  className="form-control" onChange={(event) => setLastName(event.target.value)}  value={lastName} />
+                    <label className="form-label" >Last name</label>
+                    {errors.lastName !== " " ? <div style={{textAlign:'left' , paddingBottom:'10px'  , color: 'rgb(220,71,52)'}} >{errors.lastName} </div> : ''}
+
+                  </div>
+                </div>
+              </div>
+
+              <div className="form-outline mb-4">
+                <input type="email" className="form-control"  value={email}
+                onChange={(event) => setEmail(event.target.value)} />
+                <label className="form-label" >Email address</label>
+                  {errors.email !== " " ? <div style={{textAlign:'left' , paddingBottom:'10px', color: 'rgb(220,71,52)'}} >{errors.email} </div> : ''}
+
+              </div>
+
+              <div className="form-outline mb-4">
+                <input type="password"  className="form-control" onChange={(event) => setPassword(event.target.value)} value={password}/>
+                <label className="form-label" >Password</label>
+              </div>
+
+              <div className="form-outline mb-4" >
+                <select className="nice-select" onChange={(event) => setSexe(event.target.value)} value={sexe} name="sortby">                                                    <option value="">Gender</option>
+                     <option value="Male">Male</option>
+                       <option value="Female">Female</option>
+                </select>
+                  {errors.sexe !== "" ? <div style={{textAlign:'left' , paddingBottom:'10px'  , color: 'rgb(220,71,52)'}} >{errors.sexe} </div> : ''}
+
+              </div>
+              <div className="form-outline mb-4">
+                <input type="text" id="form3Example3" className="form-control" onChange={(event) => setPhone(event.target.value)}  value={phone} />
+                <label className="form-label" >Phone Number</label>
+                {errors.phone !== " " ? <div style={{textAlign:'left' , paddingBottom:'10px'  , color: 'rgb(220,71,52)'}} >{errors.phone} </div> : ''}
+
+              </div>
+              <div className="form-outline mb-4">
+
+
+              <select className="nice-select"  onChange={(event) => setOccupation(event.target.value)} value={occupation} name="sortby">
+                         <option value="">Occupation</option>
+                               <option value="Student">Student</option>
+                                       <option value="Employee">Employee</option>
+                                                 </select>
+                                                 {errors.occupation !== "" ? <div style={{textAlign:'left' , paddingBottom:'10px'  , color: 'rgb(220,71,52)'}} >{errors.occupation} </div> : ''}
+
+              </div>
+                <br/><br/>
+              <div className="form-outline mb-4 ">
+                                               <input   onChange={(event) => setProfilePicture(event.target.files[0])}    type="file" accept=".png, .jpg, .jpeg" name="photo" />
+                                              {errors.profilePicture !== " " ? <div style={{textAlign:'left' , paddingBottom:'10px'  , color: 'rgb(220,71,52)'}} >{errors.profilePicture} </div> : ''}
+
+                                          </div>
+
+             <div className="form-outline mb-4 ">
+                 <br/>
+                <ReCAPTCHA sitekey={SITE_KEY}
+                    onChange={onChange}
+                 />
+                {errors.recaptcha !== " " ? <div style={{textAlign:'left' , paddingBottom:'10px'  , color: 'rgb(220,71,52)'}} >{errors.recaptcha} </div> : ''}
+
+             </div>
+              <button type="submit" className="btn btn-danger btn-block mb-4"  style={{paddingLeft:"10px"}}>
+                Sign up
+              </button>
+
+              
+
+              <div className="text-center">
+                <p>or sign up with:</p>
+
+                         <div className='d-flex justify-content-center'>
+                                <GoogleButton
+                                   type="light" 
+                                    onClick={ signInGoogle }
+                                />
+                                                                                                                                                                    
+                           </div>
+               <div className='d-flex'>
+                          <h6 className="terms-condition" style={{paddingBottom:'10px' }}><LockResetIcon /> Forget your password !? <a onClick={handleShow}>click here !</a></h6>
+                </div>
+                                                                       
+                                                                                                                
+                                                        </div>       
+                                                    
+            </form>
+          </div>
+          <Modal show={show} onHide={handleClose}>
         <Modal.Header closeButton>
           <Modal.Title>Reset Password</Modal.Title>
         </Modal.Header>
@@ -489,7 +693,14 @@ function Signup() {
           </Button>
         </Modal.Footer>
       </Modal>
-</main>
+        </div>
+
+
+      </div>
+    </div>
+  </div>
+</section> 
+</>
   )
 }
 

@@ -97,7 +97,7 @@ return (
       onChange={(e) => setQuery(e.target.value)}
     />
     <div className="ml-auto d-flex align-items-center"> 
-       <CButton className='mr-2' color="primary" onClick={goStatistic}>View Statistics</CButton> 
+   <CButton className='mr-2' color="primary" onClick={goStatistic}>View Statistics</CButton> 
       <CButton className='mr-2' color="primary" onClick={goCalendar}>View Calendar</CButton>  
     </div>
   </div>

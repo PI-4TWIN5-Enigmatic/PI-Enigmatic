@@ -120,3 +120,33 @@ exports.deleteDonnation = async (req, res) => {
   }
   
 }
+
+exports.getDonationTypes = async (req, res, next) => {
+  try {
+    const donations = await Donation.find();
+    const donationCounts = donations.reduce((counts, donation) => {
+      const type = donation.type;
+      counts[type] = counts[type] ? counts[type] + 1 : 1;
+      return counts;
+    }, {});
+    res.status(200).json(donationCounts);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'Server error' });
+  }
+};
+
+exports.getDonationCountsBySector = async (req, res, next) => {
+  try {
+    const donations = await Donation.find();
+    const sectorCounts = donations.reduce((counts, donation) => {
+      const sector = donation.sector;
+      counts[sector] = counts[sector] ? counts[sector] + 1 : 1;
+      return counts;
+    }, {});
+    res.status(200).json(sectorCounts);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'Server error' });
+  }
+};

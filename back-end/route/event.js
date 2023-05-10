@@ -2,14 +2,14 @@ const express = require('express')
 const router = express.Router()
 const {createEvent , getAssociationEvents , getEventById ,getAllEvent , updateEvent , 
     deleteEvent ,participateEvent,interestedInEvent, reviewEvent, deleteReviewEvent, 
-    attendeesList,unconfirm, getRating, getUserScore, sendMailEvent,confirmPartner, favoriteEvents, getEventsByIds} = require("../controllers/event")
+    attendeesList,unconfirm, getRating, getUserScore, sendMailEvent,confirmPartner, favoriteEvents, getEventsByIds, participation, intresting, founder} = require("../controllers/event")
 const{verifyToken}=require ("../middleware/auth")
 
 
 router.post('/:id/createEvent',verifyToken, createEvent)
 router.get("/:organisateurEvent/events" ,verifyToken, getAssociationEvents);
 router.get("/getEventById/:id" , getEventById);
-router.get("/getAllEvent" ,verifyToken, getAllEvent);
+router.get("/getAllEvent" , getAllEvent);
 router.put("/updateEvent/:id" ,verifyToken, updateEvent);
 router.delete('/deleteEvent/:id',verifyToken,deleteEvent);
 router.patch('/participateEvent/:id',verifyToken, participateEvent);
@@ -24,6 +24,10 @@ router.post("/sendMailEvent", sendMailEvent);
 router.post("/confirmPartner", confirmPartner);
 router.patch("/favEvent", favoriteEvents);
 router.post('/getEventsByIds' ,getEventsByIds);
+router.post('/getParticipation' ,participation);
+router.post('/getInteresting' , intresting);
+router.post('/getFounder' , founder);
+
 
 
 module.exports = router;

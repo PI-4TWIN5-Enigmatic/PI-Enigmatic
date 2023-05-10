@@ -190,11 +190,13 @@ const ListeFriends = () => {
                             <div className="content-box friends-zone">
                                 <div className="row mt--20 friends-list">
                                     <div className="col-lg-3 col-sm-6 recently request">
+                                    {Array.isArray(Friends) && 
+                                        Friends.map((friend) => (
+                                          <>
                                         <div className="friend-list-view">
                                         
-                                        {Array.isArray(Friends) && 
-                                        Friends.map((friend) => (
-    <>
+                                        
+   
       <div className="profile-thumb">
         <a href="profile">
           <figure className="profile-thumb-middle">
@@ -210,10 +212,11 @@ const ListeFriends = () => {
           </a>
         </h6>
       </div>
-    </>
-  ))}
+   
 
                                         </div>
+                                        </>
+  ))}
                                     </div>
                                 </div>
                             </div>

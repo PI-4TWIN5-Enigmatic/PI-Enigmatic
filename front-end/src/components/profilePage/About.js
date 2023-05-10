@@ -146,7 +146,6 @@ const handleFollow = async () => {
 
 });
     setFollowing(true);
-    console.log(res.data.message);
   } catch (err) {
     console.error(err);
   }

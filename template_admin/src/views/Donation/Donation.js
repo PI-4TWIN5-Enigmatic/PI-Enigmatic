@@ -15,7 +15,7 @@ import {
 import { MDBCol} from "mdbreact";
 import axios from 'axios';
 import { Cookies, useCookies } from "react-cookie";
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import ReactPaginate from 'react-paginate';
 import './Donation.css'
 
@@ -27,7 +27,7 @@ const Donation = () => {
   const [cookies, _]=useCookies(['token'])
 
   const  [Donation,setDonation]=useState([]);
-
+  const navigate = useNavigate();
   const[query,setQuery]=useState('')
 
     const [data, setData] = useState(null);
@@ -89,6 +89,10 @@ const Donation = () => {
       ).length / itemsPerPage
     );
 
+    const goStatistic=()=>{
+      navigate('/stat')
+    }
+
 
 
 
@@ -110,7 +114,11 @@ return (
           aria-label="Search"
           onChange={(e)=>setQuery(e.target.value)}
         />
+         <div className="ml-auto d-flex align-items-center">
+         <CButton className='mr-2' color="primary" onClick={goStatistic} >View Statistics</CButton>
+    </div>
       </div>
+
     </MDBCol>
 
    <br></br>

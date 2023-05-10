@@ -51,6 +51,8 @@ const Posts = () => {
     });
   }, [handleDelete]);
 
+  
+
   const handlePageClick = ({ selected }) => {
     setCurrentPage(selected);
   };
@@ -184,6 +186,7 @@ const Posts = () => {
             activeClassName={"active"}
           />
         </CCardBody>
+
       </CCard>
     </>
   );

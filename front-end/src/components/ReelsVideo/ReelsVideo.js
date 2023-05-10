@@ -3,23 +3,29 @@ import React, { useRef, useState, useEffect } from "react";
 // import components
 
 
-import "./Video.css";
+import "./ReelsVideo.css";
 import Header from "../ReelsHeader/Header";
 import Footer from "../ReelsFooter/Footer";
 
 
-export default function Video({ channel, song, url, likes, comment, shares }) {
+export default function ReelsVideo({ channel, song, url, likes, comment, shares , IncrementVue,onLike,isLiked }) {
   const [isVideoPlaying, setisVideoPlaying] = useState(false);
-
-  const vidRef = useRef();
+  
+ 
+   const vidRef = useRef();
 
   const onVideoClick = () => {
+   
+    
     if (isVideoPlaying) {
       vidRef.current.pause();
       setisVideoPlaying(false);
     } else {
       vidRef.current.play();
       setisVideoPlaying(true);
+      if (typeof IncrementVue === "function") {
+        IncrementVue();
+      }
     }
   };
 
@@ -33,23 +39,24 @@ export default function Video({ channel, song, url, likes, comment, shares }) {
     }
   }, []);
 
+ 
+
   return (
     <div className="video-cards">
       <Header />
-      <video
-        onClick={onVideoClick}
-        className="video-player"
-        ref={vidRef}
-        src={url}
-        loop
-      />
+      <video onClick={onVideoClick} className="video-player" ref={vidRef} loop>
+        <source src={url} type="video/mp4" />
+      </video>
       <Footer
         channel={channel}
         song={song}
         likes={likes}
         comment={comment}
         shares={shares}
-      />
+        onLike={onLike}
+        isLiked={isLiked}
+        
+        />
     </div>
   );
 }

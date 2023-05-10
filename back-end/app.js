@@ -29,6 +29,7 @@ const postRoutes = require('./route/post.routes');
 const conversationRoutes = require('./route/conversation');
 const messageRoutes = require('./route/message')
 const notifications = require('./route/notifications')
+const reel = require('./route/reels')
 
 
 // MIDDELWARE
@@ -51,6 +52,7 @@ app.use('/api/post', postRoutes);
 app.use('/conversation',conversationRoutes);
 app.use('/message',messageRoutes)
 app.use('/notifications',notifications)
+app.use('/reels', reel)
 
 // connect  database 
 mongoose.connect(process.env.DATABASE, { useNewUrlParser: true, useUnifiedTopology: true , useCreateIndex: true })

@@ -618,9 +618,6 @@ const navigate = useNavigate();
                           <Link style={{ textDecoration: 'none', color: 'white' }} to={`http://localhost:3000/updateEvent/${id}`}>  Update Event </Link>
                               </button>
 
-                              <button className="btn btn-danger btn-lg" style={{marginRight: "20px"}} >
-                          <Link style={{ textDecoration: 'none', color: 'white' }} to={`http://localhost:3000/meetHomePage`}>  Meeting Room </Link>
-                              </button>
 
                           </div>
 
@@ -669,21 +666,6 @@ const navigate = useNavigate();
 
                 </Container >
 
-          <Container className="mt-10 p-4">
-          <Col md={4} lg={4} sm={4}>
-
-          <h2>GiveBack Meeting</h2>
-            <hr />
-
-            <button className="btn btn-danger btn-lg" style={{marginRight: "20px"}} >
-                          <Link style={{ textDecoration: 'none', color: 'white' }} to={`http://localhost:3000/meetHomePage`}>  Meeting Room </Link>
-                              </button>
-            
-          </Col>
-          
-
-
-          </Container >
 
 
           </>         )}

@@ -1,5 +1,5 @@
 import React , { useState,useEffect } from 'react'
-import {MapContainer , TileLayer , Marker , Popup } from 'react-leaflet'
+import {MapContainer , TileLayer  } from 'react-leaflet'
 import '../createEvent/CreateEvent.css'
 import L from "leaflet";
 import "leaflet-control-geocoder/dist/Control.Geocoder.css";
@@ -145,19 +145,15 @@ const UpdateEvent = () => {
             };
             console.log("data:", data)
 
-            // Send a POST request to the backend API
              axios.put(`http://localhost:8000/event/updateEvent/${id}`, data , {headers:{Authorization:cookies.access_token}})
                 .then(response => {
                     console.log(response);
-                    toast.info("Event has been updated ")                    // Handle success response
-
-                    // Handle success response
+                    toast.info("Event has been updated ")                    
                 })
                 navigate(`/EventDetails/${id}`)
 
                 .catch(error => {
                     console.error(error);
-                    // Handle error response
                 });
                 }
         
