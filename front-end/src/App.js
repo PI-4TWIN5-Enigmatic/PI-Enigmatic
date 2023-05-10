@@ -40,6 +40,7 @@ import DetailDonation from './components/donnation/DetailDonation';
 import EventsHomePage from './components/Events/HomePage/EventsHomePage'
 import Savedposts from './components/Acceuil/Savedposts'
 import Reels from "./components/Reels/Reels";
+import ListeFriends from './components/profilePage/ListeFriends';
 
 
 
@@ -82,9 +83,13 @@ function App() {
     <Route path="/partnershipConfirmed" element={<PartnershipConfirmed />}></Route>
     <Route path="/meetHomePage/:id" element={<MeetHomePage/>}></Route>
     <Route path="/meetRoom/:roomID" element={<MeetRoom/>}></Route>
+
+    <Route path="/friends/:id" element={<ListeFriends />}></Route>
+
     <Route path="/EventsHomePage" element={<EventsHomePage/>}></Route>
 
     <Route path="/savedposts" element={<Savedposts />}></Route>
+
 
 
     <Route path="/HomePage/:id" element={<ProfilePageUser />}></Route>

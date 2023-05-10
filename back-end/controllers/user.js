@@ -512,3 +512,38 @@ exports.getFollowingAssociation = async (req, res) => {
 
 
 
+
+exports.getUsersFriends = async (req, res) => {
+  const userId = req.params.userId; // Assuming you pass the user ID as a parameter in the URL
+
+  try {
+    // Find the user by ID and populate the 'followingProfil' and 'followedProfil' fields
+    const user = await User.findById(userId)
+      .populate('followingProfil', 'firstName lastName profilePicture')
+      .populate('followedProfil', 'firstName lastName profilePicture');
+
+    if (!user) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+
+    const followingProfilIds = user.followingProfil.map(profile => profile._id);
+    const followedProfilIds = user.followedProfil.map(profile => profile._id);
+
+    // Find the users who are present in both 'followingProfil' and 'followedProfil' arrays of the same current user
+    const interestedProfiles = user.followingProfil.filter(profile =>
+      followedProfilIds.includes(profile._id)
+    );
+
+    res.json({ interestedProfiles });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: 'Internal server error' });
+  }
+}
+
+
+
+
+
+
+
