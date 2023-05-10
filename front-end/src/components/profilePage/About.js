@@ -201,7 +201,11 @@ const handleUnfollow = async () => {
                       </li>
                      
                       <li>
-                        <a href="friends.html">friends</a>
+                      <Link
+                          to={`http://localhost:3000/friends/${id}`}
+                        >
+                          Friends
+                        </Link>
                       </li>
                       <li>
                         <Link
@@ -214,14 +218,14 @@ const handleUnfollow = async () => {
                       </li>
                       <li>
                       <Button onClick={handleShow1}  variant="danger">
-      Following Profile
+      Followers
        <Badge bg="dark">{followingCount}</Badge>
      
     </Button>
                       </li>
                       <li>
                       <Button variant="danger" onClick={handleShow} >
-      Followed Profile <Badge bg="dark">{followersCount}</Badge>
+      Followed  <Badge bg="dark">{followersCount}</Badge>
      
     </Button>
                       </li>

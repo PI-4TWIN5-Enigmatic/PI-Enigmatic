@@ -272,7 +272,193 @@ function estNumeroTelephoneValide(telephone) {
                   <div className="card card-small">
                     <div className="share-box-inner">
                       <div className="share-content-box w-100">
-                        
+                        <form className="share-text-box">
+                          <div>
+                            <select
+                              className="share-text-field"
+                              name="sector"
+                              onChange={(event) =>
+                                setSector(event.target.value)
+                              }
+                              value={sector}
+                            >
+                              <option value="">Sector</option>
+                              <option value="Health">Health</option>
+                              <option value="Nature">Nature</option>
+                              <option value="Education">Education</option>
+                              <option value="Poverty">Poverty</option>
+                            </select>
+                            {errors.sector !== " " ? (
+                              <div
+                                style={{
+                                  textAlign: "left",
+                                  paddingBottom: "10px",
+                                  color: "rgb(220,71,52)",
+                                }}
+                              >
+                                {errors.sector}{" "}
+                              </div>
+                            ) : (
+                              ""
+                            )}
+                            <br></br>
+                          </div>
+
+                          <div>
+                            <select
+                              className="share-text-field"
+                              name="type"
+                              onChange={(event) => setType(event.target.value)}
+                              value={type}
+                            >
+                              <option value="">Type</option>
+                              <option value="Money">Money</option>
+                              <option value="Clothes">Clothes</option>
+                              <option value="Blood">Blood</option>
+                              <option value="Food">Food</option>
+                              <option value="Other">Other</option>
+                            </select>
+                            {errors.type !== " " ? (
+                              <div
+                                style={{
+                                  textAlign: "left",
+                                  paddingBottom: "10px",
+                                  color: "rgb(220,71,52)",
+                                }}
+                              >
+                                {errors.type}{" "}
+                              </div>
+                            ) : (
+                              ""
+                            )}
+                            <br></br>
+                          </div>
+
+                          <div>
+                            <input
+                              onChange={(event) => setGoal(event.target.value)}
+                              value={goal}
+                              type="number"
+                              className="share-text-field"
+                              placeholder="Goal"
+                            />
+                            {errors.goal !== " " ? (
+                              <div
+                                style={{
+                                  textAlign: "left",
+                                  paddingBottom: "10px",
+                                  color: "rgb(220,71,52)",
+                                }}
+                              >
+                                {errors.goal}{" "}
+                              </div>
+                            ) : (
+                              ""
+                            )}
+                            <br></br>
+                          </div>
+                          <div>
+                            <input
+                              onChange={(event) =>
+                                setLocation(event.target.value)
+                              }
+                              value={location}
+                              type="text"
+                              className="share-text-field"
+                              placeholder="Location"
+                            />
+                            {errors.location !== " " ? (
+                              <div
+                                style={{
+                                  textAlign: "left",
+                                  paddingBottom: "10px",
+                                  color: "rgb(220,71,52)",
+                                }}
+                              >
+                                {errors.location}{" "}
+                              </div>
+                            ) : (
+                              ""
+                            )}
+
+                            <br></br>
+                          </div>
+                          <div>
+                            <textarea
+                              onChange={(event) =>
+                                setDescription(event.target.value)
+                              }
+                              value={description}
+                              name="share"
+                              className="share-text-field"
+                              aria-disabled="true"
+                              placeholder="Description"
+                              id="description"
+                            ></textarea>
+                            {errors.description !== " " ? (
+                              <div
+                                style={{
+                                  textAlign: "left",
+                                  paddingBottom: "10px",
+                                  color: "rgb(220,71,52)",
+                                }}
+                              >
+                                {errors.description}{" "}
+                              </div>
+                            ) : (
+                              ""
+                            )}
+                            <br></br>
+                          </div>
+                          
+                          <div>
+                            <input
+                              onChange={(event) =>
+                                setPhone(event.target.value)
+                              }
+                              value={phone}
+                              type="text"
+                              className="share-text-field"
+                              placeholder="Phone number"
+                            />
+                            {errors.phone !== " " ? (
+                              <div
+                                style={{
+                                  textAlign: "left",
+                                  paddingBottom: "10px",
+                                  color: "rgb(220,71,52)",
+                                }}
+                              >
+                                {errors.phone}{" "}
+                              </div>
+                            ) : (
+                              ""
+                            )}
+                            <br></br>
+                            </div>
+                            <br></br>
+                          <div>
+                            <label className="form-label">
+                              Choose a Picture
+                            </label>
+                            <input
+                              className="form-control"
+                              type="file"
+                              onChange={(event) =>
+                                setPicture(event.target.files[0])
+                              }
+                            />
+                          </div>
+                          <br></br>
+
+                          <button
+                            onClick={handleSubmit}
+                            className="edit-btn"
+                            type="submit"
+                          >
+                            Request
+                          </button>
+                        </form>
                       </div>
                     </div>
                   </div>

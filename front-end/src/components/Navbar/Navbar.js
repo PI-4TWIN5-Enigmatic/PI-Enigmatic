@@ -24,8 +24,9 @@ import { BiMessageRoundedDetail, BiPhoneCall } from 'react-icons/bi';
 import { Button, Modal } from 'react-bootstrap';
 import VideoPlayer from '../Video/VideoPlayer';
 import { ContextProvider } from '../../Context';
-import Sidebar from '../Video/SideBar';
-import Notifications from '../Video/Notification';
+import Sidebar from '../video/SideBar';
+import Notifications from '../video/Notification';
+import Search from '../Search/Search';
 
 
 
@@ -583,18 +584,8 @@ setNewMessage(message)
               <div className="col-md-5">
                 <div className="header-top-right d-flex align-items-center justify-content-end">
                   {cookies.access_token && (
-                    <div className="header-top-search">
-                      <form className="top-search-box">
-                        <input
-                          type="text"
-                          placeholder="Search"
-                          className="top-search-field"
-                        />
-                        <button className="top-search-btn">
-                          <i className="flaticon-search"></i>
-                        </button>
-                      </form>
-                    </div>
+                    
+                    <Search />
                   )}
                   <div className="col-md-5">
                     <div className="header-top-right d-flex align-items-center justify-content-end">
