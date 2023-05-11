@@ -1,5 +1,7 @@
 import './App.css';
 
+import Redirectmeeting from "./components/Acceuil/Redirectmeeting";
+import Meeting from './components/Acceuil/Meeting';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'react-toastify/dist/ReactToastify.css';
 import NotFound from './components/NotFound';
@@ -57,6 +59,7 @@ function App() {
     <Route path="/signup" element={<Signup />}></Route>
     <Route path="/verif" element={<Verif />}></Route>
     <Route path="/association/cree" element={<Create />}></Route>
+    <Route path="/redirectmeeting" element={<Redirectmeeting />}></Route>
 
     <Route path="/association/update/:id" element={<UpdateAssociation />}></Route>
     
@@ -89,6 +92,7 @@ function App() {
     <Route path="/EventsHomePage" element={<EventsHomePage/>}></Route>
 
     <Route path="/savedposts" element={<Savedposts />}></Route>
+    <Route path="/stream" element={<Meeting/>}></Route>
 
 
 
