@@ -44,15 +44,11 @@ const LikedPages = () => {
                                     <ul className="like-page-list-wrapper">
                                         <li className="unorder-list">
                                             <div className="profile-thumb">
-                                                <a href="#">
-                                                    <figure className="profile-thumb-small">
-                                                        <img src={profilePicture} alt="profile picture" />
-                                                    </figure>
-                                                </a>
+                                                
                                             </div>
-                                            <Link to={'/redirectmeeting'}   style={{marginLeft:"15px"}} >   Skander Zouaoui  </Link>
 
-
+                                            {localStorage.getItem('roomID') && (
+                    <Link to={`/stream?roomID=${localStorage.getItem('roomID')}&role=Audience`} style={{  color: "#f44336"}}>view LIVE</Link> )}
                                            </li></ul></div></div>
                                 </>
 
